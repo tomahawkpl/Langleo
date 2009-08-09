@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:titleCondensed="@string/refresh" android:title="@string/refresh" android:id="@+id/download_refresh" android:icon="@drawable/menu_refresh"></item>
+<item android:titleCondensed="@string/help" android:title="@string/help" android:id="@+id/download_help" android:icon="@drawable/menu_help"></item>
+</menu>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="fill_parent" android:layout_width="fill_parent">
+	<LinearLayout android:layout_width="fill_parent"
+		android:layout_height="fill_parent" android:orientation="vertical">
+
+		<TextView android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:gravity="center"
+			android:text="@string/selected_file" android:textSize="20sp" android:height="28sp" />
+
+		<LinearLayout android:layout_width="fill_parent"
+			android:layout_height="wrap_content">
+
+			<TextView android:layout_width="wrap_content"
+				android:layout_weight="1" android:layout_height="wrap_content"
+				android:text="" android:id="@+id/import_from_file_selected_file_name" />
+
+			<Button android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:gravity="center"
+				android:text="@string/select_different_file" android:id="@+id/import_from_file_select_file" />
+
+		</LinearLayout>
+
+		
+
+		
+
+		<TextView android:layout_width="fill_parent"
+			android:layout_marginTop="10dip" android:layout_height="wrap_content"
+			android:text="@string/word_delimiter" />
+
+		<RadioGroup android:checkedButton="@+id/import_from_file_radio_tabulator" android:id="@+id/import_from_file_radio_group"
+			android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+
+			<RadioButton android:text="@string/tabulator"
+				android:id="@+id/import_from_file_radio_tabulator"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:layout_weight="1" />
+			<RadioButton android:text="@string/other"
+				android:id="@+id/import_from_file_radio_other" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:layout_weight="1" />
+
+		</RadioGroup>
+
+		<CheckBox android:text="Switch word/translation order"
+			android:id="@+id/import_from_file_switch_order" android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:gravity="center" />
+
+
+		<TextView android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:gravity="center"
+			android:text="@string/example_of_imported_word" android:textSize="20sp"
+			android:height="28sp" />
+
+		<TextView android:layout_width="fill_parent"
+			android:id="@+id/import_from_file_example_input"
+			android:layout_height="wrap_content" android:gravity="center"
+			android:layout_marginTop="5dip" />
+
+		<TextView android:layout_width="fill_parent" android:text="@string/parsing_error" android:visibility="gone"
+			android:layout_marginTop="5dip" android:layout_height="wrap_content" android:textColor="@color/error"
+			android:id="@+id/import_from_file_parsing_error" />
+
+		<TextView android:layout_width="fill_parent"
+			android:layout_marginTop="5dip" android:layout_height="wrap_content"
+			android:id="@+id/import_from_file_example_word" />
+		<TextView android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:id="@+id/import_from_file_example_translation"
+			android:text="" />
+
+
+		<Button android:layout_width="fill_parent"
+			android:layout_marginTop="5dip" android:layout_height="wrap_content"
+			android:gravity="center" android:text="@string/import_" android:id="@+id/import_from_file_import" />
+
+
+
+
+
+	</LinearLayout>
+
+</ScrollView>

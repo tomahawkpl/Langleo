@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="fill_parent"
+	android:layout_height="wrap_content" xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical">
+	<LinearLayout android:layout_width="fill_parent"
+		android:layout_height="wrap_content">
+		<LinearLayout android:layout_width="wrap_content"
+			android:orientation="vertical" android:layout_height="wrap_content"
+			android:layout_weight="1">
+			<TextView android:layout_width="wrap_content"
+				android:ellipsize="start" android:text="this is a very long collection name"
+				android:layout_height="wrap_content" android:id="@+id/collection_item_name"
+				android:textSize="22sp" android:lines="1">
+			</TextView>
+			<ProgressBar android:id="@+id/collection_item_progress"
+				style="?android:attr/progressBarStyleHorizontal" android:padding="10sp"
+				android:layout_width="fill_parent" android:layout_height="35sp" />
+		</LinearLayout>
+		<AbsoluteLayout android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+			<ImageView android:id="@+id/collection_item_base_language_image"
+				android:src="@drawable/flag_french" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:layout_x="20dip"
+				android:layout_y="13dip"/>
+			<ImageView android:id="@+id/collection_item_target_language_image"
+				android:src="@drawable/flag_spanish" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+
+		</AbsoluteLayout>
+	</LinearLayout>
+
+	<LinearLayout android:layout_width="fill_parent"
+		android:id="@+id/collection_item_stats" android:layout_weight="1"
+		android:layout_height="fill_parent">
+
+		<TextView android:layout_weight="1" android:layout_width="wrap_content"
+			android:id="@+id/collection_item_stats_words" android:layout_height="fill_parent"
+			android:textSize="15sp" android:gravity="center" android:text="930 words">
+		</TextView>
+
+		<TextView android:layout_weight="1" android:layout_width="wrap_content"
+			android:id="@+id/collection_item_stats_lists" android:layout_height="fill_parent"
+			android:textSize="15sp" android:gravity="center" android:text="7 lists">
+		</TextView>
+
+		<TextView android:layout_weight="1" android:layout_width="wrap_content"
+			android:id="@+id/collection_item_stats_learned" android:layout_height="fill_parent"
+			android:textSize="15sp" android:gravity="center" android:text="20% learned">
+		</TextView>
+
+
+	</LinearLayout>
+
+	<LinearLayout android:layout_width="fill_parent"
+		android:layout_weight="0" android:id="@+id/collection_item_dates"
+		android:layout_height="wrap_content">
+		<TextView android:layout_weight="1" android:layout_width="wrap_content"
+			android:id="@+id/collection_item_days_learning"
+			android:layout_height="wrap_content" android:gravity="center"
+			android:textSize="15sp" android:text="Days learning: 5">
+		</TextView>
+
+		<TextView android:layout_weight="1" android:layout_width="wrap_content"
+			android:id="@+id/collection_item_days_left" android:layout_height="wrap_content"
+			android:gravity="center" android:textSize="15sp" android:text="Days left: 22">
+		</TextView>
+	</LinearLayout>
+
+
+
+	<ViewStub android:id="@+id/operation_addon_stub"
+		android:layout="@layout/operation_addon" android:layout_width="fill_parent"
+		android:layout_height="wrap_content">
+	</ViewStub>
+
+</LinearLayout>

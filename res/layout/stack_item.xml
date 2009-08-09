@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="wrap_content">
+	<TextView android:text="Irregular verbs (43)" android:id="@+id/stack_item_name"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:textSize="25sp" />
+	<TextView android:text="Set of most common spanish irregular verbs"
+		android:id="@+id/stack_item_description" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:maxLines="2"/>
+
+</LinearLayout>

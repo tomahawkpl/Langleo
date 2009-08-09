@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:icon="@drawable/menu_add" android:id="@+id/lists_new_list"
+		android:title="@string/new_list" android:titleCondensed="@string/new_list"></item>
+	<item android:id="@+id/lists_download" android:titleCondensed="@string/download" android:icon="@drawable/menu_search" android:title="@string/download"></item>
+	<item android:id="@+id/lists_import" android:titleCondensed="@string/import_"
+		android:title="@string/import_" android:icon="@drawable/menu_import"></item>
+	<item android:titleCondensed="@string/export" android:title="@string/export"
+		android:icon="@drawable/menu_export" android:id="@+id/lists_export"></item>
+	<item android:id="@+id/lists_help" android:title="@string/help"
+		android:titleCondensed="@string/help" android:icon="@drawable/menu_help"></item>
+
+
+
+</menu>

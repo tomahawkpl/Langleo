@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:orientation="vertical">
+
+	<ListView android:layout_width="fill_parent" android:id="@id/android:list"
+		android:layout_height="wrap_content" android:layout_weight="1" />
+
+	<LinearLayout android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:layout_weight="0">
+
+		<Button android:text="@string/select_all" android:id="@+id/select_file_select_all"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:layout_weight="1"></Button>
+		<Button android:text="@string/deselect_all" android:id="@+id/select_file_deselect_all"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:layout_weight="1"></Button>
+
+		<Button android:text="@string/ok" android:id="@+id/select_file_ok"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:layout_weight="2"></Button>
+	</LinearLayout>
+
+</LinearLayout>

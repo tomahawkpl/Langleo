@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory android:title="@string/studying">
+		<EditTextPreference android:summary="@string/new_words_per_day_summary" android:defaultValue="20"
+			android:numeric="integer" android:title="@string/new_words_per_day"
+			android:key="new_words_per_day"></EditTextPreference>
+		<EditTextPreference android:summary="@string/new_words_per_session_summary" android:defaultValue="10"
+			android:numeric="integer" android:title="@string/new_words_per_session"
+			android:key="new_words_per_session"></EditTextPreference>
+
+
+		<CheckBoxPreference android:key="optimize_new_words_per_day" 
+			android:title="@string/optimize_new_words_per_day" android:summary="@string/optimize_new_words_per_day_summary"/>
+	</PreferenceCategory>
+
+
+</PreferenceScreen>

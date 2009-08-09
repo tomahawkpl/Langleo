@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	package="com.atteo.langleo" android:versionCode="1"
+	android:versionName="1.0">
+
+	<uses-permission android:name="android.permission.INTERNET" />
+
+	<application android:icon="@drawable/icon" android:label="@string/app_name" android:name="Langleo">
+		<activity android:name=".activities.Main" android:label="@string/app_name" android:screenOrientation="portrait">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+		<activity android:name=".activities.Collections" />
+		<activity android:name=".activities.Download" />
+		<activity android:name=".activities.StackDetails" />
+		<activity android:name=".activities.EditCollection" />
+		<activity android:name=".activities.Lists" />
+		<activity android:name=".activities.EditList" />
+		<activity android:name=".activities.Words" />
+		<activity android:name=".activities.EditWord" />
+		<activity android:name=".activities.ImportFromFile" />
+		<activity android:name=".activities.SelectFile" />
+		<activity android:name=".activities.Backup" />
+		<activity android:name=".activities.SelectList" />
+		<activity android:name=".activities.Help" />
+		<activity android:name=".activities.Preferences" />
+		<activity android:name=".activities.Study" />
+	</application>
+	<uses-sdk android:minSdkVersion="3" />
+
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+</manifest> 

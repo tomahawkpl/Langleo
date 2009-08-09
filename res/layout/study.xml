@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout android:layout_width="fill_parent" android:id="@+id/study_main_layout"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="fill_parent" android:visibility="invisible">
+
+	<AbsoluteLayout android:layout_width="wrap_content"
+		android:id="@+id/study_flags" android:layout_height="wrap_content"
+		android:layout_alignParentTop="true">
+		<ImageView android:id="@+id/study_base_language_image"
+			android:src="@drawable/flag_french" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:layout_x="20dip"
+			android:layout_y="13dip" />
+		<ImageView android:id="@+id/study_target_language_image"
+			android:src="@drawable/flag_spanish" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+	</AbsoluteLayout>
+
+	<ImageButton android:id="@+id/study_audio_switch"
+		android:src="@drawable/audio_off" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_toLeftOf="@+id/study_progress_bar"
+		android:layout_alignParentRight="true" android:layout_alignBottom="@+id/study_flags" />
+
+	<TextView android:text="" android:id="@+id/study_progress_info"
+		android:layout_height="wrap_content" android:gravity="center"
+		android:layout_toRightOf="@+id/study_flags" android:layout_width="wrap_content"
+		android:layout_alignBottom="@+id/study_flags" android:layout_toLeftOf="@+id/study_audio_switch" />
+
+	<ProgressBar android:id="@+id/study_progress_bar"
+		android:layout_margin="5dip" style="?android:attr/progressBarStyleHorizontal"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_toLeftOf="@+id/study_audio_switch"
+		android:layout_alignParentTop="true" android:layout_toRightOf="@+id/study_flags"
+		android:layout_above="@+id/study_progress_info" />
+
+	<LinearLayout android:layout_width="fill_parent"
+		android:layout_below="@+id/study_flags" android:layout_height="fill_parent"
+		android:orientation="vertical">
+
+		<FrameLayout android:id="@+id/study_layout" android:layout_weight="1"
+			android:layout_width="fill_parent" android:layout_height="wrap_content">
+			<LinearLayout android:layout_width="fill_parent"
+				android:layout_height="fill_parent" android:orientation="vertical">
+
+				<TextView android:text="@string/new_word" android:id="@+id/study_new_word"
+					android:padding="5dip" android:layout_width="fill_parent"
+					android:layout_height="wrap_content" android:gravity="center"
+					android:textSize="20sp" android:layout_below="@+id/study_flags" />
+
+				<TextView android:text="" android:id="@+id/study_word_content"
+					android:layout_width="fill_parent" android:layout_height="wrap_content"
+					android:gravity="center" android:textSize="30sp"
+					android:layout_below="@+id/study_new_word" android:layout_weight="1" />
+
+				<TextView android:text="" android:id="@+id/study_translation_content"
+					android:layout_width="fill_parent" android:layout_height="wrap_content"
+					android:gravity="center" android:layout_marginTop="5dp"
+					android:textSize="30sp" android:layout_weight="1" />
+			</LinearLayout>
+		</FrameLayout>
+		<LinearLayout android:layout_width="fill_parent"
+			android:layout_alignParentBottom="true" android:layout_height="wrap_content"
+			android:gravity="bottom" android:layout_weight="0"
+			android:id="@+id/study_normal_buttons">
+
+			<Button android:text="@string/incorrect" android:id="@+id/study_button_incorrect"
+				android:layout_width="0dip" android:layout_weight="1"
+				android:layout_height="wrap_content"/>
+
+			<Button android:text="@string/correct" android:id="@+id/study_button_correct"
+				android:layout_width="0dip" android:layout_weight="1"
+				android:layout_height="wrap_content"/>
+
+		</LinearLayout>
+
+		<LinearLayout android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:gravity="bottom"
+			android:layout_weight="0" android:id="@+id/study_first_time_buttons"
+			android:layout_alignParentBottom="true">
+
+			<Button android:text="@string/continue_" android:id="@+id/study_button_continue"
+				android:layout_width="0dip" android:layout_weight="1"
+				android:layout_height="wrap_content" />
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+
+
+
+</RelativeLayout>
+
+
+

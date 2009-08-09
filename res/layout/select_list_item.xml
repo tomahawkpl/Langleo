@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:text="TextView01" android:id="@+id/select_list_item_name" android:gravity="center_vertical"
+	android:layout_width="fill_parent" android:layout_height="wrap_content"
+	android:textSize="25sp" android:height="33sp" android:checkMark="?android:attr/listChoiceIndicatorMultiple"/>
+

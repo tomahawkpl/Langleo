@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:titleCondensed="@string/edit_word" android:title="@string/edit_word" android:id="@+id/study_edit" android:icon="@drawable/menu_edit"></item>
+<item android:titleCondensed="@string/delete_word" android:title="@string/delete_word" android:id="@+id/study_delete" android:icon="@drawable/menu_delete"></item>
+<item android:icon="@drawable/menu_help" android:titleCondensed="@string/help" android:title="@string/help" android:id="@+id/study_help"></item>
+</menu>

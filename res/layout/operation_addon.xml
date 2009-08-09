@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="wrap_content" android:id="@+id/operation_addon">
+	<TextView android:paddingTop="5sp" android:paddingLeft="5sp"
+		android:text="test" android:height="32sp"
+		android:textSize="20sp" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:id="@+id/operation_addon_name"/>
+	<ProgressBar android:id="@+id/operation_addon_progress_bar"
+		style="?android:attr/progressBarStyleHorizontal"
+		android:padding="10sp" android:layout_width="fill_parent"
+		android:layout_height="35sp" />
+
+</LinearLayout>
