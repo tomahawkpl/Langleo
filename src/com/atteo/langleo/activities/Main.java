@@ -10,10 +10,14 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.atteo.langleo.Langleo;
+import com.atteo.langleo.LearningAlgorithm;
 import com.atteo.langleo.R;
 import com.atteo.silo.Silo;
 
 public class Main extends Activity {
+
+	private boolean forceStudy = false;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -34,7 +38,6 @@ public class Main extends Activity {
 				study();
 			}
 		});
-
 
 		button = (Button) findViewById(R.id.button_manage);
 		button.setOnClickListener(new OnClickListener() {
@@ -62,15 +65,43 @@ public class Main extends Activity {
 	// Button handlers
 
 	private void study() {
-		String a;
-		if ((a = Langleo.getLearningAlgorithm().isQuestionWaiting()) != null) {
-			Toast.makeText(this, a, Toast.LENGTH_LONG).show();
+		int a;
+		if (forceStudy) {
+			Intent intent = new Intent(this, Study.class);
+			intent.putExtra("force", true);
+			startActivity(intent);
+			forceStudy = false;
+			return;
+		}
+		
+		
+		if ((a = Langleo.getLearningAlgorithm().isQuestionWaiting()) != LearningAlgorithm.QUESTIONS_WAITING) {
+			switch (a) {
+			case LearningAlgorithm.NO_QUESTIONS:
+				Toast.makeText(this, getString(R.string.no_words_to_study),
+						Toast.LENGTH_LONG).show();
+				break;
+			case LearningAlgorithm.QUESTIONS_ANSWERED:
+				Toast.makeText(this, getString(R.string.no_need_to_study_now),
+						Toast.LENGTH_LONG).show();
+				break;
+			case LearningAlgorithm.QUESTIONS_ANSWERED_FORCEABLE:
+				Toast.makeText(this, getString(R.string.no_need_to_study_now),
+						Toast.LENGTH_LONG).show();
+				Toast.makeText(this,
+						getString(R.string.click_again_to_start_either_way),
+						Toast.LENGTH_LONG).show();
+				forceStudy = true;
+
+				break;
+			}
+
 			return;
 		}
 		Intent intent = new Intent(this, Study.class);
+		intent.putExtra("force", 0);
 		startActivity(intent);
 	}
-
 
 	private void manageCollections() {
 		Intent intent = new Intent(this, Collections.class);

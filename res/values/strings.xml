@@ -21,6 +21,7 @@
 	<string name="card_not_mounted">SD card is not available</string>
 	<string name="no_words_to_study">Please add a collection</string>
 	<string name="no_need_to_study_now">There are no words to study now, please come back later</string>
+	<string name="click_again_to_start_either_way">Click \'Study\' again to study more new words than current limit</string>
 
 
 	<!-- Collections activity -->

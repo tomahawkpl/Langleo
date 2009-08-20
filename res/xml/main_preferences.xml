@@ -8,10 +8,5 @@
 			android:numeric="integer" android:title="@string/new_words_per_session"
 			android:key="new_words_per_session"></EditTextPreference>
 
-
-		<CheckBoxPreference android:key="optimize_new_words_per_day" 
-			android:title="@string/optimize_new_words_per_day" android:summary="@string/optimize_new_words_per_day_summary"/>
 	</PreferenceCategory>
-
-
 </PreferenceScreen>

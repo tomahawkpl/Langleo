@@ -7,12 +7,10 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Random;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.atteo.langleo.Langleo;
 import com.atteo.langleo.LearningAlgorithm;
-import com.atteo.langleo.R;
 import com.atteo.langleo.models.Collection;
 import com.atteo.langleo.models.List;
 import com.atteo.langleo.models.OlliAnswer;
@@ -21,11 +19,10 @@ import com.atteo.langleo.models.Question;
 import com.atteo.langleo.models.StudyDay;
 import com.atteo.langleo.models.StudySession;
 import com.atteo.langleo.models.Word;
+import com.atteo.langleo.util.BetterAsyncTask;
 import com.atteo.silo.StorableCollection;
 
 public class Olli implements LearningAlgorithm {
-	private Context context;
-
 	private int newWordsToday;
 	private int newWordsInThisSession;
 	private int maxNewWordsPerDay;
@@ -53,15 +50,11 @@ public class Olli implements LearningAlgorithm {
 
 	private static final float BASE_FACTOR_DIFFERENCE = (float) 0.05;
 	private static final float FACTOR_CHANGE_SPEED_DIFFERENCE = (float) 10;
-
+	
 	private long lastCheck;
 
 	private StudyDay studyDay;
 	private StudySession studySession;
-
-	public Olli(Context context) {
-		this.context = context;
-	}
 
 	@Override
 	public void start() {
@@ -139,7 +132,7 @@ public class Olli implements LearningAlgorithm {
 		questionsAnswered = 0;
 		allQuestions = 0;
 
-		lastCheck = 0;
+		lastCheck = -1;
 
 		findNewQuestions();
 		allQuestions += (maxNewWords - m) * 2;
@@ -157,7 +150,6 @@ public class Olli implements LearningAlgorithm {
 		ArrayList<Question> loadedQuestions = nextQuestionCollection
 				.toArrayList();
 		int len = loadedQuestions.size();
-
 		int currentCollection = -1;
 		ArrayList<Question> currentQuestionList = null;
 		Question q;
@@ -167,6 +159,7 @@ public class Olli implements LearningAlgorithm {
 		for (int i = 0; i < len; i++) {
 			q = loadedQuestions.get(i);
 			if (q.getCollection().getId() != currentCollection) {
+				reserved = 0;
 				currentCollection = q.getCollection().getId();
 				if (questions.get(currentCollection) == null)
 					questions.put(currentCollection,
@@ -201,67 +194,8 @@ public class Olli implements LearningAlgorithm {
 
 	@Override
 	public void answer(Question question, int answer) {
-		if (answer == -1) {
-			question.addRepetition();
-			question.save();
-			int c = collections.get(currentCollection).getId();
-			if (laterQuestions.get(c) == null)
-				laterQuestions.put(c, new ArrayList<Question>());
-			laterQuestions.get(c).add(
-					random.nextInt(laterQuestions.get(c).size() + 1), question);
-			questionsAnswered++;
-			return;
-		}
-		Date d = new Date();
-
-		if (question.getRepetitions() > 0) {
-			BigDecimal bd = BigDecimal.valueOf(d.getTime()
-					- question.getPreviousDate().getTime());
-			float factor = bd.divide(
-					BigDecimal.valueOf(question.getPreviousInterval()), 5,
-					BigDecimal.ROUND_FLOOR).floatValue();
-
-			updateOlliFactor(question.getRepetitions(), question
-					.getDifficulty(), factor, answer);
-		}
-
-		question.addQuery();
-		question.addRepetition();
-
-		updateDifficulty(question, answer);
-
-		if (answer == 1) {
-			questionsAnswered++;
-			question.addCorrect();
-			float factor = getFactor(question.getRepetitions(), question
-					.getDifficulty());
-
-			if (question.getRepetitions() > 1) {
-				question.setPreviousInterval(d.getTime()
-						- question.getPreviousDate().getTime());
-				question.setDate(new Date((long) (d.getTime() + factor
-						* question.getPreviousInterval())));
-
-			} else {
-				question.setPreviousInterval(FIRST_INTERVAL);
-				question.setDate(new Date(new Date().getTime()
-						+ (long) (factor * FIRST_INTERVAL)));
-			}
-			question.setPreviousDate(new Date());
-			question.save();
-		} else {
-			question.zeroRepetitions();
-			// question.setDate(new Date()); // so that they don't get loaded
-			// again by findNewQuestions
-			question.setPreviousDate(new Date(0));
-			question.save();
-			int c = collections.get(currentCollection).getId();
-			if (laterQuestions.get(c) == null)
-				laterQuestions.put(c, new ArrayList<Question>());
-			laterQuestions.get(c).add(question);
-
-		}
-
+		new AnswerTask(question, answer).execute((Void)null);
+		
 	}
 
 	private int intDifficulty(float difficulty) {
@@ -324,7 +258,7 @@ public class Olli implements LearningAlgorithm {
 		if (answer == 1) {
 			difference = usedFactor / of.getFactor();
 			if (difference > 1)
-				newFactor *= (difference * 19 + 1) / 20;
+				newFactor *= (difference + 19) / 20;
 		} else {
 			difference = BASE_FACTOR_DIFFERENCE;
 			if (usedFactor > of.getFactor()) {
@@ -344,7 +278,6 @@ public class Olli implements LearningAlgorithm {
 		of.setHits(of.getHits() + 1);
 		of.save();
 		// if ((allQuestions-questionsAnswered) % 5 == 0)
-		findNewQuestions();
 	}
 
 	private float getFactor(int repetitions, float difficulty) {
@@ -418,7 +351,7 @@ public class Olli implements LearningAlgorithm {
 		newQuestionsPerCollection.set(collectionPosition,
 				newQuestionsPerCollection.get(collectionPosition) - 1);
 		Question newQuestion = new Question();
-		newQuestion.setDate(new Date());
+		newQuestion.setDate(new Date(0));
 		newQuestion.setWord(w);
 		w.load();
 		List l = w.getList();
@@ -452,6 +385,7 @@ public class Olli implements LearningAlgorithm {
 				laterQuestions.get(c).remove(0);
 				return q;
 			}
+			
 
 			currentCollection++;
 		}
@@ -459,13 +393,13 @@ public class Olli implements LearningAlgorithm {
 	}
 
 	@Override
-	public String isQuestionWaiting() {
+	public int isQuestionWaiting() {
 		StorableCollection nextQuestionCollection = new StorableCollection(
 				Question.class);
 		nextQuestionCollection.whereInPlace("date <= " + new Date().getTime());
 		Question q = nextQuestionCollection.getFirst();
 		if (q != null)
-			return null;
+			return LearningAlgorithm.QUESTIONS_WAITING;
 
 		SharedPreferences prefs = Langleo.getPreferences();
 		maxNewWordsPerDay = Integer.valueOf(prefs.getString(
@@ -481,9 +415,11 @@ public class Olli implements LearningAlgorithm {
 		studySession.load();
 		newWordsInThisSession = studySession.getNewWords();
 
-		if (newWordsToday >= maxNewWordsPerDay
-				|| newWordsInThisSession >= maxNewWordsPerSession)
-			return context.getString(R.string.no_need_to_study_now);
+		boolean newPossible = false, newInDb = false;
+		
+		if (newWordsToday < maxNewWordsPerDay
+				&& newWordsInThisSession < maxNewWordsPerSession)
+			newPossible = true; 
 
 		nextQuestionCollection = new StorableCollection(Collection.class);
 		nextQuestionCollection.whereInPlace("priority > 0");
@@ -491,13 +427,22 @@ public class Olli implements LearningAlgorithm {
 				.whereInPlace("exists(select * from word where list_id in (select id from list where collection_id = collection.id) and studied=0)");
 		Collection c = nextQuestionCollection.getFirst();
 		if (c != null)
-			return null;
+			newInDb = true;
+		
+		if (!newPossible && !newInDb)
+			return LearningAlgorithm.QUESTIONS_ANSWERED;
+		if (!newPossible && newInDb)
+			return LearningAlgorithm.QUESTIONS_ANSWERED_FORCEABLE;
+		
+		if (newPossible && newInDb)
+			return LearningAlgorithm.QUESTIONS_WAITING;
+		
 		nextQuestionCollection = new StorableCollection(Word.class);
 		Word w = nextQuestionCollection.getFirst();
 		if (w == null)
-			return context.getString(R.string.no_words_to_study);
+			return LearningAlgorithm.NO_QUESTIONS;
 		else
-			return context.getString(R.string.no_need_to_study_now);
+			return LearningAlgorithm.QUESTIONS_ANSWERED;
 	}
 
 	@Override
@@ -511,8 +456,117 @@ public class Olli implements LearningAlgorithm {
 	}
 
 	@Override
-	public void decreaseMax() {
+	public void deletedQuestion(Question question) {
 		allQuestions--;
+		if (question.getRepetitions() == -1) {
+			allQuestions--;
+			newWordsToday -= 1;
+			newWordsInThisSession -= 1;
+			int collectionPosition = -1;
+			for (int i = 0; i < collections.size(); i++)
+				if (collections.get(i).getId() == question.getCollection()
+						.getId()) {
+					collectionPosition = i;
+					break;
+				}
+			newQuestionsPerCollection.set(collectionPosition,
+					newQuestionsPerCollection.get(collectionPosition) + 1);
+		}
+
+	}
+
+	private class AnswerTask extends BetterAsyncTask<Void, Void, Void> {
+		private Question question;
+		private int answer;
+		private int current;
+
+		public AnswerTask(Question question, int answer) {
+			this.question = question;
+			this.answer = answer;
+			
+		}
+
+		@Override
+		protected void onPreExecute() {
+			if (answer == 1 || answer == -1)
+				questionsAnswered++;
+			current = currentCollection;
+			
+			if (answer == -1) {
+				int c = collections.get(current).getId();
+				if (laterQuestions.get(c) == null)
+					laterQuestions.put(c, new ArrayList<Question>());
+				laterQuestions.get(c).add(
+						random.nextInt(laterQuestions.get(c).size() + 1),
+						question);
+				return;
+			}
+			
+			if (answer != 1) {
+				int c = collections.get(current).getId();
+				if (laterQuestions.get(c) == null)
+					laterQuestions.put(c, new ArrayList<Question>());
+				laterQuestions.get(c).add(
+						random.nextInt(laterQuestions.get(c).size() + 1),
+						question);
+
+			}
+		}
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			if (answer == -1) {
+				question.addRepetition();
+				question.save();
+				return null;
+			}
+			Date d = new Date();
+
+			if (question.getPreviousInterval() == null) // bug
+				question.zeroRepetitions();
+			
+			if (question.getRepetitions() > 0) {
+				BigDecimal bd = BigDecimal.valueOf(d.getTime()
+						- question.getPreviousDate().getTime());
+				float factor = bd.divide(
+						BigDecimal.valueOf(question.getPreviousInterval()), 5,
+						BigDecimal.ROUND_FLOOR).floatValue();
+
+				updateOlliFactor(question.getRepetitions(), question
+						.getDifficulty(), factor, answer);
+			}
+
+			question.addQuery();
+			question.addRepetition();
+
+			updateDifficulty(question, answer);
+
+			if (answer == 1) {
+				question.addCorrect();
+				float factor = getFactor(question.getRepetitions(), question
+						.getDifficulty());
+
+				if (question.getRepetitions() > 1) {
+					question.setPreviousInterval(d.getTime()
+							- question.getPreviousDate().getTime());
+					question.setDate(new Date((long) (d.getTime() + factor
+							* question.getPreviousInterval())));
+
+				} else {
+					question.setPreviousInterval(FIRST_INTERVAL);
+					question.setDate(new Date(new Date().getTime()
+							+ (long) (factor * FIRST_INTERVAL)));
+				}
+				question.setPreviousDate(new Date());
+				question.save();
+			} else {
+				question.zeroRepetitions();
+				question.setPreviousDate(new Date(0));
+				question.save();
+			}
+			findNewQuestions();
+			return null;
+		}
 
 	}
 

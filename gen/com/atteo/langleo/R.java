@@ -252,129 +252,130 @@ public final class R {
          */
         public static final int app_name=0x7f060001;
         public static final int are_you_sure=0x7f060004;
-        public static final int base_language=0x7f06002b;
+        public static final int base_language=0x7f06002c;
         public static final int cancel=0x7f060003;
         public static final int card_not_mounted=0x7f06000d;
-        public static final int change=0x7f06002d;
-        public static final int collection_disabled=0x7f06002e;
+        public static final int change=0x7f06002e;
+        public static final int click_again_to_start_either_way=0x7f060010;
+        public static final int collection_disabled=0x7f06002f;
         /**  Preferences activity 
          */
-        public static final int collections=0x7f060055;
-        public static final int collections_empty=0x7f060011;
-        public static final int connecting_with_studystacks=0x7f060062;
-        public static final int continue_=0x7f060050;
-        public static final int correct=0x7f060051;
+        public static final int collections=0x7f060056;
+        public static final int collections_empty=0x7f060012;
+        public static final int connecting_with_studystacks=0x7f060063;
+        public static final int continue_=0x7f060051;
+        public static final int correct=0x7f060052;
         /**   Errors 
          */
         public static final int database_error=0x7f060000;
-        public static final int days_learning=0x7f060025;
-        public static final int days_left=0x7f060026;
-        public static final int delete=0x7f060014;
-        public static final int delete_word=0x7f060052;
-        public static final int deleting=0x7f06001d;
-        public static final int deselect_all=0x7f06004c;
-        public static final int download=0x7f06001c;
-        public static final int downloading=0x7f060034;
-        public static final int edit=0x7f06001b;
+        public static final int days_learning=0x7f060026;
+        public static final int days_left=0x7f060027;
+        public static final int delete=0x7f060015;
+        public static final int delete_word=0x7f060053;
+        public static final int deleting=0x7f06001e;
+        public static final int deselect_all=0x7f06004d;
+        public static final int download=0x7f06001d;
+        public static final int downloading=0x7f060035;
+        public static final int edit=0x7f06001c;
         /**  Edit collection activity 
          */
-        public static final int edit_collection_title=0x7f060029;
+        public static final int edit_collection_title=0x7f06002a;
         /**  Study activity 
          */
-        public static final int edit_word=0x7f06004d;
-        public static final int empty_file=0x7f060040;
-        public static final int empty_file_select_another=0x7f06003f;
-        public static final int example_of_imported_word=0x7f060041;
-        public static final int example_translation=0x7f060045;
-        public static final int example_word=0x7f060043;
-        public static final int export=0x7f060016;
-        public static final int export_options=0x7f06004a;
+        public static final int edit_word=0x7f06004e;
+        public static final int empty_file=0x7f060041;
+        public static final int empty_file_select_another=0x7f060040;
+        public static final int example_of_imported_word=0x7f060042;
+        public static final int example_translation=0x7f060046;
+        public static final int example_word=0x7f060044;
+        public static final int export=0x7f060017;
+        public static final int export_options=0x7f06004b;
         /**  Export activity 
          */
-        public static final int export_to=0x7f060049;
-        public static final int export_to_file=0x7f060015;
-        public static final int exporting=0x7f060020;
-        public static final int files_selected=0x7f060048;
-        public static final int finished_learning=0x7f060028;
+        public static final int export_to=0x7f06004a;
+        public static final int export_to_file=0x7f060016;
+        public static final int exporting=0x7f060021;
+        public static final int files_selected=0x7f060049;
+        public static final int finished_learning=0x7f060029;
         public static final int help=0x7f06000c;
-        public static final int import_=0x7f060017;
-        public static final int import_export=0x7f060056;
-        public static final int import_export_summary=0x7f060057;
-        public static final int import_from_file=0x7f060018;
-        public static final int importing=0x7f06001f;
-        public static final int incorrect=0x7f06004f;
-        public static final int insert_word_delimiter=0x7f060042;
-        public static final int list_name_empty=0x7f060046;
-        public static final int lists_empty=0x7f060035;
-        public static final int loading=0x7f06003c;
+        public static final int import_=0x7f060018;
+        public static final int import_export=0x7f060057;
+        public static final int import_export_summary=0x7f060058;
+        public static final int import_from_file=0x7f060019;
+        public static final int importing=0x7f060020;
+        public static final int incorrect=0x7f060050;
+        public static final int insert_word_delimiter=0x7f060043;
+        public static final int list_name_empty=0x7f060047;
+        public static final int lists_empty=0x7f060036;
+        public static final int loading=0x7f06003d;
         public static final int manage_your_collections=0x7f060009;
-        public static final int name=0x7f06002a;
-        public static final int new_=0x7f060012;
-        public static final int new_collection=0x7f060013;
+        public static final int name=0x7f06002b;
+        public static final int new_=0x7f060013;
+        public static final int new_collection=0x7f060014;
         /**  Lists activity 
          */
-        public static final int new_list=0x7f060032;
+        public static final int new_list=0x7f060033;
         /**  Words activity 
          */
-        public static final int new_word=0x7f060036;
-        public static final int new_words_per_day=0x7f060059;
-        public static final int new_words_per_day_summary=0x7f06005a;
-        public static final int new_words_per_session=0x7f06005b;
-        public static final int new_words_per_session_summary=0x7f06005c;
+        public static final int new_word=0x7f060037;
+        public static final int new_words_per_day=0x7f06005a;
+        public static final int new_words_per_day_summary=0x7f06005b;
+        public static final int new_words_per_session=0x7f06005c;
+        public static final int new_words_per_session_summary=0x7f06005d;
         public static final int no=0x7f060006;
-        public static final int no_download_for_this_language=0x7f060061;
-        public static final int no_internet_connection=0x7f060033;
+        public static final int no_download_for_this_language=0x7f060062;
+        public static final int no_internet_connection=0x7f060034;
         public static final int no_need_to_study_now=0x7f06000f;
         public static final int no_words_to_study=0x7f06000e;
-        public static final int not_learning_yet=0x7f060027;
+        public static final int not_learning_yet=0x7f060028;
         public static final int ok=0x7f060002;
-        public static final int optimize_new_words_per_day=0x7f06005d;
-        public static final int optimize_new_words_per_day_summary=0x7f06005e;
-        public static final int other=0x7f06003e;
-        public static final int parsing_error=0x7f060044;
-        public static final int please_wait=0x7f060053;
+        public static final int optimize_new_words_per_day=0x7f06005e;
+        public static final int optimize_new_words_per_day_summary=0x7f06005f;
+        public static final int other=0x7f06003f;
+        public static final int parsing_error=0x7f060045;
+        public static final int please_wait=0x7f060054;
         public static final int preferences=0x7f06000b;
-        public static final int preparing=0x7f06001e;
-        public static final int priority=0x7f06002f;
-        public static final int priority_long=0x7f060030;
+        public static final int preparing=0x7f06001f;
+        public static final int priority=0x7f060030;
+        public static final int priority_long=0x7f060031;
         public static final int progress=0x7f06000a;
-        public static final int refresh=0x7f060060;
+        public static final int refresh=0x7f060061;
         /**  Collections activity 
          */
-        public static final int restore_backup=0x7f060010;
-        public static final int save=0x7f06001a;
-        public static final int save_to_file=0x7f060019;
-        public static final int saving_file=0x7f060021;
+        public static final int restore_backup=0x7f060011;
+        public static final int save=0x7f06001b;
+        public static final int save_to_file=0x7f06001a;
+        public static final int saving_file=0x7f060022;
         /**  Download activity 
          */
-        public static final int search=0x7f06005f;
+        public static final int search=0x7f060060;
         /**  Select file activity 
          */
-        public static final int select_all=0x7f06004b;
-        public static final int select_different_file=0x7f06003b;
-        public static final int select_language=0x7f060031;
+        public static final int select_all=0x7f06004c;
+        public static final int select_different_file=0x7f06003c;
+        public static final int select_language=0x7f060032;
         /**  Import activity 
          */
-        public static final int selected_file=0x7f06003a;
-        public static final int stats=0x7f06004e;
-        public static final int stats_learned=0x7f060024;
-        public static final int stats_lists=0x7f060023;
-        public static final int stats_words=0x7f060022;
+        public static final int selected_file=0x7f06003b;
+        public static final int stats=0x7f06004f;
+        public static final int stats_learned=0x7f060025;
+        public static final int stats_lists=0x7f060024;
+        public static final int stats_words=0x7f060023;
         /**  Main activity 
          */
         public static final int study=0x7f060007;
-        public static final int study_headphones_text=0x7f060054;
+        public static final int study_headphones_text=0x7f060055;
         public static final int study_using_headphones=0x7f060008;
-        public static final int studying=0x7f060058;
-        public static final int tabulator=0x7f06003d;
-        public static final int target_language=0x7f06002c;
-        public static final int translation=0x7f060039;
+        public static final int studying=0x7f060059;
+        public static final int tabulator=0x7f06003e;
+        public static final int target_language=0x7f06002d;
+        public static final int translation=0x7f06003a;
         /**  Edit word activity 
          */
-        public static final int word=0x7f060038;
-        public static final int word_delimiter=0x7f060047;
-        public static final int words=0x7f060063;
-        public static final int words_empty=0x7f060037;
+        public static final int word=0x7f060039;
+        public static final int word_delimiter=0x7f060048;
+        public static final int words=0x7f060064;
+        public static final int words_empty=0x7f060038;
         public static final int yes=0x7f060005;
     }
     public static final class style {

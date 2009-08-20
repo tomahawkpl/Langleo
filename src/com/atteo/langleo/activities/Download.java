@@ -44,7 +44,6 @@ import com.atteo.langleo.models.Language;
 import com.atteo.langleo.util.BetterAsyncTask;
 
 public class Download extends ListActivity {
-
 	private Collection collection;
 
 	private final int DIALOG_DOWNLOADING = 1;

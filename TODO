@@ -1,8 +1,12 @@
 TODO:
 
+- increasing new words limit
 - download speed
 - help
-- optimise learning
+- orientation switch bug
+- counting bug
+- window switching bug
+
 
 Checks:
 - exception dialogs
@@ -13,3 +17,4 @@ Maybe:
 - backup
 - widget
 - animations
+- optimise learning

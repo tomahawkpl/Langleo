@@ -51,14 +51,15 @@ public class Study extends Activity {
 
 	private static final int DIALOG_PLEASE_WAIT = 1;
 
+	private PrepareTask prepareTask;
+
 	private TTS tts = null;
 
 	private TTS.InitListener ttsInitListener = new TTS.InitListener() {
 
 		public void onInit(int version) {
 			tts.setSpeechRate(120);
-			Word w = currentQuestion.getWord();
-			w.load();
+			Word w = currentQuestion.getWord().l();
 
 			tts.setLanguage(questionBaseLanguage.getShortName());
 			tts.speak(prepareToSpeak(w.getWord()), 1, null);
@@ -71,6 +72,15 @@ public class Study extends Activity {
 	private void initAudio() {
 		if (tts == null)
 			tts = new TTS(this, ttsInitListener, true);
+		else {
+			Word w = currentQuestion.getWord();
+			w.load();
+
+			tts.setLanguage(questionBaseLanguage.getShortName());
+			tts.speak(prepareToSpeak(w.getWord()), 1, null);
+
+			readTranslation = true;
+		}
 
 	}
 
@@ -81,9 +91,6 @@ public class Study extends Activity {
 
 		SharedPreferences prefs = Langleo.getPreferences();
 		audioEnabled = prefs.getBoolean("audio_enabled", false);
-
-		if (audioEnabled)
-			initAudio();
 
 		baseLanguageImage = (ImageView) findViewById(R.id.study_base_language_image);
 		targetLanguageImage = (ImageView) findViewById(R.id.study_target_language_image);
@@ -217,7 +224,8 @@ public class Study extends Activity {
 						.setVisibility(View.VISIBLE);
 			}
 		} else {
-			new PrepareTask().execute();
+			prepareTask = new PrepareTask();
+			prepareTask.execute();
 		}
 	}
 
@@ -264,10 +272,8 @@ public class Study extends Activity {
 			startActivityForResult(intent, REQUEST_EDIT_WORD);
 			break;
 		case R.id.study_delete:
+			Langleo.getLearningAlgorithm().deletedQuestion(currentQuestion);
 			currentQuestion.getWord().delete();
-			Langleo.getLearningAlgorithm().decreaseMax();
-			if (currentQuestion.getRepetitions() == -1)
-				Langleo.getLearningAlgorithm().decreaseMax();
 			nextQuestion();
 			break;
 		case R.id.study_help:
@@ -301,8 +307,19 @@ public class Study extends Activity {
 	}
 
 	@Override
+	protected void onStop() {
+		super.onStop();
+
+		removeDialog(DIALOG_PLEASE_WAIT);
+		if (prepareTask != null)
+			prepareTask.cancel(true);
+
+	}
+
+	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+
 		Langleo.getLearningAlgorithm().stop();
 	}
 
@@ -336,7 +353,7 @@ public class Study extends Activity {
 			questionBaseLanguage.load();
 		}
 		if (questionTargetLanguage == null
-				|| questionTargetLanguage.getId() != c.getBaseLanguage()
+				|| questionTargetLanguage.getId() != c.getTargetLanguage()
 						.getId()) {
 			questionTargetLanguage = c.getTargetLanguage();
 			questionTargetLanguage.load();
@@ -383,7 +400,6 @@ public class Study extends Activity {
 
 	private void answer(int answerQuality) {
 		Langleo.getLearningAlgorithm().answer(currentQuestion, answerQuality);
-
 		nextQuestion();
 	}
 
@@ -395,9 +411,13 @@ public class Study extends Activity {
 
 		@Override
 		protected void onPostExecute(Void v) {
+			prepareTask = null;
+			if (audioEnabled)
+				initAudio();
 			nextQuestion();
 			findViewById(R.id.study_main_layout).setVisibility(View.VISIBLE);
 			removeDialog(DIALOG_PLEASE_WAIT);
+
 		}
 
 		@Override

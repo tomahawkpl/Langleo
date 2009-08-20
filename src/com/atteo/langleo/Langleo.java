@@ -96,7 +96,7 @@ public class Langleo extends Application {
 		sharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(getApplicationContext());
 
-		learningAlgorithm = new Olli(getApplicationContext());
+		learningAlgorithm = new Olli();
 
 		openDatabase();
 
