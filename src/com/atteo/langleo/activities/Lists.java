@@ -659,7 +659,7 @@ public class Lists extends ListActivity {
 				publishProgress(done);
 
 				String[] s = line.split(importData.wordDelimiter);
-				if (s.length != 2)
+				if (s.length != 2 && s.length != 3)
 					continue;
 				if (importData.switchOrder) {
 					w.setWord(s[1].trim());
@@ -668,9 +668,10 @@ public class Lists extends ListActivity {
 					w.setWord(s[0].trim());
 					w.setTranslation(s[1].trim());
 				}
+				if (s.length == 3)
+					w.setNote(s[2].trim());
 				w.quickInsert();
 				done++;
-
 			}
 			publishProgress(done);
 

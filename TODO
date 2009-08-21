@@ -1,12 +1,10 @@
 TODO:
 
-- increasing new words limit
 - download speed
 - help
 - orientation switch bug
-- counting bug
 - window switching bug
-
+- import bug
 
 Checks:
 - exception dialogs

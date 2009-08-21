@@ -67,6 +67,9 @@
 		<TextView android:layout_width="fill_parent"
 			android:layout_height="wrap_content" android:id="@+id/import_from_file_example_translation"
 			android:text="" />
+		<TextView android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:id="@+id/import_from_file_example_note"
+			android:text="" />
 
 
 		<Button android:layout_width="fill_parent"

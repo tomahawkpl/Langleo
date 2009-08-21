@@ -107,7 +107,7 @@ public class Collections extends ListActivity {
 		SharedPreferences prefs = Langleo.getPreferences();
 		int maxNewWordsPerDay = Integer.valueOf(prefs.getString(
 				"new_words_per_day", Langleo.DEFAULT_NEW_WORDS_PER_DAY));
-
+		
 		collectionLearningSpeeds = new HashMap<Integer, Float>();
 
 		ArrayList<Integer> priorities = new ArrayList<Integer>();
@@ -121,6 +121,8 @@ public class Collections extends ListActivity {
 		Collection c;
 
 		while ((c = collections.next()) != null) {
+			if (c.getNotLearnedWordsCount() == 0)
+				continue;
 			priorities.add(c.getPriority());
 			ids.add(c.getId());
 			sum += c.getPriority();
@@ -563,8 +565,6 @@ public class Collections extends ListActivity {
 				h.progress.setProgress(0);
 				h.progress.setMax(c.words);
 				h.progress.setProgress(c.learned);
-				Log.i("t","max " + c.words);
-				Log.i("t","progress " + c.learned);
 				h.days_learning.setText(c.days_learning);
 				h.days_left.setText(c.days_left);
 				h.stats_learned.setText(c.stats_learned);

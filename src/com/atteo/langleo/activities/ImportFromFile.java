@@ -44,7 +44,7 @@ public class ImportFromFile extends Activity {
 	private ProgressDialog loadDialog;
 
 	private CheckBox checkbox;
-	
+
 	private final int DIALOG_LOADING = 1;
 	private final int DIALOG_WORD_DELIMITER = 2;
 
@@ -135,7 +135,7 @@ public class ImportFromFile extends Activity {
 		intent.putExtra("part", "import");
 		startActivity(intent);
 	}
-	
+
 	private void selectFile() {
 		Intent intent = new Intent(getApplicationContext(), SelectFile.class);
 		startActivityForResult(intent, REQUEST_SELECT_FILE);
@@ -196,7 +196,7 @@ public class ImportFromFile extends Activity {
 				showDialog(DIALOG_LOADING);
 				Bundle b = intent.getExtras();
 				new LoadTask().execute(b);
-				
+
 				break;
 			}
 
@@ -235,7 +235,7 @@ public class ImportFromFile extends Activity {
 		TextView tv_input = (TextView) findViewById(R.id.import_from_file_example_input);
 		tv_input.setText(firstLine);
 		String[] tokens = firstLine.split(importData.wordDelimiter);
-		if (tokens.length == 2) {
+		if (tokens.length == 2 || tokens.length == 3) {
 			TextView tv_word = (TextView) findViewById(R.id.import_from_file_example_word);
 			TextView tv_translation = (TextView) findViewById(R.id.import_from_file_example_translation);
 			collection.getBaseLanguage().load();
@@ -250,6 +250,11 @@ public class ImportFromFile extends Activity {
 					.getBaseLanguage().getName(), word));
 			tv_translation.setText(getString(R.string.example_translation,
 					collection.getTargetLanguage().getName(), translation));
+			if (tokens.length == 3) {
+				TextView tv_note = (TextView) findViewById(R.id.import_from_file_example_note);
+				String note = tokens[2];
+				tv_note.setText(getString(R.string.example_note, note));
+			}
 			Button b = (Button) findViewById(R.id.import_from_file_import);
 			b.setVisibility(View.VISIBLE);
 			TextView tv_error = (TextView) findViewById(R.id.import_from_file_parsing_error);
@@ -257,10 +262,12 @@ public class ImportFromFile extends Activity {
 		} else {
 			TextView tv_word = (TextView) findViewById(R.id.import_from_file_example_word);
 			TextView tv_translation = (TextView) findViewById(R.id.import_from_file_example_translation);
+			TextView tv_note = (TextView) findViewById(R.id.import_from_file_example_note);
 			TextView tv_error = (TextView) findViewById(R.id.import_from_file_parsing_error);
 			tv_error.setVisibility(View.VISIBLE);
 			tv_word.setText("");
 			tv_translation.setText("");
+			tv_note.setText("");
 			Button b = (Button) findViewById(R.id.import_from_file_import);
 			b.setVisibility(View.INVISIBLE);
 		}

@@ -49,6 +49,10 @@ public class EditWord extends Activity {
         TextView tv_translation = (TextView)findViewById(R.id.edit_word_translation);
         tv_translation.setText(word.getTranslation());
 
+        TextView tv_note = (TextView)findViewById(R.id.edit_word_note);
+        tv_note.setText(word.getNote());
+
+        
 	}
 
 	@Override
@@ -78,10 +82,13 @@ public class EditWord extends Activity {
 		Intent intent = new Intent();
 		TextView tv_word = (TextView)findViewById(R.id.edit_word_word);
 		TextView tv_translation = (TextView)findViewById(R.id.edit_word_translation);
+		TextView tv_note = (TextView)findViewById(R.id.edit_word_note);
 		String word_ = tv_word.getText().toString();
 		String translation = tv_translation.getText().toString();
+		String note = tv_note.getText().toString();
 		word.setWord(word_);
 		word.setTranslation(translation);
+		word.setNote(note);
 		intent.putExtra("word", word.toBundle());
 		
 		setResult(RESULT_OK,intent);
@@ -96,10 +103,13 @@ public class EditWord extends Activity {
 	private void new_word() {
 		TextView tv_word = (TextView)findViewById(R.id.edit_word_word);
 		TextView tv_translation = (TextView)findViewById(R.id.edit_word_translation);
+		TextView tv_note = (TextView)findViewById(R.id.edit_word_note);
 		String word_ = tv_word.getText().toString();
 		String translation = tv_translation.getText().toString();
+		String note = tv_note.getText().toString();
 		word.setWord(word_);
 		word.setTranslation(translation);
+		word.setNote(note);
 		word.save();
 		Word nword = new Word();
 		nword.setList(word.getList());

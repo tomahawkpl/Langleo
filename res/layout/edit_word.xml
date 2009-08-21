@@ -4,17 +4,24 @@
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:padding="5dp">
-	<TextView android:id="@+id/TextView01" android:layout_width="wrap_content"
+	<TextView android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:text="@string/word"></TextView>
 	<EditText android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:hint="@string/word"
 		android:id="@+id/edit_word_word"></EditText>
 
-	<TextView android:id="@+id/TextView01" android:layout_width="wrap_content"
+	<TextView android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:text="@string/translation"></TextView>
 	<EditText android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:hint="@string/translation"
 		android:id="@+id/edit_word_translation"></EditText>
+
+	<TextView android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="@string/note"/>
+	<EditText android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:hint="@string/note"
+		android:id="@+id/edit_word_note"/>
+
 
 
 	<LinearLayout android:id="@+id/LinearLayout02"
