@@ -4,7 +4,6 @@ TODO:
 - help
 - orientation switch bug
 - window switching bug
-- import bug
 
 Checks:
 - exception dialogs
@@ -12,6 +11,7 @@ Checks:
 - volume when studying
 
 Maybe:
+- save session and day time
 - backup
 - widget
 - animations

@@ -14,7 +14,6 @@ import android.content.SharedPreferences;
 import android.database.DataSetObserver;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -160,6 +159,7 @@ public class Collections extends ListActivity {
 	}
 
 	public void updateListItem(int collectionId) {
+		calculateLearningSpeeds();
 		Collection c = new Collection(collectionId);
 		c.load();
 		String days_learning, days_left, stats_learned, stats_words, stats_lists, stats;
@@ -173,7 +173,7 @@ public class Collections extends ListActivity {
 			lists = c.getLists().getCount();
 			
 			Date started = c.getStarted();
-			if (started == null) {
+			if (started == null|| (words == learned && words == 0)) {
 				days_learning = s6;
 				days_left = "";
 			} else if (words == learned && words != 0) {
@@ -183,9 +183,7 @@ public class Collections extends ListActivity {
 
 				days_learning = s4
 						+ ((new Date().getTime() - started.getTime()) / (1000 * 60 * 60 * 24));
-				days_left = s5
-						+ (int) ((words - learned) / collectionLearningSpeeds
-								.get(collectionId));
+				days_left = s5 + (int) ((words - learned) / collectionLearningSpeeds.get(collectionId));
 
 			}
 
@@ -227,7 +225,7 @@ public class Collections extends ListActivity {
 				lists = c.getLists().getCount();
 
 				Date started = c.getStarted();
-				if (started == null) {
+				if (started == null || (words == learned && words == 0)) {
 					days_learning = s6;
 					days_left = "";
 				} else if (words == learned && words != 0) {
@@ -237,6 +235,7 @@ public class Collections extends ListActivity {
 
 					days_learning = s4
 							+ ((new Date().getTime() - started.getTime()) / (1000 * 60 * 60 * 24));
+					
 					days_left = s5
 							+ (int) ((words - learned) / collectionLearningSpeeds
 									.get(id));

@@ -88,6 +88,7 @@
 	<string name="empty_file_select_another">Selected file doesn\'t contain any words, please select another one</string>
 	<string name="empty_file">Empty file</string>
 	<string name="example_of_imported_word">Example of an imported word:</string>
+	<string name="will_be_imported_as">Will be imported as:</string>
 	<string name="insert_word_delimiter">Insert a character or string</string>
 	<string name="example_word">Word (%s): %s</string>
 	<string name="example_note">Note: %s</string>

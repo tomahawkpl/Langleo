@@ -49,8 +49,8 @@
 
 		<TextView android:layout_width="fill_parent"
 			android:layout_height="wrap_content" android:gravity="center"
-			android:text="@string/example_of_imported_word" android:textSize="20sp"
-			android:height="28sp" />
+			android:text="@string/example_of_imported_word" android:textSize="18sp"
+			android:height="26sp" android:textColor="#ffffff"/>
 
 		<TextView android:layout_width="fill_parent"
 			android:id="@+id/import_from_file_example_input"
@@ -60,6 +60,11 @@
 		<TextView android:layout_width="fill_parent" android:text="@string/parsing_error" android:visibility="gone"
 			android:layout_marginTop="5dip" android:layout_height="wrap_content" android:textColor="@color/error"
 			android:id="@+id/import_from_file_parsing_error" />
+
+		<TextView android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:gravity="center"
+			android:text="@string/will_be_imported_as" android:textSize="18sp"
+			android:height="26sp" android:textColor="#ffffff"/>
 
 		<TextView android:layout_width="fill_parent"
 			android:layout_marginTop="5dip" android:layout_height="wrap_content"

@@ -34,6 +34,7 @@ public class SelectFile extends ListActivity {
 	private String currentDirectory;
 
 	public void onCreate(Bundle savedInstanceState) {
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.select_list);
 		ListView list = getListView();

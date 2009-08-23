@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
 
+import android.os.Bundle;
 import android.util.Log;
 
 import com.atteo.langleo.LearningAlgorithm;
@@ -32,12 +33,14 @@ public class Olli implements LearningAlgorithm {
 	private int prioritySum;
 	private ArrayList<Integer> wordsCount;
 	private ArrayList<Integer> priorities;
-	private ArrayList<Boolean> started;
+	private ArrayList<Integer> started;
 
 	private int currentCollection;
 
 	private Random random;
 
+	private boolean isStarted = false;
+	
 	private ArrayList<Collection> collections;
 	private HashMap<Integer, ArrayList<Question>> questions;
 	private HashMap<Integer, ArrayList<Question>> laterQuestions;
@@ -62,10 +65,6 @@ public class Olli implements LearningAlgorithm {
 		maxNewWordsPerDay = studyDay.getMaxNewWords();
 		maxNewWordsPerSession = studySession.getMaxNewWords();
 
-		Log.i("t","maxnewwordsperday " + maxNewWordsPerDay);
-		Log.i("t","maxnewwordspersession " + maxNewWordsPerSession);
-		Log.i("t","newwordstoday " + newWordsToday);
-		Log.i("t","newwordsinthissession " + newWordsInThisSession);
 		maxNewWordsFinal = maxNewWordsPerDay - newWordsToday;
 		if (maxNewWordsFinal > maxNewWordsPerSession - newWordsInThisSession)
 			maxNewWordsFinal = maxNewWordsPerSession - newWordsInThisSession;
@@ -79,7 +78,6 @@ public class Olli implements LearningAlgorithm {
 		int p = prioritySum;
 		int newQuestions;
 		int unused = maxNewWordsFinal;
-		Log.i("t","maxnewwordsfinal " + unused);
 		int len = collections.size();
 		for (int i = 0; i < len; i++) {
 			if (p > 0) {
@@ -99,68 +97,125 @@ public class Olli implements LearningAlgorithm {
 	}
 
 	@Override
-	public void start() {
-		studyDay = StudyDay.getToday();
-		studyDay.load();
-
-		studySession = StudySession.getThisSession();
-		studySession.load();
-
-		newWordsToday = studyDay.getNewWords();
-		newWordsInThisSession = studySession.getNewWords();
-
-		usedNewQuestionsPerCollection = new ArrayList<Integer>();
-		calculateMaxNewWordsFinal();
-
+	public void start(Bundle b) {
 		random = new Random();
 		random.setSeed(new Date().getTime());
-
-		prioritySum = 0;
-		currentCollection = 0;
-		priorities = new ArrayList<Integer>();
-		wordsCount = new ArrayList<Integer>();
-		started = new ArrayList<Boolean>();
 
 		StorableCollection storableCollection = new StorableCollection(
 				Collection.class);
 		storableCollection.whereInPlace("disabled = 0");
 		storableCollection.orderByInPlace("name");
 		collections = storableCollection.toArrayList();
-
-		Collection c;
-		int len = collections.size();
-
-		for (int i = 0; i < len; i++)
-			usedNewQuestionsPerCollection.add(0);
-
-		int notLearned;
-		for (int i = 0; i < len; i++) {
-			c = collections.get(i);
-			started.add(c.getStarted() == null);
-			notLearned = c.getNotLearnedWordsCount();
-			wordsCount.add(notLearned);
-			if (notLearned == 0) {
-				priorities.add(0);
-			} else {
-				priorities.add(c.getPriority());
-				prioritySum += c.getPriority();
-
+		
+		if (b != null) {
+			Log.i("t","ollistart");
+			studyDay = new StudyDay();
+			studyDay.loadBundle(b.getBundle("studyDay"));
+			studySession = new StudySession();
+			studySession.loadBundle(b.getBundle("studySession"));
+			newWordsToday = b.getInt("newWordsToday");
+			newWordsInThisSession = b.getInt("newWordsInThisSession");
+			maxNewWordsPerDay = b.getInt("maxNewWordsPerDay");
+			maxNewWordsFinal = b.getInt("maxNewWordsFinal");
+			prioritySum = b.getInt("prioritySum");
+			currentCollection = b.getInt("currentCollection");
+			questionsAnswered = b.getInt("questionsAnswered");
+			allNewQuestions = b.getInt("allNewQuestions");
+			allRepeatedQuestions = b.getInt("allRepeatedQuestions");
+			lastCheck = b.getLong("lastCheck");
+			priorities = b.getIntegerArrayList("priorities");
+			wordsCount = b.getIntegerArrayList("wordsCount");
+			started = b.getIntegerArrayList("started");
+			usedNewQuestionsPerCollection = b.getIntegerArrayList("usedNewQuestionsPerCollection");
+			maxNewQuestionsPerCollection = b.getIntegerArrayList("maxNewQuestionsPerCollection");
+			
+			questions = new HashMap<Integer, ArrayList<Question>>();
+			Bundle questionsBundle = b.getBundle("questions");
+			String[] keys = questionsBundle.keySet().toArray(new String[questionsBundle.keySet().size()]);
+			for (int c = 0;c<keys.length;c++) {
+				ArrayList<Question> a = new ArrayList<Question>();				
+				Bundle collectionQuestions = questionsBundle.getBundle(keys[c]);
+				String[] collectionKeys = collectionQuestions.keySet().toArray(new String[collectionQuestions.keySet().size()]);
+				for (int i=0;i<collectionKeys.length;i++) {
+					Question q = new Question();
+					q.loadBundle(collectionQuestions.getBundle(collectionKeys[i]));
+					a.add(q);
+				}				
+				questions.put(Integer.valueOf(keys[c]), a);
 			}
+			
+			laterQuestions = new HashMap<Integer, ArrayList<Question>>();
+			questionsBundle = b.getBundle("laterQuestions");
+			keys = questionsBundle.keySet().toArray(new String[questionsBundle.keySet().size()]);
+			for (int c = 0;c<keys.length;c++) {
+				ArrayList<Question> a = new ArrayList<Question>();				
+				Bundle collectionQuestions = questionsBundle.getBundle(keys[c]);
+				String[] collectionKeys = collectionQuestions.keySet().toArray(new String[collectionQuestions.keySet().size()]);
+				for (int i=0;i<collectionKeys.length;i++) {
+					Question q = new Question();
+					q.loadBundle(collectionQuestions.getBundle(collectionKeys[i]));
+					a.add(q);
+				}				
+				laterQuestions.put(Integer.valueOf(keys[c]), a);
+			}
+		} else {
+
+			studyDay = StudyDay.getToday();
+			studyDay.load();
+
+			studySession = StudySession.getThisSession();
+			studySession.load();
+			
+			newWordsToday = studyDay.getNewWords();
+			newWordsInThisSession = studySession.getNewWords();
+			
+			usedNewQuestionsPerCollection = new ArrayList<Integer>();
+			calculateMaxNewWordsFinal();
+
+			prioritySum = 0;
+			currentCollection = 0;
+			priorities = new ArrayList<Integer>();
+			wordsCount = new ArrayList<Integer>();
+			started = new ArrayList<Integer>();
+
+			Collection c;
+			int len = collections.size();
+
+			for (int i = 0; i < len; i++)
+				usedNewQuestionsPerCollection.add(0);
+
+			int notLearned;
+			for (int i = 0; i < len; i++) {
+				c = collections.get(i);
+				started.add(c.getStarted() == null ? 0 : 1);
+				notLearned = c.getNotLearnedWordsCount();
+				wordsCount.add(notLearned);
+				if (notLearned == 0) {
+					priorities.add(0);
+				} else {
+					priorities.add(c.getPriority());
+					prioritySum += c.getPriority();
+
+				}
+			}
+
+			questions = new HashMap<Integer, ArrayList<Question>>();
+			laterQuestions = new HashMap<Integer, ArrayList<Question>>();
+
+			questionsAnswered = 0;
+			allNewQuestions = 0;
+			allRepeatedQuestions = 0;
+
+			lastCheck = -1;
+
+			calculateNewQuestionsPerCollection();
+			
 		}
+		
 
-		questions = new HashMap<Integer, ArrayList<Question>>();
-		laterQuestions = new HashMap<Integer, ArrayList<Question>>();
-
-		questionsAnswered = 0;
-		allNewQuestions = 0;
-		allRepeatedQuestions = 0;
-
-		lastCheck = -1;
-
-		calculateNewQuestionsPerCollection();
 
 		findNewQuestions();
-
+		isStarted = true;
 	}
 
 	private void findNewQuestions() {
@@ -213,7 +268,61 @@ public class Olli implements LearningAlgorithm {
 		studySession.setDate(new Date());
 		studySession.setNewWords(newWordsInThisSession);
 		studySession.save();
+		isStarted = false;
+	}
+	
+	@Override
+	public Bundle getInstanceState() {
+		if (!isStarted)
+			return null;
+		Bundle b = new Bundle();
+		b.putInt("newWordsToday", newWordsToday);
+		b.putInt("newWordsInThisSession", newWordsInThisSession);
+		b.putInt("maxNewWordsPerDay", maxNewWordsPerDay);
+		b.putInt("maxNewWordsPerSession", maxNewWordsPerSession);
+		b.putInt("maxNewWordsFinal", maxNewWordsFinal);
+		b.putInt("allNewQuestions", allNewQuestions);
+		b.putInt("allRepeatedQuestions", allRepeatedQuestions);
+		b.putInt("questionsAnswered", questionsAnswered);
+		b.putInt("prioritySum", prioritySum);
+		b.putIntegerArrayList("wordsCount", wordsCount);
+		b.putIntegerArrayList("started", started);
+		b.putInt("currentCollection", currentCollection);
 
+		Bundle questionsBundle = new Bundle();
+		Integer[] keys = questions.keySet().toArray(new Integer[questions.size()]);
+		ArrayList<Question> q;
+		for (int c = 0;c<keys.length;c++) {
+			Bundle collectionBundle = new Bundle();
+			q = questions.get(keys[c]);
+			for (int i=0;i<q.size();i++)
+				collectionBundle.putBundle(String.valueOf(i), q.get(i).toBundle());
+			questionsBundle.putBundle(String.valueOf(keys[c]), collectionBundle);
+		}
+		b.putBundle("questions", questionsBundle);
+		
+		questionsBundle = new Bundle();
+		keys = laterQuestions.keySet().toArray(new Integer[laterQuestions.size()]);
+		for (int c = 0;c<keys.length;c++) {
+			Bundle collectionBundle = new Bundle();
+			q = laterQuestions.get(keys[c]);
+			for (int i=0;i<q.size();i++)
+				collectionBundle.putBundle(String.valueOf(i), q.get(i).toBundle());
+			questionsBundle.putBundle(String.valueOf(keys[c]), collectionBundle);
+		}
+		b.putBundle("laterQuestions", questionsBundle);
+
+		b.putIntegerArrayList("maxNewQuestionsPerCollection",
+				maxNewQuestionsPerCollection);
+		b.putIntegerArrayList("usedNewQuestionsPerCollection",
+				usedNewQuestionsPerCollection);
+
+		b.putLong("lastCheck", lastCheck);
+		b.putBoolean("loopAllowed", loopAllowed);
+		b.putBundle("studyDay", studyDay.toBundle());
+		b.putBundle("studySession", studySession.toBundle());
+
+		return b;
 	}
 
 	@Override
@@ -429,7 +538,7 @@ public class Olli implements LearningAlgorithm {
 
 		studyDay = StudyDay.getToday();
 		studySession = StudySession.getThisSession();
-		
+
 		maxNewWordsPerDay = studyDay.getMaxNewWords();
 		maxNewWordsPerSession = studySession.getMaxNewWords();
 		StudyDay studyDay = StudyDay.getToday();
@@ -493,8 +602,6 @@ public class Olli implements LearningAlgorithm {
 
 	@Override
 	public int allQuestions() {
-		Log.i("t","allnew " + allNewQuestions);
-		Log.i("t","allr " + allRepeatedQuestions);
 		return allNewQuestions * 2 + allRepeatedQuestions;
 	}
 
@@ -537,20 +644,20 @@ public class Olli implements LearningAlgorithm {
 
 			if (answer != LearningAlgorithm.ANSWER_INCORRECT)
 				questionsAnswered++;
-			
+
 			if (answer == LearningAlgorithm.ANSWER_NOT_NEW
 					|| answer == LearningAlgorithm.ANSWER_CONTINUE) {
 				question.getWord().setStudied(true);
 				question.getWord().save();
-				if (answer == LearningAlgorithm.ANSWER_CONTINUE) {				
-						newWordsToday += 1;
-						newWordsInThisSession += 1;
-						usedNewQuestionsPerCollection.set(collectionPosition,
-								usedNewQuestionsPerCollection
-										.get(collectionPosition) + 1);
+				if (answer == LearningAlgorithm.ANSWER_CONTINUE) {
+					newWordsToday += 1;
+					newWordsInThisSession += 1;
+					usedNewQuestionsPerCollection.set(collectionPosition,
+							usedNewQuestionsPerCollection
+									.get(collectionPosition) + 1);
 				}
 			}
-			
+
 			if (answer == LearningAlgorithm.ANSWER_NOT_NEW)
 				allNewQuestions++;
 			current = currentCollection;
@@ -575,8 +682,8 @@ public class Olli implements LearningAlgorithm {
 				question.addRepetition();
 				question.save();
 
-				if (started.get(collectionPosition)) {
-					started.set(collectionPosition, false);
+				if (started.get(collectionPosition) == 0) {
+					started.set(collectionPosition, 1);
 					Collection collection = collections.get(collectionPosition);
 					collection.setStarted(new Date());
 					collection.save();

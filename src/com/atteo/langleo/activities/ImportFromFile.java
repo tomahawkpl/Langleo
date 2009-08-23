@@ -193,7 +193,6 @@ public class ImportFromFile extends Activity {
 		if (resultCode == RESULT_OK)
 			switch (requestCode) {
 			case REQUEST_SELECT_FILE:
-				showDialog(DIALOG_LOADING);
 				Bundle b = intent.getExtras();
 				new LoadTask().execute(b);
 
@@ -207,6 +206,7 @@ public class ImportFromFile extends Activity {
 			throw new RuntimeException("No input file read");
 
 		Intent intent = new Intent();
+		
 		intent.putExtra("import_data", importData.toBundle());
 		intent.putExtra("collection", collection.toBundle());
 		setResult(RESULT_OK, intent);
@@ -284,8 +284,7 @@ public class ImportFromFile extends Activity {
 		updateExample();
 	}
 
-	private class LoadTask extends BetterAsyncTask<Bundle, Void, ImportData> {
-
+	class LoadTask extends BetterAsyncTask<Bundle, Void, ImportData> {
 		@Override
 		public void onPreExecute() {
 			showDialog(DIALOG_LOADING);
@@ -311,14 +310,14 @@ public class ImportFromFile extends Activity {
 			int len = keys.length;
 			Bundle fileToLoad;
 			ImportData result = new ImportData();
+			result.wordDelimiter = wordDelim;
 			for (int i = 0; i < len; i++) {
 				ImportFile importFile = new ImportFile();
 				fileToLoad = b.getBundle(keys[i]);
 
 				importFile.fullpath = fileToLoad.getString("fullpath");
 				importFile.filename = fileToLoad.getString("filename");
-				result.wordDelimiter = wordDelim;
-
+				
 				importFile.lines = new ArrayList<String>();
 
 				FileReader fileReader = null;
@@ -329,7 +328,7 @@ public class ImportFromFile extends Activity {
 					return null;
 				}
 
-				BufferedReader reader = new BufferedReader(fileReader);
+				BufferedReader reader = new BufferedReader(fileReader,16384);
 				String line;
 				int lineNumber = 0;
 				while (true) {

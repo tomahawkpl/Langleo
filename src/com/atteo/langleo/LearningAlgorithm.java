@@ -1,5 +1,7 @@
 package com.atteo.langleo;
 
+import android.os.Bundle;
+
 import com.atteo.langleo.models.Question;
 
 public interface LearningAlgorithm {
@@ -13,8 +15,9 @@ public interface LearningAlgorithm {
 	public static final int ANSWER_INCORRECT = 2;
 	public static final int ANSWER_CORRECT = 3;
 	
-	public void start();
+	public void start(Bundle bundle);
 	public void stop();
+	public Bundle getInstanceState();
 	
 	public int isQuestionWaiting();
 	public void increaseLimit(int increase);

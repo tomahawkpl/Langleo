@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -51,8 +52,8 @@ public class Study extends Activity {
 	private ProgressBar progressBar = null;
 
 	private Chronometer chronometer;
-	
-	private long startTime;
+
+	private long startTime = 0;
 
 	private boolean audioEnabled;
 	private boolean readTranslation;
@@ -100,6 +101,8 @@ public class Study extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.i("t", "onCreate");
+
 		setContentView(R.layout.study);
 
 		Intent intent = getIntent();
@@ -117,14 +120,14 @@ public class Study extends Activity {
 		tv_word = (TextView) findViewById(R.id.study_word_content);
 		tv_translation = (TextView) findViewById(R.id.study_translation_content);
 		tv_progress = (TextView) findViewById(R.id.study_progress_info);
-		tv_note =  (TextView) findViewById(R.id.study_note);
+		tv_note = (TextView) findViewById(R.id.study_note);
 		tv_time_estimation = (TextView) findViewById(R.id.study_progress_time_estimation);
 
 		new_word_buttons = (LinearLayout) findViewById(R.id.study_first_time_buttons);
 		normal_buttons = (LinearLayout) findViewById(R.id.study_normal_buttons);
 
 		chronometer = (Chronometer) findViewById(R.id.study_chronometer);
-		
+
 		Button button = (Button) findViewById(R.id.study_button_incorrect);
 		button.setOnClickListener(new OnClickListener() {
 			@Override
@@ -232,7 +235,6 @@ public class Study extends Activity {
 					initAudio();
 
 			}
-
 		});
 
 		FrameLayout f = (FrameLayout) findViewById(R.id.study_layout);
@@ -254,14 +256,56 @@ public class Study extends Activity {
 				findViewById(R.id.study_main_layout)
 						.setVisibility(View.VISIBLE);
 			}
-			startTime = savedInstanceState.getLong("startTime");
-			chronometer.setBase(startTime);
-			chronometer.start();
-			updateTimeEstimation();
+			startTime = savedInstanceState.getLong("elapsedTime");
+			prepareTask = new PrepareTask();
+			prepareTask.execute(savedInstanceState.getBundle("alg_state"));
 		} else {
+			startTime = SystemClock.elapsedRealtime();
 			prepareTask = new PrepareTask();
 			prepareTask.execute();
 		}
+		updateTimeEstimation();
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		if (prepareTask == null) {
+			startTime = SystemClock.elapsedRealtime() - startTime;
+			chronometer.setBase(startTime);
+			chronometer.start();
+		}
+		Log.i("t", "onStart");
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		Log.i("t", "onResume");
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		Log.i("t", "onPause");
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		startTime = SystemClock.elapsedRealtime() - startTime;
+		chronometer.stop();
+		Log.i("t", "onStop");
+		removeDialog(DIALOG_PLEASE_WAIT);
+		if (prepareTask != null)
+			prepareTask.cancel(true);
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		Log.i("t", "onDestroy");
+		Langleo.getLearningAlgorithm().stop();
 	}
 
 	private String prepareToSpeak(String string) {
@@ -377,27 +421,14 @@ public class Study extends Activity {
 	}
 
 	@Override
-	protected void onStop() {
-		super.onStop();
-		removeDialog(DIALOG_PLEASE_WAIT);
-		if (prepareTask != null)
-			prepareTask.cancel(true);
-
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		Langleo.getLearningAlgorithm().stop();
-	}
-
-	@Override
 	protected void onSaveInstanceState(Bundle b) {
 		b.putBoolean("answer_shown", !tv_translation.getText().toString()
 				.equals(""));
 		if (currentQuestion != null)
 			b.putBundle("question", currentQuestion.toBundle());
-		b.putLong("startTime",startTime);
+		b.putLong("elapsedTime", SystemClock.elapsedRealtime() - startTime);
+		b.putBundle("alg_state", Langleo.getLearningAlgorithm()
+				.getInstanceState());
 	}
 
 	private void nextQuestion() {
@@ -478,28 +509,27 @@ public class Study extends Activity {
 		long estimation = SystemClock.elapsedRealtime() - startTime;
 		estimation += estimation / alg.questionsAnswered()
 				* (alg.allQuestions() - alg.questionsAnswered());
-		int hours = (int)(estimation / (1000 * 60 * 60));
-		int minutes = (int)(estimation / (1000 * 60)) % 60;
-		int seconds = (int)(estimation / 1000) % 60;
-		
+		int hours = (int) (estimation / (1000 * 60 * 60));
+		int minutes = (int) (estimation / (1000 * 60)) % 60;
+		int seconds = (int) (estimation / 1000) % 60;
+
 		String minStr;
 		String secStr;
-		
-		if (minutes < 10 && hours >0)
+
+		if (minutes < 10 && hours > 0)
 			minStr = "0" + minutes;
 		else
 			minStr = String.valueOf(minutes);
-		
+
 		if (seconds < 10)
 			secStr = "0" + seconds;
 		else
 			secStr = String.valueOf(seconds);
-		
-		
-		if (hours >0)
-			tv_time_estimation.setText(hours + ":"+minStr +":"+secStr);
+
+		if (hours > 0)
+			tv_time_estimation.setText(hours + ":" + minStr + ":" + secStr);
 		else
-			tv_time_estimation.setText(minStr +":"+secStr);
+			tv_time_estimation.setText(minStr + ":" + secStr);
 	}
 
 	private void answer(int answerQuality) {
@@ -508,7 +538,7 @@ public class Study extends Activity {
 		updateTimeEstimation();
 	}
 
-	private class PrepareTask extends BetterAsyncTask<Void, Void, Void> {
+	private class PrepareTask extends BetterAsyncTask<Bundle, Void, Void> {
 		@Override
 		protected void onPreExecute() {
 			showDialog(DIALOG_PLEASE_WAIT);
@@ -519,9 +549,11 @@ public class Study extends Activity {
 			prepareTask = null;
 			if (audioEnabled)
 				initAudio();
-			nextQuestion();
+			if (currentQuestion == null)
+				nextQuestion();
+			else
+				showQuestion();
 			findViewById(R.id.study_main_layout).setVisibility(View.VISIBLE);
-			updateTimeEstimation();
 			removeDialog(DIALOG_PLEASE_WAIT);
 			startTime = SystemClock.elapsedRealtime();
 			chronometer.setBase(startTime);
@@ -530,8 +562,13 @@ public class Study extends Activity {
 		}
 
 		@Override
-		protected Void doInBackground(Void... params) {
-			Langleo.getLearningAlgorithm().start();
+		protected Void doInBackground(Bundle... params) {
+			Bundle bundle;
+			if (params.length == 1)
+				bundle = params[0];
+			else
+				bundle = null;
+			Langleo.getLearningAlgorithm().start(bundle);
 			Langleo.getLearningAlgorithm().increaseLimit(limitIncrease);
 			return null;
 		}

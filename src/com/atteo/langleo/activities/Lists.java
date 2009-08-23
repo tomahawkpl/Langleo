@@ -64,9 +64,9 @@ public class Lists extends ListActivity {
 
 	private int enteredList;
 
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.lists_list);
 
 		TaskManager.setLists(this);
@@ -116,6 +116,8 @@ public class Lists extends ListActivity {
 
 	}
 
+	
+	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		TaskManager.setLists(null);
