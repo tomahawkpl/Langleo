@@ -105,6 +105,8 @@ public class Study extends Activity {
 
 		setContentView(R.layout.study);
 
+		
+		
 		Intent intent = getIntent();
 		limitIncrease = intent.getIntExtra("limit_increase", 0);
 
@@ -264,7 +266,7 @@ public class Study extends Activity {
 			prepareTask = new PrepareTask();
 			prepareTask.execute();
 		}
-		updateTimeEstimation();
+		
 	}
 
 	@Override
@@ -555,9 +557,9 @@ public class Study extends Activity {
 				showQuestion();
 			findViewById(R.id.study_main_layout).setVisibility(View.VISIBLE);
 			removeDialog(DIALOG_PLEASE_WAIT);
-			startTime = SystemClock.elapsedRealtime();
 			chronometer.setBase(startTime);
 			chronometer.start();
+			updateTimeEstimation();
 
 		}
 

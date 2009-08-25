@@ -1,14 +1,8 @@
 TODO:
 
-- download speed
 - help
-- orientation switch bug
-- window switching bug
-
-Checks:
-- exception dialogs
-- input validation
-- volume when studying
+- cleanup, timelimit
+- package name
 
 Maybe:
 - save session and day time
@@ -16,3 +10,10 @@ Maybe:
 - widget
 - animations
 - optimise learning
+
+
+Checks:
+- exception dialogs
+- input validation
+- volume when studying
+

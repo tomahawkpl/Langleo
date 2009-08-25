@@ -116,6 +116,7 @@ public class Olli implements LearningAlgorithm {
 			newWordsToday = b.getInt("newWordsToday");
 			newWordsInThisSession = b.getInt("newWordsInThisSession");
 			maxNewWordsPerDay = b.getInt("maxNewWordsPerDay");
+			maxNewWordsPerSession = b.getInt("maxNewWordsPerSession");
 			maxNewWordsFinal = b.getInt("maxNewWordsFinal");
 			prioritySum = b.getInt("prioritySum");
 			currentCollection = b.getInt("currentCollection");
@@ -123,7 +124,7 @@ public class Olli implements LearningAlgorithm {
 			allNewQuestions = b.getInt("allNewQuestions");
 			allRepeatedQuestions = b.getInt("allRepeatedQuestions");
 			lastCheck = b.getLong("lastCheck");
-			priorities = b.getIntegerArrayList("priorities");
+			// priorities ommited
 			wordsCount = b.getIntegerArrayList("wordsCount");
 			started = b.getIntegerArrayList("started");
 			usedNewQuestionsPerCollection = b.getIntegerArrayList("usedNewQuestionsPerCollection");

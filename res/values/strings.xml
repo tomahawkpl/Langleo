@@ -134,6 +134,7 @@
 	<string name="search">Search</string>
 	<string name="refresh">Refresh</string>
 	<string name="no_download_for_this_language">There are no downloads for the %s language</string>
-	<string name="connecting_with_studystacks">Connecting to studystack.com...</string>
+	<string name="connecting_with_studystacks">Downloading index from studystack.com, it may take a while...</string>
+	<string name="loading_index">Loading index...</string>
 	<string name="words">words</string>
 </resources>

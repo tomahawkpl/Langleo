@@ -342,6 +342,7 @@ public final class R {
         public static final int list_name_empty=0x7f06004c;
         public static final int lists_empty=0x7f060038;
         public static final int loading=0x7f060040;
+        public static final int loading_index=0x7f06006a;
         public static final int manage_your_collections=0x7f060009;
         public static final int more_new_words=0x7f060010;
         public static final int name=0x7f06002d;
@@ -411,7 +412,7 @@ public final class R {
          */
         public static final int word=0x7f06003b;
         public static final int word_delimiter=0x7f06004d;
-        public static final int words=0x7f06006a;
+        public static final int words=0x7f06006b;
         public static final int words_empty=0x7f06003a;
         public static final int yes=0x7f060005;
     }
