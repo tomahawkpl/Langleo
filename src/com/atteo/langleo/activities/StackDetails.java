@@ -132,7 +132,7 @@ public class StackDetails extends ListActivity {
 		case DIALOG_DOWNLOADING:
 			progressDialog = new ProgressDialog(this);
 			progressDialog
-					.setMessage(getString(R.string.connecting_with_studystacks));
+					.setMessage(getString(R.string.loading_words));
 			progressDialog.setCancelable(false);
 			return progressDialog;
 

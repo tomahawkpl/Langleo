@@ -115,6 +115,7 @@
 	<string name="correct">Correct</string>
 	<string name="delete_word">Delete word</string>
 	<string name="please_wait">Please wait...</string>
+	<string name="audio_activated">Audio and gestures activated</string>
 	<string name="study_headphones_text">You\'re in \'Study using headphones\' mode now, press \'Back\' button to leave or \'Menu\' button for help</string>
 	
 	<!-- Preferences activity -->
@@ -136,5 +137,6 @@
 	<string name="no_download_for_this_language">There are no downloads for the %s language</string>
 	<string name="connecting_with_studystacks">Downloading index from studystack.com, it may take a while...</string>
 	<string name="loading_index">Loading index...</string>
+	<string name="loading_words">Loading words...</string>
 	<string name="words">words</string>
 </resources>

@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.atteo.langleo.Langleo;
@@ -229,9 +230,12 @@ public class Study extends Activity {
 				Editor e = prefs.edit();
 				e.putBoolean("audio_enabled", audioEnabled);
 				e.commit();
+				
 				// updateAudioIcon();
-				if (audioEnabled)
+				if (audioEnabled) {
+					Toast.makeText(Study.this, R.string.audio_activated, Toast.LENGTH_LONG).show();
 					initAudio();
+				}
 
 			}
 		});
@@ -544,8 +548,10 @@ public class Study extends Activity {
 
 		@Override
 		protected void onPostExecute(Void v) {
-			if (audioEnabled)
+			if (audioEnabled) {
 				initAudio();
+				Toast.makeText(Study.this, R.string.audio_activated, Toast.LENGTH_LONG).show();
+			}
 			if (currentQuestion == null)
 				nextQuestion();
 			else
