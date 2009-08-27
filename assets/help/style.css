@@ -3,3 +3,7 @@ body{
 	background:#ffffff;
 	font-family:Verdana;
 }
+
+p {
+	text-align: justify;
+}

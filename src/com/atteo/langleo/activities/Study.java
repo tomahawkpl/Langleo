@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -54,6 +53,9 @@ public class Study extends Activity {
 	private Chronometer chronometer;
 
 	private long startTime = 0;
+	private long elapsedTime = 0;
+
+	private boolean isCreated = false;
 
 	private boolean audioEnabled;
 	private boolean readTranslation;
@@ -64,8 +66,6 @@ public class Study extends Activity {
 
 	private static final int DIALOG_SELECT_LIMIT = 0;
 	private static final int DIALOG_PLEASE_WAIT = 1;
-
-	private PrepareTask prepareTask;
 
 	private TTS tts = null;
 
@@ -101,12 +101,11 @@ public class Study extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.i("t", "onCreate");
 
 		setContentView(R.layout.study);
 
-		
-		
+		isCreated = true;
+
 		Intent intent = getIntent();
 		limitIncrease = intent.getIntExtra("limit_increase", 0);
 
@@ -173,10 +172,8 @@ public class Study extends Activity {
 			@Override
 			public void onGestureFinish(Gesture gesture) {
 				if (gesture == Gesture.CENTER) {
-
-					tv_translation.setText(currentQuestion.getWord()
-							.getTranslation());
-					tv_note.setText(currentQuestion.getWord().getNote());
+					tv_translation.setVisibility(View.VISIBLE);
+					tv_note.setVisibility(View.VISIBLE);
 
 					if (!audioEnabled)
 						return;
@@ -254,59 +251,55 @@ public class Study extends Activity {
 					tv_translation.setText(currentQuestion.getWord()
 							.getTranslation());
 					tv_note.setText(currentQuestion.getWord().getNote());
+					tv_translation.setVisibility(View.VISIBLE);
+					tv_note.setVisibility(View.VISIBLE);
 				}
 				findViewById(R.id.study_main_layout)
 						.setVisibility(View.VISIBLE);
 			}
-			startTime = savedInstanceState.getLong("elapsedTime");
-			prepareTask = new PrepareTask();
-			prepareTask.execute(savedInstanceState.getBundle("alg_state"));
+			elapsedTime = savedInstanceState.getLong("elapsedTime",0);
+			new PrepareTask()
+					.execute(savedInstanceState.getBundle("alg_state"));
 		} else {
-			startTime = SystemClock.elapsedRealtime();
-			prepareTask = new PrepareTask();
-			prepareTask.execute();
+			elapsedTime = 0;
+			new PrepareTask().execute();
 		}
-		
+
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
-		if (prepareTask == null) {
-			startTime = SystemClock.elapsedRealtime() - startTime;
+		if (!isCreated) {
+			startTime = SystemClock.elapsedRealtime() - elapsedTime;
 			chronometer.setBase(startTime);
 			chronometer.start();
-		}
-		Log.i("t", "onStart");
+		} else
+			isCreated = false;
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		Log.i("t", "onResume");
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		Log.i("t", "onPause");
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		startTime = SystemClock.elapsedRealtime() - startTime;
+		elapsedTime = SystemClock.elapsedRealtime() - startTime;
 		chronometer.stop();
-		Log.i("t", "onStop");
 		removeDialog(DIALOG_PLEASE_WAIT);
-		if (prepareTask != null)
-			prepareTask.cancel(true);
+
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		Log.i("t", "onDestroy");
 		Langleo.getLearningAlgorithm().stop();
 	}
 
@@ -424,11 +417,11 @@ public class Study extends Activity {
 
 	@Override
 	protected void onSaveInstanceState(Bundle b) {
-		b.putBoolean("answer_shown", !tv_translation.getText().toString()
-				.equals(""));
+		b.putBoolean("answer_shown", !tv_translation.isShown());
 		if (currentQuestion != null)
 			b.putBundle("question", currentQuestion.toBundle());
-		b.putLong("elapsedTime", SystemClock.elapsedRealtime() - startTime);
+		elapsedTime = SystemClock.elapsedRealtime() - startTime;
+		b.putLong("elapsedTime", elapsedTime);
 		b.putBundle("alg_state", Langleo.getLearningAlgorithm()
 				.getInstanceState());
 	}
@@ -461,8 +454,9 @@ public class Study extends Activity {
 			questionTargetLanguage.load();
 		}
 		tv_word.setText(w.getWord());
-		tv_note.setText("");
-		tv_translation.setText("");
+		tv_note.setText(w.getNote());
+		tv_translation.setText(w.getTranslation());
+		
 		baseLanguageImage.setImageDrawable(getResources().getDrawable(
 				getResources().getIdentifier(
 						"flag_" + questionBaseLanguage.getName().toLowerCase(),
@@ -485,13 +479,15 @@ public class Study extends Activity {
 		if (currentQuestion.getRepetitions() == -1) {
 			normal_buttons.setVisibility(View.GONE);
 			new_word_buttons.setVisibility(View.VISIBLE);
-			tv_new.setVisibility(View.VISIBLE);
-			tv_translation.setText(currentQuestion.getWord().getTranslation());
-			tv_note.setText(currentQuestion.getWord().getNote());
+			tv_translation.setVisibility(View.VISIBLE);
+			tv_note.setVisibility(View.VISIBLE);
 		} else {
 			normal_buttons.setVisibility(View.VISIBLE);
+			tv_translation.setVisibility(View.INVISIBLE);
+			tv_note.setVisibility(View.INVISIBLE);
 			new_word_buttons.setVisibility(View.GONE);
 			tv_new.setVisibility(View.GONE);
+			
 		}
 
 		if (audioEnabled) {
@@ -548,7 +544,6 @@ public class Study extends Activity {
 
 		@Override
 		protected void onPostExecute(Void v) {
-			prepareTask = null;
 			if (audioEnabled)
 				initAudio();
 			if (currentQuestion == null)
@@ -557,6 +552,7 @@ public class Study extends Activity {
 				showQuestion();
 			findViewById(R.id.study_main_layout).setVisibility(View.VISIBLE);
 			removeDialog(DIALOG_PLEASE_WAIT);
+			startTime = SystemClock.elapsedRealtime() - elapsedTime;
 			chronometer.setBase(startTime);
 			chronometer.start();
 			updateTimeEstimation();

@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Random;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import com.atteo.langleo.LearningAlgorithm;
 import com.atteo.langleo.models.Collection;
@@ -48,11 +47,12 @@ public class Olli implements LearningAlgorithm {
 	private ArrayList<Integer> usedNewQuestionsPerCollection;
 
 	private static final long FIRST_INTERVAL = 1000 * 60 * 60;
+	private static final float MIN_FACTOR = (float) 1.3;
 	private static final float FIRST_FACTOR = (float) 4;
 	private static final float MAX_FACTOR_DIFFERENCE = (float) 0.2;
 
-	private static final float BASE_FACTOR_DIFFERENCE = (float) 0.05;
-	private static final float FACTOR_CHANGE_SPEED_DIFFERENCE = (float) 10;
+	//private static final float BASE_FACTOR_DIFFERENCE = (float) 0.05;
+	//private static final float FACTOR_CHANGE_SPEED_DIFFERENCE = (float) 10;
 
 	private long lastCheck;
 
@@ -108,7 +108,6 @@ public class Olli implements LearningAlgorithm {
 		collections = storableCollection.toArrayList();
 		
 		if (b != null) {
-			Log.i("t","ollistart");
 			studyDay = new StudyDay();
 			studyDay.loadBundle(b.getBundle("studyDay"));
 			studySession = new StudySession();
@@ -346,10 +345,29 @@ public class Olli implements LearningAlgorithm {
 		if (result != null)
 			return result;
 
+		float factor = FIRST_FACTOR;
+		switch (difficulty) {
+		case 0:
+			factor = MIN_FACTOR;
+			break;
+		case 1:
+			factor = (FIRST_FACTOR-MIN_FACTOR)/4*1 + MIN_FACTOR;
+			break;
+		case 2:
+			factor = (FIRST_FACTOR-MIN_FACTOR)/4*2 + MIN_FACTOR;
+			break;
+		case 3:
+			factor = (FIRST_FACTOR-MIN_FACTOR)/4*3 + MIN_FACTOR;
+			break;
+		case 4:
+			factor = (float)FIRST_FACTOR;
+			break;
+		}
+		
 		result = new OlliFactor();
 		result.setDifficulty(difficulty);
 		result.setRepetitions(repetitions);
-		result.setFactor(FIRST_FACTOR);
+		result.setFactor(factor);
 		return result;
 	}
 
@@ -376,6 +394,8 @@ public class Olli implements LearningAlgorithm {
 	private void updateOlliFactor(int repetitions, float difficulty,
 			float usedFactor, int answer) {
 		int diff = intDifficulty(difficulty);
+		
+		
 		OlliFactor of = getOlliFactor(repetitions, diff);
 
 		// addOlliAnswer(diff, repetitions, usedFactor, answer);
@@ -384,11 +404,20 @@ public class Olli implements LearningAlgorithm {
 
 		float newFactor = of.getFactor();
 
-		if (answer == 1) {
-			difference = usedFactor / of.getFactor();
-			if (difference > 1)
-				newFactor *= (difference + 19) / 20;
+		difference = usedFactor / of.getFactor();
+		
+		final int CHANGE_SPEED = 50;
+		
+		if (answer == LearningAlgorithm.ANSWER_CORRECT) {
+			if (difference > 1 && difference < 1.5)
+				newFactor *= (difference + (CHANGE_SPEED-1)) / CHANGE_SPEED;
 		} else {
+			if (difference > 1) {
+				if (difference < 1.2)
+					newFactor *=  (float)(CHANGE_SPEED*3-1) / (CHANGE_SPEED*3);
+			} else
+				newFactor *= (difference + (CHANGE_SPEED-1)) / CHANGE_SPEED;
+			/*
 			difference = BASE_FACTOR_DIFFERENCE;
 			if (usedFactor > of.getFactor()) {
 				difference /= (float) Math.pow(FACTOR_CHANGE_SPEED_DIFFERENCE,
@@ -398,11 +427,11 @@ public class Olli implements LearningAlgorithm {
 				difference = 1 - difference;
 				difference /= 2 - usedFactor / of.getFactor();
 				newFactor *= difference;
-			}
+			}*/
 		}
 
-		if (newFactor < 1.3)
-			newFactor = (float) 1.3;
+		if (newFactor < MIN_FACTOR)
+			newFactor = MIN_FACTOR;
 		of.setFactor(newFactor);
 		of.setHits(of.getHits() + 1);
 		of.save();
@@ -433,7 +462,7 @@ public class Olli implements LearningAlgorithm {
 	private void updateDifficulty(Question question, int answer) {
 		int mult = question.getQueries();
 		if (mult == 0) {
-			if (answer == 0)
+			if (answer == LearningAlgorithm.ANSWER_INCORRECT)
 				question.setDifficulty((float) 3.5);
 			else
 				question.setDifficulty((float) 1.5);
@@ -441,7 +470,7 @@ public class Olli implements LearningAlgorithm {
 		}
 		float step = (float) 5.0 / (mult + 1);
 		float newDifficulty = question.getDifficulty();
-		if (answer == 1) {
+		if (answer == LearningAlgorithm.ANSWER_CORRECT) {
 			step /= 3;
 			newDifficulty -= step;
 		} else
