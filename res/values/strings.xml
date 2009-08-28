@@ -13,7 +13,7 @@
 
 	<!-- Main activity -->
 	<string name="welcome_title">Welcome to Langleo!</string>
-	<string name="welcome_message">Hi! Langleo is a very effective tool which will let you learn up to few thousand new words per month. Before you\'ll start using it I encourage you to read	first two sections of the help page. They will explain to you basic	ideas behind Langleo and how to use it efficiently. Happy learning :)</string>
+	<string name="welcome_message">Hi! Langleo is a very effective tool which will let you learn up to few thousand new words per month. Before you\'ll start using it I encourage you to read	first two sections of the help page. They will explain to you basic	ideas behind Langleo and tell you how to use it efficiently. Happy learning :)</string>
 	<string name="study">Study</string>
 	<string name="study_using_headphones">Study using headphones</string>
 	<string name="manage_your_collections">Collections</string>

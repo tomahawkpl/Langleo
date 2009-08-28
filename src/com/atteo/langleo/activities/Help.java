@@ -19,8 +19,8 @@ public class Help extends Activity {
 	public void onStart() {
 		super.onStart();
 		WebView wv = (WebView) this.findViewById(R.id.help_webview);
+		
 		Intent intent = getIntent();
 		wv.loadUrl(prefix + "#" + intent.getStringExtra("part"));
-		
 	}
 }
