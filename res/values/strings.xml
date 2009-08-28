@@ -12,6 +12,8 @@
 	<string name="no">No</string>
 
 	<!-- Main activity -->
+	<string name="welcome_title">Welcome to Langleo!</string>
+	<string name="welcome_message">Hi! Langleo is a very effective tool which will let you learn up to few thousand new words per month. Before you\'ll start using it I encourage you to read	first two sections of the help page. They will explain to you basic	ideas behind Langleo and how to use it efficiently. Happy learning :)</string>
 	<string name="study">Study</string>
 	<string name="study_using_headphones">Study using headphones</string>
 	<string name="manage_your_collections">Collections</string>
@@ -125,9 +127,9 @@
 
 	<string name="studying">Studying</string>
 	<string name="new_words_per_day">New words per day</string>
-	<string name="new_words_per_day_summary">Number of new words that will be introduced into the learning process daily</string>
+	<string name="new_words_per_day_summary">Number of new words that will be introduced daily</string>
 	<string name="new_words_per_session">New words per session</string>
-	<string name="new_words_per_session_summary">Number of new words that will be introduced into the learning process per session</string>
+	<string name="new_words_per_session_summary">Number of new words that will be introduced per session</string>
 	<string name="optimize_new_words_per_day">Optimise</string>
 	<string name="optimize_new_words_per_day_summary">Let Langleo figure out the number of new words optimal for you</string>
 	

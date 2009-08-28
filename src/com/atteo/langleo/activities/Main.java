@@ -3,7 +3,10 @@ package com.atteo.langleo.activities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,6 +25,7 @@ public class Main extends Activity {
 	private boolean forceStudy = false;
 
 	private static final int DIALOG_SELECT_LIMIT = 0;
+	private static final int DIALOG_WELCOME = 1;
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -68,35 +72,64 @@ public class Main extends Activity {
 		
 
 	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		SharedPreferences prefs = Langleo.getPreferences();
+		boolean firstRun = prefs.getBoolean("first_run", true);
+		if (firstRun) {
+			showDialog(DIALOG_WELCOME);
+			Editor e = prefs.edit();
+			e.putBoolean("first_run", false);
+			e.commit();
+		}
+	}
 
 	// Button handlers
 
 	@Override
 	protected Dialog onCreateDialog(int dialogId) {
+		
 		switch (dialogId) {
+		case DIALOG_WELCOME:
+			
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle(R.string.welcome_title).setMessage(
+					getString(R.string.welcome_message)).setCancelable(false)
+					.setPositiveButton(getString(R.string.ok),
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int id) {
+
+								}
+							});
+			AlertDialog alert = builder.create();
+			return alert;
+			
 		case DIALOG_SELECT_LIMIT:
-			final Dialog dialog = new SelectLimitDialog(this);
-			Button b = (Button) dialog.findViewById(R.id.increase_limit_dialog_ok);
+			final Dialog limit_dialog = new SelectLimitDialog(this);
+			Button b = (Button) limit_dialog.findViewById(R.id.increase_limit_dialog_ok);
 			b.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					dialog.dismiss();
+					limit_dialog.dismiss();
 					Intent intent = new Intent(Main.this, Study.class);
-					NumberPicker np = (NumberPicker) dialog.findViewById(R.id.increase_limit_dialog_picker);
+					NumberPicker np = (NumberPicker) limit_dialog.findViewById(R.id.increase_limit_dialog_picker);
 					intent.putExtra("limit_increase", np.getCurrent());
 					startActivity(intent);
 					forceStudy = false;
 				}
 			});
-			b = (Button) dialog.findViewById(R.id.increase_limit_dialog_cancel);
+			b = (Button) limit_dialog.findViewById(R.id.increase_limit_dialog_cancel);
 			b.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					dialog.dismiss();
+					limit_dialog.dismiss();
 				}
 			});
 			
-			return dialog;
+			return limit_dialog;
 		default:
 			return null;
 		}
