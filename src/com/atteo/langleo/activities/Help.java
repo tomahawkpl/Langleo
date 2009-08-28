@@ -18,8 +18,7 @@ public class Help extends Activity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		WebView wv = (WebView) this.findViewById(R.id.help_webview);
-		
+		WebView wv = (WebView) this.findViewById(R.id.help_webview);	
 		Intent intent = getIntent();
 		wv.loadUrl(prefix + "#" + intent.getStringExtra("part"));
 	}
