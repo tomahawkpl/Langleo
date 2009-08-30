@@ -485,6 +485,7 @@ public class Study extends Activity {
 			new_word_buttons.setVisibility(View.VISIBLE);
 			tv_translation.setVisibility(View.VISIBLE);
 			tv_note.setVisibility(View.VISIBLE);
+			tv_new.setVisibility(View.VISIBLE);
 		} else {
 			normal_buttons.setVisibility(View.VISIBLE);
 			tv_translation.setVisibility(View.INVISIBLE);
