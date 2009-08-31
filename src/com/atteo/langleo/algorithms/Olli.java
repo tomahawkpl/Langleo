@@ -27,6 +27,7 @@ public class Olli implements LearningAlgorithm {
 	private int maxNewWordsFinal;
 	private int allNewQuestions;
 	private int allRepeatedQuestions;
+	private int usedNewQuestions;
 	private int questionsAnswered;
 
 	private int prioritySum;
@@ -35,7 +36,8 @@ public class Olli implements LearningAlgorithm {
 	private ArrayList<Integer> started;
 
 	private int currentCollection;
-
+	private boolean loopEmpty = true;
+	
 	private Random random;
 
 	private boolean isStarted = false;
@@ -56,8 +58,6 @@ public class Olli implements LearningAlgorithm {
 
 	private long lastCheck;
 
-	private boolean loopAllowed = false;
-
 	private StudyDay studyDay;
 	private StudySession studySession;
 
@@ -75,6 +75,10 @@ public class Olli implements LearningAlgorithm {
 	private void calculateNewQuestionsPerCollection() {
 		maxNewQuestionsPerCollection = new ArrayList<Integer>();
 
+		usedNewQuestionsPerCollection = new ArrayList<Integer>();
+		for (int i = 0; i < collections.size(); i++)
+			usedNewQuestionsPerCollection.add(0);
+
 		int p = prioritySum;
 		int newQuestions;
 		int unused = maxNewWordsFinal;
@@ -89,10 +93,9 @@ public class Olli implements LearningAlgorithm {
 			} else
 				newQuestions = 0;
 			maxNewQuestionsPerCollection.add(newQuestions);
-
 		}
 
-		allNewQuestions += maxNewWordsFinal - unused;
+		allNewQuestions = usedNewQuestions + maxNewWordsFinal - unused;
 
 	}
 
@@ -169,7 +172,6 @@ public class Olli implements LearningAlgorithm {
 			newWordsToday = studyDay.getNewWords();
 			newWordsInThisSession = studySession.getNewWords();
 			
-			usedNewQuestionsPerCollection = new ArrayList<Integer>();
 			calculateMaxNewWordsFinal();
 
 			prioritySum = 0;
@@ -181,8 +183,7 @@ public class Olli implements LearningAlgorithm {
 			Collection c;
 			int len = collections.size();
 
-			for (int i = 0; i < len; i++)
-				usedNewQuestionsPerCollection.add(0);
+			
 
 			int notLearned;
 			for (int i = 0; i < len; i++) {
@@ -205,6 +206,7 @@ public class Olli implements LearningAlgorithm {
 			questionsAnswered = 0;
 			allNewQuestions = 0;
 			allRepeatedQuestions = 0;
+			usedNewQuestions = 0;
 
 			lastCheck = -1;
 
@@ -233,12 +235,11 @@ public class Olli implements LearningAlgorithm {
 		ArrayList<Question> currentQuestionList = null;
 		Question q;
 
-		// int extra = 0;
-		// int reserved = 0;
+
 		for (int i = 0; i < len; i++) {
 			q = loadedQuestions.get(i);
 			if (q.getCollection().getId() != currentCollection) {
-				// reserved = 0;
+
 				currentCollection = q.getCollection().getId();
 				if (questions.get(currentCollection) == null)
 					questions.put(currentCollection,
@@ -246,11 +247,7 @@ public class Olli implements LearningAlgorithm {
 				else
 					currentQuestionList = questions.get(currentCollection);
 			}
-			// if (q.getRepetitions() == -1) {
-			// extra++;
-			// reserved++;
-			// currentQuestionList.add(currentQuestionList.size(), q);
-			// } else
+
 			currentQuestionList.add(random
 					.nextInt(currentQuestionList.size() + 1 /*- reserved*/),
 					q);
@@ -318,7 +315,6 @@ public class Olli implements LearningAlgorithm {
 				usedNewQuestionsPerCollection);
 
 		b.putLong("lastCheck", lastCheck);
-		b.putBoolean("loopAllowed", loopAllowed);
 		b.putBundle("studyDay", studyDay.toBundle());
 		b.putBundle("studySession", studySession.toBundle());
 
@@ -499,17 +495,6 @@ public class Olli implements LearningAlgorithm {
 		if (w == null)
 			return null;
 
-		/*
-		 * if (started.get(collectionPosition)) {
-		 * started.set(collectionPosition, false); Collection collection =
-		 * collections.get(collectionPosition); collection.setStarted(new
-		 * Date()); collection.save(); }
-		 */
-		/*
-		 * newWordsToday += 1; newWordsInThisSession += 1;
-		 * usedNewQuestionsPerCollection.set(collectionPosition,
-		 * usedNewQuestionsPerCollection.get(collectionPosition) + 1);
-		 */
 		Question newQuestion = new Question();
 		newQuestion.setDate(new Date(0));
 		newQuestion.setWord(w);
@@ -517,9 +502,6 @@ public class Olli implements LearningAlgorithm {
 		List l = w.getList();
 		l.load();
 		newQuestion.setCollection(l.getCollection());
-		// newQuestion.save();
-		// w.setStudied(true);
-		// w.save();
 		return newQuestion;
 	}
 
@@ -531,11 +513,13 @@ public class Olli implements LearningAlgorithm {
 			if (questions.get(c) != null && !questions.get(c).isEmpty()) {
 				q = questions.get(c).get(0);
 				questions.get(c).remove(0);
+				loopEmpty = false;
 				return q;
 			}
 
 			q = newQuestionFromCollection(currentCollection);
 			if (q != null) {
+				loopEmpty = false;
 				return q;
 			}
 
@@ -543,13 +527,14 @@ public class Olli implements LearningAlgorithm {
 					&& !laterQuestions.get(c).isEmpty()) {
 				q = laterQuestions.get(c).get(0);
 				laterQuestions.get(c).remove(0);
+				loopEmpty = false;
 				return q;
 			}
 
 			currentCollection++;
 		}
-		if (loopAllowed) {
-			loopAllowed = false;
+		if (!loopEmpty) {
+			loopEmpty = true;
 			currentCollection = 0;
 			return getQuestion();
 		}
@@ -620,8 +605,7 @@ public class Olli implements LearningAlgorithm {
 		studyDay.setMaxNewWords(studyDay.getMaxNewWords() + increase);
 		calculateMaxNewWordsFinal();
 		calculateNewQuestionsPerCollection();
-		if (currentCollection > 0)
-			loopAllowed = true;
+
 
 	}
 
@@ -680,6 +664,7 @@ public class Olli implements LearningAlgorithm {
 				question.getWord().setStudied(true);
 				question.getWord().save();
 				if (answer == LearningAlgorithm.ANSWER_CONTINUE) {
+					usedNewQuestions++;
 					newWordsToday += 1;
 					newWordsInThisSession += 1;
 					usedNewQuestionsPerCollection.set(collectionPosition,
