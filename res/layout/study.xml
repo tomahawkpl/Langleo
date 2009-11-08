@@ -6,7 +6,7 @@
 
 	<AbsoluteLayout android:layout_width="wrap_content"
 		android:id="@+id/study_flags" android:layout_height="wrap_content"
-		android:layout_alignParentTop="true">
+		android:layout_alignParentTop="true" android:layout_alignParentLeft="true">
 		<ImageView android:id="@+id/study_base_language_image"
 			android:src="@drawable/flag_french" android:layout_width="wrap_content"
 			android:layout_height="wrap_content" android:layout_x="20dip"
@@ -23,38 +23,39 @@
 		android:layout_alignParentRight="true" android:layout_alignBottom="@+id/study_flags"
 		android:layout_alignParentTop="true" />
 
-	<LinearLayout android:layout_toRightOf="@+id/study_flags"
-		android:layout_width="wrap_content" android:layout_alignBottom="@+id/study_flags"
-		android:layout_toLeftOf="@+id/study_audio_switch"
-		android:layout_height="wrap_content" android:layout_marginTop="0sp"
-		android:layout_marginLeft="10sp" android:layout_marginRight="10sp">
+	<LinearLayout android:orientation="vertical"
+		android:layout_alignParentTop="true" android:layout_toLeftOf="@+id/study_audio_switch"
+		android:layout_toRightOf="@+id/study_flags"
+		android:layout_alignBottom="@+id/study_flags"
+		android:layout_height="wrap_content" android:layout_width="wrap_content">
+		<ProgressBar android:id="@+id/study_progress_bar"
+			android:layout_margin="10sp" style="?android:attr/progressBarStyleHorizontal"
+			android:layout_width="fill_parent" android:layout_height="wrap_content" />
 
+		<LinearLayout android:id="@+id/study_progress_info_bar"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:layout_marginTop="0sp" android:layout_marginLeft="10sp"
+			android:layout_marginRight="10sp">
 
-		<TextView android:text="" android:id="@+id/study_progress_info"
-			android:layout_height="wrap_content" android:gravity="center"
-			android:layout_width="wrap_content" android:layout_weight="0" />
+			<TextView android:text="" android:id="@+id/study_progress_info"
+				android:layout_height="wrap_content" android:gravity="center"
+				android:layout_width="wrap_content" android:layout_weight="0" />
 
-		<Chronometer android:textAppearance="?android:attr/textAppearanceSmall"
-			android:digits="0123456789" android:id="@+id/study_chronometer"
-			android:gravity="right" android:layout_width="wrap_content"
-			android:layout_weight="1" android:layout_height="wrap_content" />
+			<Chronometer android:textAppearance="?android:attr/textAppearanceSmall"
+				android:digits="0123456789" android:id="@+id/study_chronometer"
+				android:gravity="right" android:layout_width="wrap_content"
+				android:layout_weight="1" android:layout_height="wrap_content" />
 
-		<TextView android:text="/" android:layout_height="wrap_content"
-			android:gravity="center" android:layout_width="wrap_content"
-			android:layout_weight="0" />
+			<TextView android:text="/" android:layout_height="wrap_content"
+				android:gravity="center" android:layout_width="wrap_content"
+				android:layout_weight="0" />
 
-		<TextView android:id="@+id/study_progress_time_estimation"
-			android:layout_height="wrap_content" android:gravity="center"
-			android:layout_width="wrap_content" android:layout_weight="0" />
+			<TextView android:id="@+id/study_progress_time_estimation"
+				android:layout_height="wrap_content" android:gravity="center"
+				android:layout_width="wrap_content" android:layout_weight="0" />
 
+		</LinearLayout>
 	</LinearLayout>
-
-	<ProgressBar android:id="@+id/study_progress_bar"
-		android:layout_margin="10sp" style="?android:attr/progressBarStyleHorizontal"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:layout_toLeftOf="@+id/study_audio_switch"
-		android:layout_alignParentTop="true" android:layout_toRightOf="@+id/study_flags"
-		android:layout_above="@+id/study_progress_info" />
 
 	<LinearLayout android:layout_width="fill_parent"
 		android:layout_below="@+id/study_flags" android:layout_height="fill_parent"

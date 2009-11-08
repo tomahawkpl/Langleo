@@ -388,7 +388,6 @@ public class Lists extends ListActivity {
 			TextView tv;
 			TextView stats;
 			ImageView studystack;
-			View operation;
 		}
 
 		private void notifyObservers() {

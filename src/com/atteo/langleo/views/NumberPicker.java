@@ -16,8 +16,6 @@
 
 package com.atteo.langleo.views;
 
-import com.atteo.langleo.R;
-
 import android.content.Context;
 import android.os.Handler;
 import android.text.InputFilter;
@@ -30,9 +28,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnLongClickListener;
-import android.widget.TextView;
-import android.widget.LinearLayout;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.atteo.langleo.R;
 
 
 public class NumberPicker extends LinearLayout implements OnClickListener,

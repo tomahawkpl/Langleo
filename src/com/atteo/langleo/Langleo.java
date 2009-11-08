@@ -1,6 +1,11 @@
 package com.atteo.langleo;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 import android.app.AlertDialog;
@@ -8,6 +13,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
@@ -78,23 +85,39 @@ public class Langleo extends Application {
 			"insert into language(name,shortname, studystackid) values ('Tamil','ta', -1)",
 			"insert into language(name,shortname, studystackid) values ('Turkish','tr', -1)",
 			"insert into language(name,shortname, studystackid) values ('Vietnamese','vi', -1)",
-			"insert into language(name,shortname, studystackid) values ('Welsh','cy', -1)",
-			};
+			"insert into language(name,shortname, studystackid) values ('Welsh','cy', -1)", };
 
 	public static String DATABASE_NAME = "Langleo";
 	public static String LOG_IDENT = "Langleo";
 	public static String DIR_NAME = "Langleo";
-	public static String PACKAGE = "com.atteo.langleo";
-	
+	public static String PACKAGE;
+	public static String VERSION;
+
 	private static ArrayList<Language> cachedLanguages;
 
 	private static SharedPreferences sharedPreferences;
 
+	private void readPackageInfo() {
+		PACKAGE = getPackageName();
+		PackageInfo pi = null;
+		try {
+			pi = getPackageManager().getPackageInfo(PACKAGE, 0);
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		VERSION = pi.versionName;
+	}
+
 	public void onCreate() {
 		super.onCreate();
 
+		readPackageInfo();
+
 		sharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(getApplicationContext());
+
+		if (getPreferences().getBoolean("first_run", true))
+			insertSampleData();
 
 		learningAlgorithm = new Olli();
 
@@ -142,7 +165,7 @@ public class Langleo extends Application {
 		Silo.initializeClass(OlliAnswer.class);
 		Silo.setLogIdent(LOG_IDENT);
 	}
-	
+
 	public void closeDatabase() {
 		Silo.close();
 	}
@@ -151,21 +174,24 @@ public class Langleo extends Application {
 		closeDatabase();
 		super.onTerminate();
 	}
-	
+
 	public static boolean isConnectionAvailable(Context context) {
-		NetworkInfo ni = ((ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+		NetworkInfo ni = ((ConnectivityManager) context
+				.getSystemService(Context.CONNECTIVITY_SERVICE))
+				.getActiveNetworkInfo();
 		boolean connected;
 		if (ni == null)
 			connected = false;
 		else
 			connected = ni.isConnected();
-		
+
 		if (!connected) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(context) {
 			};
 			builder.setMessage(
-					context.getString(R.string.no_internet_connection)).setCancelable(false)
-					.setPositiveButton(context.getString(R.string.ok),
+					context.getString(R.string.no_internet_connection))
+					.setCancelable(false).setPositiveButton(
+							context.getString(R.string.ok),
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int id) {
@@ -175,8 +201,30 @@ public class Langleo extends Application {
 			AlertDialog alert = builder.create();
 			alert.show();
 		}
-		
+
 		return connected;
 	}
-	
+
+	private void insertSampleData() {
+		OutputStream databaseOutputStream;
+		try {
+			databaseOutputStream = new FileOutputStream("/data/data/" + PACKAGE
+					+ "/databases/" + DATABASE_NAME);
+			InputStream databaseInputStream;
+
+			byte[] buffer = new byte[1024];
+
+			databaseInputStream = getResources().openRawResource(
+					R.raw.defaultdatabase);
+			while (databaseInputStream.read(buffer) > 0) {
+				databaseOutputStream.write(buffer);
+			}
+			databaseInputStream.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
 }

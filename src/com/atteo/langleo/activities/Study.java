@@ -495,7 +495,7 @@ public class Study extends Activity {
 			
 		}
 
-		if (audioEnabled) {
+		if (audioEnabled && tts != null) {
 			tts.setLanguage(questionBaseLanguage.getShortName());
 			tts.speak(prepareToSpeak(w.getWord()), 1, null);
 			readTranslation = true;

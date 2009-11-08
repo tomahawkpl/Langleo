@@ -37,11 +37,11 @@ public class Olli implements LearningAlgorithm {
 
 	private int currentCollection;
 	private boolean loopEmpty = true;
-	
+
 	private Random random;
 
 	private boolean isStarted = false;
-	
+
 	private ArrayList<Collection> collections;
 	private HashMap<Integer, ArrayList<Question>> questions;
 	private HashMap<Integer, ArrayList<Question>> laterQuestions;
@@ -53,8 +53,8 @@ public class Olli implements LearningAlgorithm {
 	private static final float FIRST_FACTOR = (float) 4;
 	private static final float MAX_FACTOR_DIFFERENCE = (float) 0.2;
 
-	//private static final float BASE_FACTOR_DIFFERENCE = (float) 0.05;
-	//private static final float FACTOR_CHANGE_SPEED_DIFFERENCE = (float) 10;
+	// private static final float BASE_FACTOR_DIFFERENCE = (float) 0.05;
+	// private static final float FACTOR_CHANGE_SPEED_DIFFERENCE = (float) 10;
 
 	private long lastCheck;
 
@@ -109,7 +109,7 @@ public class Olli implements LearningAlgorithm {
 		storableCollection.whereInPlace("disabled = 0");
 		storableCollection.orderByInPlace("name");
 		collections = storableCollection.toArrayList();
-		
+
 		if (b != null) {
 			studyDay = new StudyDay();
 			studyDay.loadBundle(b.getBundle("studyDay"));
@@ -129,36 +129,44 @@ public class Olli implements LearningAlgorithm {
 			// priorities ommited
 			wordsCount = b.getIntegerArrayList("wordsCount");
 			started = b.getIntegerArrayList("started");
-			usedNewQuestionsPerCollection = b.getIntegerArrayList("usedNewQuestionsPerCollection");
-			maxNewQuestionsPerCollection = b.getIntegerArrayList("maxNewQuestionsPerCollection");
-			
+			usedNewQuestionsPerCollection = b
+					.getIntegerArrayList("usedNewQuestionsPerCollection");
+			maxNewQuestionsPerCollection = b
+					.getIntegerArrayList("maxNewQuestionsPerCollection");
+
 			questions = new HashMap<Integer, ArrayList<Question>>();
 			Bundle questionsBundle = b.getBundle("questions");
-			String[] keys = questionsBundle.keySet().toArray(new String[questionsBundle.keySet().size()]);
-			for (int c = 0;c<keys.length;c++) {
-				ArrayList<Question> a = new ArrayList<Question>();				
+			String[] keys = questionsBundle.keySet().toArray(
+					new String[questionsBundle.keySet().size()]);
+			for (int c = 0; c < keys.length; c++) {
+				ArrayList<Question> a = new ArrayList<Question>();
 				Bundle collectionQuestions = questionsBundle.getBundle(keys[c]);
-				String[] collectionKeys = collectionQuestions.keySet().toArray(new String[collectionQuestions.keySet().size()]);
-				for (int i=0;i<collectionKeys.length;i++) {
+				String[] collectionKeys = collectionQuestions.keySet().toArray(
+						new String[collectionQuestions.keySet().size()]);
+				for (int i = 0; i < collectionKeys.length; i++) {
 					Question q = new Question();
-					q.loadBundle(collectionQuestions.getBundle(collectionKeys[i]));
+					q.loadBundle(collectionQuestions
+							.getBundle(collectionKeys[i]));
 					a.add(q);
-				}				
+				}
 				questions.put(Integer.valueOf(keys[c]), a);
 			}
-			
+
 			laterQuestions = new HashMap<Integer, ArrayList<Question>>();
 			questionsBundle = b.getBundle("laterQuestions");
-			keys = questionsBundle.keySet().toArray(new String[questionsBundle.keySet().size()]);
-			for (int c = 0;c<keys.length;c++) {
-				ArrayList<Question> a = new ArrayList<Question>();				
+			keys = questionsBundle.keySet().toArray(
+					new String[questionsBundle.keySet().size()]);
+			for (int c = 0; c < keys.length; c++) {
+				ArrayList<Question> a = new ArrayList<Question>();
 				Bundle collectionQuestions = questionsBundle.getBundle(keys[c]);
-				String[] collectionKeys = collectionQuestions.keySet().toArray(new String[collectionQuestions.keySet().size()]);
-				for (int i=0;i<collectionKeys.length;i++) {
+				String[] collectionKeys = collectionQuestions.keySet().toArray(
+						new String[collectionQuestions.keySet().size()]);
+				for (int i = 0; i < collectionKeys.length; i++) {
 					Question q = new Question();
-					q.loadBundle(collectionQuestions.getBundle(collectionKeys[i]));
+					q.loadBundle(collectionQuestions
+							.getBundle(collectionKeys[i]));
 					a.add(q);
-				}				
+				}
 				laterQuestions.put(Integer.valueOf(keys[c]), a);
 			}
 		} else {
@@ -168,10 +176,10 @@ public class Olli implements LearningAlgorithm {
 
 			studySession = StudySession.getThisSession();
 			studySession.load();
-			
+
 			newWordsToday = studyDay.getNewWords();
 			newWordsInThisSession = studySession.getNewWords();
-			
+
 			calculateMaxNewWordsFinal();
 
 			prioritySum = 0;
@@ -182,8 +190,6 @@ public class Olli implements LearningAlgorithm {
 
 			Collection c;
 			int len = collections.size();
-
-			
 
 			int notLearned;
 			for (int i = 0; i < len; i++) {
@@ -211,10 +217,8 @@ public class Olli implements LearningAlgorithm {
 			lastCheck = -1;
 
 			calculateNewQuestionsPerCollection();
-			
-		}
-		
 
+		}
 
 		findNewQuestions();
 		isStarted = true;
@@ -235,22 +239,25 @@ public class Olli implements LearningAlgorithm {
 		ArrayList<Question> currentQuestionList = null;
 		Question q;
 
+		Collection c = null;
 
 		for (int i = 0; i < len; i++) {
 			q = loadedQuestions.get(i);
 			if (q.getCollection().getId() != currentCollection) {
-
 				currentCollection = q.getCollection().getId();
+				c = new Collection(currentCollection);
+				c.load();
 				if (questions.get(currentCollection) == null)
 					questions.put(currentCollection,
 							currentQuestionList = new ArrayList<Question>());
 				else
 					currentQuestionList = questions.get(currentCollection);
 			}
-
-			currentQuestionList.add(random
-					.nextInt(currentQuestionList.size() + 1 /*- reserved*/),
-					q);
+			if (c.getDisabled() == true)
+				len--;
+			else
+				currentQuestionList.add(random.nextInt(currentQuestionList
+						.size() + 1), q);
 
 		}
 
@@ -267,7 +274,7 @@ public class Olli implements LearningAlgorithm {
 		studySession.save();
 		isStarted = false;
 	}
-	
+
 	@Override
 	public Bundle getInstanceState() {
 		if (!isStarted)
@@ -287,25 +294,31 @@ public class Olli implements LearningAlgorithm {
 		b.putInt("currentCollection", currentCollection);
 
 		Bundle questionsBundle = new Bundle();
-		Integer[] keys = questions.keySet().toArray(new Integer[questions.size()]);
+		Integer[] keys = questions.keySet().toArray(
+				new Integer[questions.size()]);
 		ArrayList<Question> q;
-		for (int c = 0;c<keys.length;c++) {
+		for (int c = 0; c < keys.length; c++) {
 			Bundle collectionBundle = new Bundle();
 			q = questions.get(keys[c]);
-			for (int i=0;i<q.size();i++)
-				collectionBundle.putBundle(String.valueOf(i), q.get(i).toBundle());
-			questionsBundle.putBundle(String.valueOf(keys[c]), collectionBundle);
+			for (int i = 0; i < q.size(); i++)
+				collectionBundle.putBundle(String.valueOf(i), q.get(i)
+						.toBundle());
+			questionsBundle
+					.putBundle(String.valueOf(keys[c]), collectionBundle);
 		}
 		b.putBundle("questions", questionsBundle);
-		
+
 		questionsBundle = new Bundle();
-		keys = laterQuestions.keySet().toArray(new Integer[laterQuestions.size()]);
-		for (int c = 0;c<keys.length;c++) {
+		keys = laterQuestions.keySet().toArray(
+				new Integer[laterQuestions.size()]);
+		for (int c = 0; c < keys.length; c++) {
 			Bundle collectionBundle = new Bundle();
 			q = laterQuestions.get(keys[c]);
-			for (int i=0;i<q.size();i++)
-				collectionBundle.putBundle(String.valueOf(i), q.get(i).toBundle());
-			questionsBundle.putBundle(String.valueOf(keys[c]), collectionBundle);
+			for (int i = 0; i < q.size(); i++)
+				collectionBundle.putBundle(String.valueOf(i), q.get(i)
+						.toBundle());
+			questionsBundle
+					.putBundle(String.valueOf(keys[c]), collectionBundle);
 		}
 		b.putBundle("laterQuestions", questionsBundle);
 
@@ -347,19 +360,19 @@ public class Olli implements LearningAlgorithm {
 			factor = MIN_FACTOR;
 			break;
 		case 1:
-			factor = (FIRST_FACTOR-MIN_FACTOR)/4*1 + MIN_FACTOR;
+			factor = (FIRST_FACTOR - MIN_FACTOR) / 4 * 1 + MIN_FACTOR;
 			break;
 		case 2:
-			factor = (FIRST_FACTOR-MIN_FACTOR)/4*2 + MIN_FACTOR;
+			factor = (FIRST_FACTOR - MIN_FACTOR) / 4 * 2 + MIN_FACTOR;
 			break;
 		case 3:
-			factor = (FIRST_FACTOR-MIN_FACTOR)/4*3 + MIN_FACTOR;
+			factor = (FIRST_FACTOR - MIN_FACTOR) / 4 * 3 + MIN_FACTOR;
 			break;
 		case 4:
-			factor = (float)FIRST_FACTOR;
+			factor = (float) FIRST_FACTOR;
 			break;
 		}
-		
+
 		result = new OlliFactor();
 		result.setDifficulty(difficulty);
 		result.setRepetitions(repetitions);
@@ -390,8 +403,7 @@ public class Olli implements LearningAlgorithm {
 	private void updateOlliFactor(int repetitions, float difficulty,
 			float usedFactor, int answer) {
 		int diff = intDifficulty(difficulty);
-		
-		
+
 		OlliFactor of = getOlliFactor(repetitions, diff);
 
 		// addOlliAnswer(diff, repetitions, usedFactor, answer);
@@ -401,29 +413,27 @@ public class Olli implements LearningAlgorithm {
 		float newFactor = of.getFactor();
 
 		difference = usedFactor / of.getFactor();
-		
+
 		final int CHANGE_SPEED = 50;
-		
+
 		if (answer == LearningAlgorithm.ANSWER_CORRECT) {
 			if (difference > 1 && difference < 1.5)
-				newFactor *= (difference + (CHANGE_SPEED-1)) / CHANGE_SPEED;
+				newFactor *= (difference + (CHANGE_SPEED - 1)) / CHANGE_SPEED;
 		} else {
 			if (difference > 1) {
 				if (difference < 1.2)
-					newFactor *=  (float)(CHANGE_SPEED*3-1) / (CHANGE_SPEED*3);
+					newFactor *= (float) (CHANGE_SPEED * 3 - 1)
+							/ (CHANGE_SPEED * 3);
 			} else
-				newFactor *= (difference + (CHANGE_SPEED-1)) / CHANGE_SPEED;
+				newFactor *= (difference + (CHANGE_SPEED - 1)) / CHANGE_SPEED;
 			/*
-			difference = BASE_FACTOR_DIFFERENCE;
-			if (usedFactor > of.getFactor()) {
-				difference /= (float) Math.pow(FACTOR_CHANGE_SPEED_DIFFERENCE,
-						(usedFactor / of.getFactor() - 1));
-				newFactor *= 1 - difference;
-			} else {
-				difference = 1 - difference;
-				difference /= 2 - usedFactor / of.getFactor();
-				newFactor *= difference;
-			}*/
+			 * difference = BASE_FACTOR_DIFFERENCE; if (usedFactor >
+			 * of.getFactor()) { difference /= (float)
+			 * Math.pow(FACTOR_CHANGE_SPEED_DIFFERENCE, (usedFactor /
+			 * of.getFactor() - 1)); newFactor *= 1 - difference; } else {
+			 * difference = 1 - difference; difference /= 2 - usedFactor /
+			 * of.getFactor(); newFactor *= difference; }
+			 */
 		}
 
 		if (newFactor < MIN_FACTOR)
@@ -605,7 +615,6 @@ public class Olli implements LearningAlgorithm {
 		studyDay.setMaxNewWords(studyDay.getMaxNewWords() + increase);
 		calculateMaxNewWordsFinal();
 		calculateNewQuestionsPerCollection();
-
 
 	}
 

@@ -3,6 +3,7 @@ package com.atteo.langleo;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.atteo.langleo.R;
 import com.atteo.langleo.activities.Collections;
 import com.atteo.langleo.activities.Lists;
 

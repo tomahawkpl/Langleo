@@ -216,7 +216,7 @@ public class EditCollection extends Activity {
 		collection.setBaseLanguage(selectedBaseLanguage);
 		collection.setTargetLanguage(selectedTargetLanguage);
 		intent.putExtra("collection", collection.toBundle());
-
+		
 		setResult(RESULT_OK, intent);
 		finish();
 	}

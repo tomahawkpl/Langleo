@@ -232,7 +232,6 @@ public class Collections extends ListActivity {
 					days_learning = s7;
 					days_left = "";
 				} else {
-
 					days_learning = s4
 							+ ((new Date().getTime() - started.getTime()) / (1000 * 60 * 60 * 24));
 					

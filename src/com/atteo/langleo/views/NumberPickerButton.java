@@ -16,13 +16,13 @@
 
 package com.atteo.langleo.views;
 
-import com.atteo.langleo.R;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.ImageButton;
+
+import com.atteo.langleo.R;
 
 
 /**

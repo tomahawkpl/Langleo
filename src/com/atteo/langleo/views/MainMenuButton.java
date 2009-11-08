@@ -1,13 +1,13 @@
 package com.atteo.langleo.views;
 
-import com.atteo.langleo.R;
-
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
-import android.widget.Button;
 import android.view.MotionEvent;
+import android.widget.Button;
+
+import com.atteo.langleo.R;
 
 public class MainMenuButton extends Button {
 

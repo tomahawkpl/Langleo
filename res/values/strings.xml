@@ -4,6 +4,9 @@
 	<string name="database_error">Couldn\'t connect to database</string>
 
 	<!--  General -->
+	<string name="shared_user_label">atteo</string>
+	<string name="shared_user_id">atteo</string>
+	
 	<string name="app_name">Langleo</string>
 	<string name="ok">OK</string>
 	<string name="cancel">Cancel</string>
@@ -13,7 +16,8 @@
 
 	<!-- Main activity -->
 	<string name="welcome_title">Welcome to Langleo!</string>
-	<string name="welcome_message">Hi! Langleo is a very effective tool which will let you learn up to few thousand new words per month. Before you\'ll start using it I encourage you to read	first two sections of the help page. They will explain to you basic	ideas behind Langleo and tell you how to use it efficiently. Happy learning :)</string>
+	<string name="welcome_message">Hi! Langleo is a very effective tool which will let you learn up to few thousand new words per month. Before you\'ll start using it I encourage you to read	first two sections of the help page. They will explain to you basic	ideas behind Langleo and tell you how to use it efficiently.</string>
+	<string name="welcome_message2">Some sample French words are preloaded so that you can see how Langleo works. The easiest way of adding new words is using the \'Download\' function.</string>
 	<string name="study">Study</string>
 	<string name="study_using_headphones">Study using headphones</string>
 	<string name="manage_your_collections">Collections</string>
