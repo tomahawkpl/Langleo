@@ -12,19 +12,19 @@
 		android:layout_height="fill_parent" android:orientation="vertical"
 		android:gravity="bottom">
 
-		<com.atteo.langleo.views.MainMenuButton android:text="@string/study" android:id="@+id/button_study"
+		<com.atteo.langleo_trial.views.MainMenuButton android:text="@string/study" android:id="@+id/button_study"
 			android:layout_height="wrap_content" android:drawableLeft="@drawable/main_study"
 			android:layout_width="fill_parent" style="@style/Button" 
 			android:layout_margin="5sp" android:layout_gravity="right" />
-		<com.atteo.langleo.views.MainMenuButton android:text="@string/manage_your_collections"
+		<com.atteo.langleo_trial.views.MainMenuButton android:text="@string/manage_your_collections"
 			android:id="@+id/button_manage" android:layout_height="wrap_content"
 			android:layout_width="fill_parent" android:drawableLeft="@drawable/main_collections"
 			android:layout_margin="5sp" style="@style/Button" />
-		<com.atteo.langleo.views.MainMenuButton android:text="@string/preferences" android:id="@+id/button_preferences"
+		<com.atteo.langleo_trial.views.MainMenuButton android:text="@string/preferences" android:id="@+id/button_preferences"
 			android:layout_width="fill_parent" android:layout_height="wrap_content"
 			android:drawableLeft="@drawable/main_prefs" android:layout_margin="5sp"
 			style="@style/Button"/>
-		<com.atteo.langleo.views.MainMenuButton android:text="@string/help" android:id="@+id/button_help"
+		<com.atteo.langleo_trial.views.MainMenuButton android:text="@string/help" android:id="@+id/button_help"
 			android:layout_width="fill_parent" android:layout_height="wrap_content"
 			android:drawableLeft="@drawable/main_help" android:layout_margin="5sp"
 			style="@style/Button" />

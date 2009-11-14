@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	android:versionName="1.0.2" package="com.atteo.langleo" android:sharedUserLabel="@string/shared_user_label" android:sharedUserId="@string/shared_user_id" android:versionCode="66">
+	android:versionName="1.0.2" package="com.atteo.langleo_trial" android:sharedUserLabel="@string/shared_user_label" android:sharedUserId="@string/shared_user_id" android:versionCode="66">
 
 	<uses-permission android:name="android.permission.INTERNET" />
 

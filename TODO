@@ -1,12 +1,11 @@
 TODO:
 
-- database upgrade
-- disabled collection bug
-- sample data
 
-- help load bug
-- time bug
+- threads/orientation change issue in all windows
 
+- better tts handling
+- download GC issues
+- study screen in landscape
 
 Maybe:
 - save session and day time
