@@ -3,9 +3,14 @@ TODO:
 
 - threads/orientation change issue in all windows
 
+
 - better tts handling
-- download GC issues
+
 - study screen in landscape
+- download GC issues
+- click handlers
+
+
 
 Maybe:
 - save session and day time

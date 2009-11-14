@@ -1,6 +1,5 @@
 package com.atteo.langleo_trial.util;
 
-
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,7 +7,7 @@ import android.os.Message;
 
 public class ProgressHandler extends Handler {
 	protected ProgressDialog progressDialog;
-	
+
 	public ProgressHandler(ProgressDialog progressDialog) {
 		this.progressDialog = progressDialog;
 	}
@@ -20,7 +19,7 @@ public class ProgressHandler extends Handler {
 		msg.setData(b);
 		sendMessage(msg);
 	}
-	
+
 	public void sendChangeMessage(String message) {
 		Message msg = obtainMessage();
 		Bundle b = new Bundle();
@@ -58,7 +57,7 @@ public class ProgressHandler extends Handler {
 		String message = msg.getData().getString("message");
 		if (message != null)
 			progressDialog.setMessage(message);
-		
+
 		if (msg.getData().getBoolean("finished")) {
 			progressDialog.cancel();
 		}

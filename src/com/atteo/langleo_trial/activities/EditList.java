@@ -1,6 +1,5 @@
 package com.atteo.langleo_trial.activities;
 
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,28 +16,29 @@ import com.atteo.langleo_trial.models.List;
 
 public class EditList extends Activity {
 	private List list;
-	public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.edit_list);
-        Bundle bundle = getIntent().getBundleExtra("list");
-        list = new List();
-        list.loadBundle(bundle);
-        list.load();
-        Button button = (Button)findViewById(R.id.edit_list_cancel);
-        button.setOnClickListener(new OnClickListener() {
-        	public void onClick(View view) {
-        		cancel();
-        	}
-        });
-        button = (Button)findViewById(R.id.edit_list_ok);
-        button.setOnClickListener(new OnClickListener() {
-        	public void onClick(View view) {
-        		OK();
-        	}
-        });
 
-        TextView tv_name = (TextView)findViewById(R.id.edit_list_name);
-        tv_name.setText(list.getName());
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.edit_list);
+		Bundle bundle = getIntent().getBundleExtra("list");
+		list = new List();
+		list.loadBundle(bundle);
+		list.load();
+		Button button = (Button) findViewById(R.id.edit_list_cancel);
+		button.setOnClickListener(new OnClickListener() {
+			public void onClick(View view) {
+				cancel();
+			}
+		});
+		button = (Button) findViewById(R.id.edit_list_ok);
+		button.setOnClickListener(new OnClickListener() {
+			public void onClick(View view) {
+				OK();
+			}
+		});
+
+		TextView tv_name = (TextView) findViewById(R.id.edit_list_name);
+		tv_name.setText(list.getName());
 
 	}
 
@@ -64,20 +64,20 @@ public class EditList extends Activity {
 		intent.putExtra("part", "edit_list");
 		startActivity(intent);
 	}
-	
+
 	private void OK() {
 		Intent intent = new Intent();
-		TextView textview_name= (TextView)findViewById(R.id.edit_list_name);
+		TextView textview_name = (TextView) findViewById(R.id.edit_list_name);
 		String name = textview_name.getText().toString();
 		list.setName(name);
 		intent.putExtra("list", list.toBundle());
-		
-		setResult(RESULT_OK,intent);
+
+		setResult(RESULT_OK, intent);
 		finish();
 	}
-	
+
 	private void cancel() {
-		setResult(RESULT_CANCELED,null);
+		setResult(RESULT_CANCELED, null);
 		finish();
 	}
 

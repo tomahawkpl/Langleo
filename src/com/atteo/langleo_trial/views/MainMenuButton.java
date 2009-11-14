@@ -49,7 +49,7 @@ public class MainMenuButton extends Button {
 		else if (event.getAction() == MotionEvent.ACTION_UP)
 			setBackgroundResource(R.drawable.button);
 		return super.onTouchEvent(event);
-		
+
 	}
 
 }

@@ -4,11 +4,15 @@ import com.atteo.silo.Storable;
 import com.atteo.silo.associations.DatabaseField;
 
 public class OlliFactor extends Storable {
-	@DatabaseField private Integer difficulty;
-	@DatabaseField private Integer repetitions;
-	@DatabaseField private Float factor;
-	@DatabaseField private Integer hits = 0;
-	
+	@DatabaseField
+	private Integer difficulty;
+	@DatabaseField
+	private Integer repetitions;
+	@DatabaseField
+	private Float factor;
+	@DatabaseField
+	private Integer hits = 0;
+
 	public Float getFactor() {
 		return factor;
 	}
@@ -16,11 +20,11 @@ public class OlliFactor extends Storable {
 	public void setFactor(Float factor) {
 		this.factor = factor;
 	}
-	
+
 	public int getDifficulty() {
 		return difficulty;
 	}
-	
+
 	public Integer getRepetitions() {
 		return repetitions;
 	}

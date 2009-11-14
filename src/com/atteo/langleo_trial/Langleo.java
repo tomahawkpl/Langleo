@@ -50,7 +50,6 @@ public class Langleo extends Application {
 			"create table question(id integer primary key autoincrement, word_id integer, date integer, difficulty real, repetitions integer, queries integer, correct integer, previousdate integer, previousinterval integer, collection_id integer)",
 			"create table studyday(id integer primary key autoincrement, date integer, newwords integer, maxnewwords integer)",
 			"create table ollifactor(id integer primary key autoincrement, repetitions integer, difficulty integer, factor real, hits integer)",
-			"create table ollianswer(id integer primary key autoincrement, repetitions integer, difficulty integer, factor real, correct integer, incorrect integer)",
 			"create table studysession(id integer primary key autoincrement, date integer, newwords integer, maxnewwords integer)",
 			"insert into language(name,shortname, studystackid) values ('English','en-us', -1)",
 			"insert into language(name,shortname, studystackid) values ('Spanish','es', 14)",
@@ -85,7 +84,10 @@ public class Langleo extends Application {
 			"insert into language(name,shortname, studystackid) values ('Tamil','ta', -1)",
 			"insert into language(name,shortname, studystackid) values ('Turkish','tr', -1)",
 			"insert into language(name,shortname, studystackid) values ('Vietnamese','vi', -1)",
-			"insert into language(name,shortname, studystackid) values ('Welsh','cy', -1)", };
+			"insert into language(name,shortname, studystackid) values ('Welsh','cy', -1)",
+			"insert into language(name,shortname, studystackid) values ('Russian','ru', 28)",
+	// "create table ollianswer(id integer primary key autoincrement, repetitions integer, difficulty integer, factor real, correct integer, incorrect integer)"
+	};
 
 	public static String DATABASE_NAME = "Langleo";
 	public static String LOG_IDENT = "Langleo";
@@ -153,7 +155,7 @@ public class Langleo extends Application {
 	}
 
 	public void openDatabase() {
-		Silo.open(this, DATABASE_NAME, MIGRATIONS, RunningMode.DEVELOPMENT);
+		Silo.open(this, DATABASE_NAME, MIGRATIONS, RunningMode.PRODUCTION);
 		Silo.initializeClass(Collection.class);
 		Silo.initializeClass(List.class);
 		Silo.initializeClass(Word.class);
@@ -220,6 +222,7 @@ public class Langleo extends Application {
 				databaseOutputStream.write(buffer);
 			}
 			databaseInputStream.close();
+			databaseOutputStream.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

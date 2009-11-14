@@ -6,7 +6,7 @@
 	android:orientation="vertical" android:padding="5dp">
 	<TextView android:id="@+id/TextView01" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:text="@string/name"></TextView>
-	<EditText android:layout_width="fill_parent"
+	<EditText android:layout_width="fill_parent" android:singleLine="true"
 		android:layout_height="wrap_content" android:hint="@string/name"
 		android:maxLength="30" android:id="@+id/edit_list_name"></EditText>
 

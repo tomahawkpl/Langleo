@@ -229,5 +229,4 @@ public class Main extends Activity {
 		startActivity(intent);
 	}
 
-
 }

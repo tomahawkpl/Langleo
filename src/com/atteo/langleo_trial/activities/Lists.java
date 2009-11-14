@@ -70,7 +70,7 @@ public class Lists extends ListActivity {
 		setContentView(R.layout.lists_list);
 
 		TaskManager.setLists(this);
-		
+
 		adapter = new ListsAdapter();
 
 		collection = new Collection();
@@ -116,7 +116,6 @@ public class Lists extends ListActivity {
 
 	}
 
-	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
@@ -225,7 +224,7 @@ public class Lists extends ListActivity {
 		intent.putExtra("part", "lists");
 		startActivity(intent);
 	}
-	
+
 	private void registerProgressBars(AbsListView view) {
 		TaskManager.clearProgressBarsForLists();
 
@@ -296,11 +295,11 @@ public class Lists extends ListActivity {
 		intent.putExtra("collection", collection.toBundle());
 		startActivityForResult(intent, REQUEST_EXPORT);
 	}
-	
+
 	private void download() {
 		if (!Langleo.isConnectionAvailable(this))
 			return;
-		
+
 		Language l = collection.getTargetLanguage();
 		l.load();
 
@@ -372,7 +371,8 @@ public class Lists extends ListActivity {
 					+ (c > 0 ? (list.getWords().whereInPlace("studied != 0")
 							.getCount() * 100 / c) : 0) + s2;
 
-			adapter.addList(list.getId(), list.getName(), stat, list.isFromStudyStack());
+			adapter.addList(list.getId(), list.getName(), stat, list
+					.isFromStudyStack());
 		}
 	}
 
@@ -396,7 +396,8 @@ public class Lists extends ListActivity {
 				observers.get(i).onChanged();
 		}
 
-		public void addList(int listId, String name, String stat, boolean fromStudyStack) {
+		public void addList(int listId, String name, String stat,
+				boolean fromStudyStack) {
 			ids.add(listId);
 			names.add(name);
 			stats.add(stat);
@@ -470,18 +471,19 @@ public class Lists extends ListActivity {
 				h = new ViewHolder();
 				h.tv = (TextView) v.findViewById(R.id.list_item_name);
 				h.stats = (TextView) v.findViewById(R.id.list_item_stats);
-				h.studystack = (ImageView) v.findViewById(R.id.list_item_studystack_logo);
+				h.studystack = (ImageView) v
+						.findViewById(R.id.list_item_studystack_logo);
 				v.setTag(h);
 
 			}
 			h.tv.setText(names.get(position));
 			h.stats.setText(stats.get(position));
-		
+
 			if (studyStack.get(position))
 				h.studystack.setVisibility(View.VISIBLE);
 			else
 				h.studystack.setVisibility(View.GONE);
-			
+
 			TaskManager.registerProgressBarForList(ids.get(position), v);
 
 			return v;
@@ -637,7 +639,7 @@ public class Lists extends ListActivity {
 			TaskManager.taskFinished(taskInfo);
 			if (!tasks.isEmpty())
 				tasks.get(0).execute((Void) null);
-			
+
 		}
 
 		@Override

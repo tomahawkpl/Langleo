@@ -11,8 +11,7 @@ public class SelectLimitDialog extends Dialog {
 		super(context);
 		setTitle(R.string.more_new_words);
 		setContentView(R.layout.increase_limit_dialog);
-		
-		
+
 		NumberPicker np = (NumberPicker) findViewById(R.id.increase_limit_dialog_picker);
 		np.setRange(1, 100);
 		np.setCurrent(5);

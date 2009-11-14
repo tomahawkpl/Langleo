@@ -16,43 +16,43 @@ import com.atteo.langleo_trial.models.Word;
 
 public class EditWord extends Activity {
 	private Word word;
+
 	public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.edit_word);
-        Bundle bundle = getIntent().getBundleExtra("word");
-        word = new Word();
-        word.loadBundle(bundle);
-        word.load();
-        Button button = (Button)findViewById(R.id.edit_word_cancel);
-        button.setOnClickListener(new OnClickListener() {
-        	public void onClick(View view) {
-        		cancel();
-        	}
-        });
-        button = (Button)findViewById(R.id.edit_word_ok);
-        button.setOnClickListener(new OnClickListener() {
-        	public void onClick(View view) {
-        		OK();
-        	}
-        });
-        
-        button = (Button)findViewById(R.id.edit_word_new);
-        button.setOnClickListener(new OnClickListener() {
-        	public void onClick(View view) {
-        		new_word();
-        	}
-        });
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.edit_word);
+		Bundle bundle = getIntent().getBundleExtra("word");
+		word = new Word();
+		word.loadBundle(bundle);
+		word.load();
+		Button button = (Button) findViewById(R.id.edit_word_cancel);
+		button.setOnClickListener(new OnClickListener() {
+			public void onClick(View view) {
+				cancel();
+			}
+		});
+		button = (Button) findViewById(R.id.edit_word_ok);
+		button.setOnClickListener(new OnClickListener() {
+			public void onClick(View view) {
+				OK();
+			}
+		});
 
-        TextView tv_word = (TextView)findViewById(R.id.edit_word_word);
-        tv_word.setText(word.getWord());
-        
-        TextView tv_translation = (TextView)findViewById(R.id.edit_word_translation);
-        tv_translation.setText(word.getTranslation());
+		button = (Button) findViewById(R.id.edit_word_new);
+		button.setOnClickListener(new OnClickListener() {
+			public void onClick(View view) {
+				new_word();
+			}
+		});
 
-        TextView tv_note = (TextView)findViewById(R.id.edit_word_note);
-        tv_note.setText(word.getNote());
+		TextView tv_word = (TextView) findViewById(R.id.edit_word_word);
+		tv_word.setText(word.getWord());
 
-        
+		TextView tv_translation = (TextView) findViewById(R.id.edit_word_translation);
+		tv_translation.setText(word.getTranslation());
+
+		TextView tv_note = (TextView) findViewById(R.id.edit_word_note);
+		tv_note.setText(word.getNote());
+
 	}
 
 	@Override
@@ -77,12 +77,12 @@ public class EditWord extends Activity {
 		intent.putExtra("part", "edit_word");
 		startActivity(intent);
 	}
-	
+
 	private void OK() {
 		Intent intent = new Intent();
-		TextView tv_word = (TextView)findViewById(R.id.edit_word_word);
-		TextView tv_translation = (TextView)findViewById(R.id.edit_word_translation);
-		TextView tv_note = (TextView)findViewById(R.id.edit_word_note);
+		TextView tv_word = (TextView) findViewById(R.id.edit_word_word);
+		TextView tv_translation = (TextView) findViewById(R.id.edit_word_translation);
+		TextView tv_note = (TextView) findViewById(R.id.edit_word_note);
 		String word_ = tv_word.getText().toString();
 		String translation = tv_translation.getText().toString();
 		String note = tv_note.getText().toString();
@@ -90,20 +90,20 @@ public class EditWord extends Activity {
 		word.setTranslation(translation);
 		word.setNote(note);
 		intent.putExtra("word", word.toBundle());
-		
-		setResult(RESULT_OK,intent);
+
+		setResult(RESULT_OK, intent);
 		finish();
 	}
-	
+
 	private void cancel() {
-		setResult(RESULT_CANCELED,null);
+		setResult(RESULT_CANCELED, null);
 		finish();
 	}
 
 	private void new_word() {
-		TextView tv_word = (TextView)findViewById(R.id.edit_word_word);
-		TextView tv_translation = (TextView)findViewById(R.id.edit_word_translation);
-		TextView tv_note = (TextView)findViewById(R.id.edit_word_note);
+		TextView tv_word = (TextView) findViewById(R.id.edit_word_word);
+		TextView tv_translation = (TextView) findViewById(R.id.edit_word_translation);
+		TextView tv_note = (TextView) findViewById(R.id.edit_word_note);
 		String word_ = tv_word.getText().toString();
 		String translation = tv_translation.getText().toString();
 		String note = tv_note.getText().toString();
@@ -118,5 +118,5 @@ public class EditWord extends Activity {
 		tv_translation.setText(word.getTranslation());
 		tv_word.requestFocus();
 	}
-	
+
 }

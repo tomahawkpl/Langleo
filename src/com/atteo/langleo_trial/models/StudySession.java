@@ -10,14 +10,14 @@ import com.atteo.silo.StorableCollection;
 import com.atteo.silo.associations.DatabaseField;
 
 public class StudySession extends Storable {
-	
+
 	@DatabaseField
 	private Date date;
 	@DatabaseField
 	private Integer newWords;
 	@DatabaseField
 	private Integer maxNewWords;
-	
+
 	public Integer getMaxNewWords() {
 		return maxNewWords;
 	}
@@ -46,8 +46,8 @@ public class StudySession extends Storable {
 		long t = new Date().getTime();
 
 		t -= Langleo.SESSION_TIMEOUT;
-		StudySession result = new StorableCollection(StudySession.class).whereInPlace(
-				"date > " + t).getFirst();
+		StudySession result = new StorableCollection(StudySession.class)
+				.whereInPlace("date > " + t).getFirst();
 
 		if (result != null)
 			return result;

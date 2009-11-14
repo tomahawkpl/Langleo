@@ -47,7 +47,7 @@ public class SelectList extends ListActivity {
 				ListView list = getListView();
 				ArrayList<Integer> lists = new ArrayList<Integer>();
 				int len = list.getCount();
-				
+
 				boolean found = false;
 				for (int i = 0; i < len; i++)
 					if (list.isItemChecked(i)) {
@@ -119,7 +119,7 @@ public class SelectList extends ListActivity {
 		adapter.setViewBinder(new myBinder());
 		list.setAdapter(adapter);
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -143,16 +143,16 @@ public class SelectList extends ListActivity {
 		intent.putExtra("part", "select_list");
 		startActivity(intent);
 	}
-	
+
 	private class myBinder implements SimpleAdapter.ViewBinder {
 
 		@Override
 		public boolean setViewValue(View view, Object data,
 				String textRepresentation) {
-			((CheckedTextView)view).setText(textRepresentation);
+			((CheckedTextView) view).setText(textRepresentation);
 			return true;
 		}
-		
+
 	}
 
 }

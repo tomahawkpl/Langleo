@@ -23,15 +23,15 @@ public class TaskManager {
 
 	private static Collections collections;
 	private static Lists lists;
-	
+
 	public static void setCollections(Collections collections) {
 		TaskManager.collections = collections;
 	}
-	
+
 	public static void setLists(Lists lists) {
 		TaskManager.lists = lists;
 	}
-	
+
 	private static CollectionProgress getCollectionProgress(int collectionId) {
 		CollectionProgress result = collectionProgresses.get(collectionId);
 		if (result != null)
@@ -41,7 +41,6 @@ public class TaskManager {
 		collectionProgresses.put(collectionId, result);
 		return result;
 	}
-	
 
 	private static void syncCollectionProgress(int collectionId) {
 		View v = viewsForCollections.get(collectionId);
@@ -56,7 +55,8 @@ public class TaskManager {
 			p.setMax(c.max);
 			p.setProgress(c.progress);
 			if (c.operationName != 0)
-				((TextView) v.findViewById(R.id.operation_addon_name)).setText(c.operationName);
+				((TextView) v.findViewById(R.id.operation_addon_name))
+						.setText(c.operationName);
 		}
 
 	}
@@ -106,7 +106,7 @@ public class TaskManager {
 			collectionProgresses.remove(task.collectionId);
 			syncCollectionProgress(task.collectionId);
 		}
-		
+
 		if (lists != null)
 			lists.updateListItem(task.listId);
 		if (collections != null)

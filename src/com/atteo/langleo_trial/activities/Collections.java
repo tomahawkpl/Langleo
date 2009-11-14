@@ -54,7 +54,6 @@ public class Collections extends ListActivity {
 
 	String s1, s2, s3, s4, s5, s6, s7;
 
-	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -64,7 +63,7 @@ public class Collections extends ListActivity {
 		setContentView(R.layout.collections_list);
 
 		TaskManager.setCollections(this);
-		
+
 		ListView list = getListView();
 		registerForContextMenu(list);
 
@@ -92,7 +91,7 @@ public class Collections extends ListActivity {
 		s5 = getString(R.string.days_left) + ": ";
 		s6 = getString(R.string.not_learning_yet);
 		s7 = getString(R.string.finished_learning);
-		
+
 		refreshList();
 	}
 
@@ -106,7 +105,7 @@ public class Collections extends ListActivity {
 		SharedPreferences prefs = Langleo.getPreferences();
 		int maxNewWordsPerDay = Integer.valueOf(prefs.getString(
 				"new_words_per_day", Langleo.DEFAULT_NEW_WORDS_PER_DAY));
-		
+
 		collectionLearningSpeeds = new HashMap<Integer, Float>();
 
 		ArrayList<Integer> priorities = new ArrayList<Integer>();
@@ -164,16 +163,16 @@ public class Collections extends ListActivity {
 		c.load();
 		String days_learning, days_left, stats_learned, stats_words, stats_lists, stats;
 		int words = 0, learned = 0, lists;
-		
+
 		if (c.getDisabled()) {
 			days_learning = days_left = stats_learned = stats_words = stats_lists = "";
 		} else {
 			words = c.getWordsCount();
 			learned = c.getLearnedWordsCount();
 			lists = c.getLists().getCount();
-			
+
 			Date started = c.getStarted();
-			if (started == null|| (words == learned && words == 0)) {
+			if (started == null || (words == learned && words == 0)) {
 				days_learning = s6;
 				days_left = "";
 			} else if (words == learned && words != 0) {
@@ -183,7 +182,9 @@ public class Collections extends ListActivity {
 
 				days_learning = s4
 						+ ((new Date().getTime() - started.getTime()) / (1000 * 60 * 60 * 24));
-				days_left = s5 + (int) ((words - learned) / collectionLearningSpeeds.get(collectionId));
+				days_left = s5
+						+ (int) ((words - learned) / collectionLearningSpeeds
+								.get(collectionId));
 
 			}
 
@@ -194,8 +195,9 @@ public class Collections extends ListActivity {
 			stats = (words > 0 ? (learned * 100) / words : 0) + s3;
 			stats_learned = stats;
 		}
-		
-		adapter.updateItem(collectionId,words,learned, days_learning, days_left, stats_learned, stats_words,stats_lists);
+
+		adapter.updateItem(collectionId, words, learned, days_learning,
+				days_left, stats_learned, stats_words, stats_lists);
 		getListView().invalidateViews();
 	}
 
@@ -234,7 +236,7 @@ public class Collections extends ListActivity {
 				} else {
 					days_learning = s4
 							+ ((new Date().getTime() - started.getTime()) / (1000 * 60 * 60 * 24));
-					
+
 					days_left = s5
 							+ (int) ((words - learned) / collectionLearningSpeeds
 									.get(id));
@@ -285,8 +287,9 @@ public class Collections extends ListActivity {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.collection, menu);
-		
-		if (TaskManager.isThereATaskForCollection((int)((AdapterContextMenuInfo)menuInfo).id))
+
+		if (TaskManager
+				.isThereATaskForCollection((int) ((AdapterContextMenuInfo) menuInfo).id))
 			menu.getItem(1).setEnabled(false);
 	}
 
@@ -346,7 +349,7 @@ public class Collections extends ListActivity {
 		intent.putExtra("part", "collections");
 		startActivity(intent);
 	}
-	
+
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		if (requestCode == REQUEST_COLLECTION_LISTS)
 			updateListItem(enteredCollection);
@@ -433,9 +436,9 @@ public class Collections extends ListActivity {
 				observers.get(i).onChanged();
 		}
 
-		public void updateItem(int collectionId, int words,
-				int learned, String days_learning, String days_left,
-				String stats_learned, String stats_words, String stats_lists) {
+		public void updateItem(int collectionId, int words, int learned,
+				String days_learning, String days_left, String stats_learned,
+				String stats_words, String stats_lists) {
 			int len = collections.size();
 			for (int i = 0; i < len; i++) {
 				if (collections.get(i).id == collectionId) {
@@ -511,7 +514,7 @@ public class Collections extends ListActivity {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View operation, v;
 			ViewHolder h;
-			
+
 			if (convertView != null) {
 				v = convertView;
 				h = (ViewHolder) convertView.getTag();

@@ -206,7 +206,7 @@ public class ImportFromFile extends Activity {
 			throw new RuntimeException("No input file read");
 
 		Intent intent = new Intent();
-		
+
 		intent.putExtra("import_data", importData.toBundle());
 		intent.putExtra("collection", collection.toBundle());
 		setResult(RESULT_OK, intent);
@@ -317,7 +317,7 @@ public class ImportFromFile extends Activity {
 
 				importFile.fullpath = fileToLoad.getString("fullpath");
 				importFile.filename = fileToLoad.getString("filename");
-				
+
 				importFile.lines = new ArrayList<String>();
 
 				FileReader fileReader = null;
@@ -328,7 +328,7 @@ public class ImportFromFile extends Activity {
 					return null;
 				}
 
-				BufferedReader reader = new BufferedReader(fileReader,16384);
+				BufferedReader reader = new BufferedReader(fileReader, 16384);
 				String line;
 				int lineNumber = 0;
 				while (true) {

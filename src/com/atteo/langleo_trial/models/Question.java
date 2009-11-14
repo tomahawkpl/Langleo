@@ -24,7 +24,7 @@ public class Question extends Storable {
 	@DatabaseField
 	private Integer correct = 0;
 	@DatabaseField
-	private Long previousInterval = (long)0;
+	private Long previousInterval = (long) 0;
 
 	public Long getPreviousInterval() {
 		return previousInterval;
@@ -33,7 +33,7 @@ public class Question extends Storable {
 	public void setPreviousInterval(Long previousInterval) {
 		this.previousInterval = previousInterval;
 	}
-	
+
 	public Date getPreviousDate() {
 		return previousDate;
 	}
@@ -96,14 +96,12 @@ public class Question extends Storable {
 		load();
 		this.correct++;
 	}
-/*
-	public int getPriority() {
-		return priority;
-	}
 
-	public void setPriority(int priority) {
-		this.priority = priority;
-	}*/
+	/*
+	 * public int getPriority() { return priority; }
+	 * 
+	 * public void setPriority(int priority) { this.priority = priority; }
+	 */
 
 	public void setCollection(Collection collection) {
 		this.collection = collection;

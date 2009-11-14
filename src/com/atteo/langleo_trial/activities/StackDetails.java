@@ -36,14 +36,14 @@ public class StackDetails extends ListActivity {
 	private int stackId;
 	private String stackName;
 	private String stackDescription;
-	
+
 	private String content;
 	private Collection collection;
-	
+
 	private boolean switchOrder;
-	
+
 	private ArrayList<Word> words;
-	
+
 	private static final int DIALOG_DOWNLOADING = 1;
 
 	@Override
@@ -52,7 +52,7 @@ public class StackDetails extends ListActivity {
 
 		setContentView(R.layout.stack_details);
 		setTitle("studystack.com");
-		
+
 		Intent intent = getIntent();
 		stackId = Integer.valueOf(intent.getStringExtra("id"));
 		stackName = intent.getStringExtra("name");
@@ -60,9 +60,9 @@ public class StackDetails extends ListActivity {
 		collection = new Collection();
 		collection.loadBundle(intent.getBundleExtra("collection"));
 		collection.load();
-		
+
 		Language l;
-		
+
 		TextView tv = (TextView) findViewById(R.id.stack_details_name);
 		tv.setText(stackName);
 		tv = (TextView) findViewById(R.id.stack_details_description);
@@ -75,9 +75,9 @@ public class StackDetails extends ListActivity {
 		l = collection.getTargetLanguage();
 		l.load();
 		tv.setText(l.getName());
-		
+
 		getListView().setClickable(false);
-		
+
 		CheckBox checkbox = (CheckBox) findViewById(R.id.stack_details_switch_order);
 		checkbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
@@ -89,7 +89,7 @@ public class StackDetails extends ListActivity {
 			}
 
 		});
-		
+
 		Button button = (Button) findViewById(R.id.stack_details_download);
 		button.setOnClickListener(new OnClickListener() {
 
@@ -97,9 +97,9 @@ public class StackDetails extends ListActivity {
 			public void onClick(View v) {
 				download();
 			}
-			
+
 		});
-		
+
 		loadStack();
 	}
 
@@ -125,34 +125,33 @@ public class StackDetails extends ListActivity {
 		intent.putExtra("part", "list_details");
 		startActivity(intent);
 	}
-	
+
 	public Dialog onCreateDialog(int dialog) {
 		ProgressDialog progressDialog;
 		switch (dialog) {
 		case DIALOG_DOWNLOADING:
 			progressDialog = new ProgressDialog(this);
-			progressDialog
-					.setMessage(getString(R.string.loading_words));
+			progressDialog.setMessage(getString(R.string.loading_words));
 			progressDialog.setCancelable(false);
 			return progressDialog;
 
 		}
 		return null;
 	}
-	
+
 	private void download() {
 		if (!Langleo.isConnectionAvailable(this))
 			return;
 		Intent intent = new Intent();
-		intent.putExtra("name",stackName);
+		intent.putExtra("name", stackName);
 		int len = words.size();
-		intent.putExtra("words",len);
-		for (int i =0;i<len;i++)
-			intent.putExtra("word_"+i,words.get(i).toBundle());
-		setResult(RESULT_OK,intent);
+		intent.putExtra("words", len);
+		for (int i = 0; i < len; i++)
+			intent.putExtra("word_" + i, words.get(i).toBundle());
+		setResult(RESULT_OK, intent);
 		finish();
 	}
-	
+
 	private String getStudyStackURL(int stackId) {
 		return "http://www.studystack.com/servlet/simpledelim?studyStackId="
 				+ stackId + "&delimiter=%7C";
@@ -173,11 +172,11 @@ public class StackDetails extends ListActivity {
 		}
 		return result;
 	}
-	
+
 	private void loadStack() {
 		new LoadStackTask().execute(stackId);
 	}
-	
+
 	private ArrayList<Word> loadWordsFromString(String content) {
 		words = new ArrayList<Word>();
 		String lines[];
@@ -190,27 +189,30 @@ public class StackDetails extends ListActivity {
 			if (stackData != null)
 				words.add(stackData);
 		}
-		
+
 		return words;
 	}
-	
+
 	private void updateExample() {
-		ArrayList<HashMap<String,String>> hash = new ArrayList<HashMap<String,String>>();
+		ArrayList<HashMap<String, String>> hash = new ArrayList<HashMap<String, String>>();
 		int len = words.size();
-		HashMap<String,String> h;
-		for(int i=0;i<len;i++) {
-			h = new HashMap<String,String>();
+		HashMap<String, String> h;
+		for (int i = 0; i < len; i++) {
+			h = new HashMap<String, String>();
 			h.put("word", words.get(i).getWord());
 			h.put("translation", words.get(i).getTranslation());
 			hash.add(h);
 		}
 		SimpleAdapter adapter = new SimpleAdapter(StackDetails.this, hash,
-				R.layout.stack_details_item, new String[] { "word", "translation" },
-				new int[] { R.id.stack_details_item_word, R.id.stack_details_item_translation });
+				R.layout.stack_details_item, new String[] { "word",
+						"translation" }, new int[] {
+						R.id.stack_details_item_word,
+						R.id.stack_details_item_translation });
 		setListAdapter(adapter);
 	}
-	
-	private class LoadStackTask extends BetterAsyncTask<Integer, Void, ArrayList<Word>> {
+
+	private class LoadStackTask extends
+			BetterAsyncTask<Integer, Void, ArrayList<Word>> {
 
 		@Override
 		protected void onPreExecute() {
@@ -221,7 +223,7 @@ public class StackDetails extends ListActivity {
 		protected void onPostExecute(ArrayList<Word> result) {
 			TextView tv = (TextView) findViewById(R.id.stack_details_words);
 			tv.setText(words.size() + " " + getString(R.string.words));
-			
+
 			updateExample();
 			removeDialog(DIALOG_DOWNLOADING);
 		}
@@ -229,11 +231,12 @@ public class StackDetails extends ListActivity {
 		@Override
 		protected ArrayList<Word> doInBackground(Integer... params) {
 			char input[] = new char[Download.BLOCK_SIZE];
-			InputStream in = Download.openHttpConnection(getStudyStackURL(stackId));
-			
+			InputStream in = Download
+					.openHttpConnection(getStudyStackURL(stackId));
+
 			InputStreamReader reader = new InputStreamReader(in, Charset
 					.forName("ISO-8859-1"));
-			
+
 			int read = -1;
 			content = "";
 			while (true) {
@@ -251,7 +254,6 @@ public class StackDetails extends ListActivity {
 
 			return loadWordsFromString(content);
 		}
-		
-		
+
 	}
 }

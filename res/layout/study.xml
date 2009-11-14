@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout android:layout_width="fill_parent"
-	android:id="@+id/study_main_layout" xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_height="fill_parent" android:visibility="invisible">
+
+<RelativeLayout android:layout_width="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/study_main_layout" android:layout_height="fill_parent"
+	android:visibility="invisible">
 
 	<AbsoluteLayout android:layout_width="wrap_content"
 		android:id="@+id/study_flags" android:layout_height="wrap_content"
@@ -26,8 +27,8 @@
 	<LinearLayout android:orientation="vertical"
 		android:layout_alignParentTop="true" android:layout_toLeftOf="@+id/study_audio_switch"
 		android:layout_toRightOf="@+id/study_flags"
-		android:layout_alignBottom="@+id/study_flags"
-		android:layout_height="wrap_content" android:layout_width="wrap_content">
+		android:layout_alignBottom="@+id/study_flags" android:layout_height="wrap_content"
+		android:layout_width="wrap_content">
 		<ProgressBar android:id="@+id/study_progress_bar"
 			android:layout_margin="10sp" style="?android:attr/progressBarStyleHorizontal"
 			android:layout_width="fill_parent" android:layout_height="wrap_content" />
@@ -122,6 +123,4 @@
 
 
 </RelativeLayout>
-
-
 

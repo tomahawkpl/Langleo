@@ -164,7 +164,7 @@ public class EditCollection extends Activity {
 		intent.putExtra("part", "edit_collection");
 		startActivity(intent);
 	}
-	
+
 	private void updateNewWords() {
 		CheckBox cb_enabled = (CheckBox) findViewById(R.id.edit_collection_disabled);
 		SeekBar e = (SeekBar) findViewById(R.id.edit_collection_priority);
@@ -216,7 +216,7 @@ public class EditCollection extends Activity {
 		collection.setBaseLanguage(selectedBaseLanguage);
 		collection.setTargetLanguage(selectedTargetLanguage);
 		intent.putExtra("collection", collection.toBundle());
-		
+
 		setResult(RESULT_OK, intent);
 		finish();
 	}

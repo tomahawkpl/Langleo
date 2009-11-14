@@ -28,7 +28,7 @@ public class Words extends ListActivity {
 	private List list;
 
 	private Cursor cursor;
-	
+
 	private final int REQUEST_NEW_WORD = 1;
 	private final int REQUEST_EDIT_WORD = 2;
 
@@ -36,9 +36,9 @@ public class Words extends ListActivity {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		setContentView(R.layout.words_list);
-		
+
 		list = new List();
 		list.loadBundle(getIntent().getBundleExtra("list"));
 
@@ -49,7 +49,7 @@ public class Words extends ListActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				editWord((int)id);
+				editWord((int) id);
 			}
 
 		});
@@ -81,10 +81,10 @@ public class Words extends ListActivity {
 				.getMenuInfo();
 		switch (item.getItemId()) {
 		case R.id.delete_word:
-			deleteWord((int)info.id);
+			deleteWord((int) info.id);
 			return true;
 		case R.id.edit_word:
-			editWord((int)info.id);
+			editWord((int) info.id);
 			return true;
 		default:
 			return super.onContextItemSelected(item);
@@ -122,12 +122,12 @@ public class Words extends ListActivity {
 
 		}
 	}
-	
+
 	public void editWord(int id) {
 		Intent intent = new Intent(getApplicationContext(), EditWord.class);
 		intent.putExtra("word", new Word(id).toBundle());
 		startActivityForResult(intent, REQUEST_EDIT_WORD);
-		
+
 	}
 
 	public void deleteWord(int id) {
@@ -141,8 +141,8 @@ public class Words extends ListActivity {
 
 		this.list.load();
 		this.cursor = this.list.getWords().orderByInPlace("word").getCursor();
-		adapter = new SimpleCursorAdapter(this, R.layout.word_item, this.cursor,
-				new String[] { "word", "translation" }, new int[] {
+		adapter = new SimpleCursorAdapter(this, R.layout.word_item,
+				this.cursor, new String[] { "word", "translation" }, new int[] {
 						R.id.word_word, R.id.word_translation });
 		list.setAdapter(adapter);
 	}

@@ -1,5 +1,7 @@
 package com.atteo.langleo_trial.activities;
 
+import java.util.Locale;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -37,7 +39,8 @@ import com.atteo.langleo_trial.views.SelectLimitDialog;
 import com.google.marvin.widget.TouchGestureControlOverlay;
 import com.google.marvin.widget.TouchGestureControlOverlay.Gesture;
 import com.google.marvin.widget.TouchGestureControlOverlay.GestureListener;
-import com.google.tts.TTS;
+import com.google.tts.TextToSpeechBeta;
+import com.google.tts.TextToSpeechBeta.OnInitListener;
 
 public class Study extends Activity {
 	private static Study INSTANCE = null;
@@ -59,8 +62,11 @@ public class Study extends Activity {
 
 	private boolean isCreated = false;
 
-	private boolean audioEnabled;
-	private boolean readTranslation;
+	private boolean audioOn;
+	private boolean readTranslation = false;
+
+	private boolean noWordLanguageShown = false,
+			noTranslationLanguageShown = false;
 
 	private int limitIncrease = 0;
 
@@ -69,37 +75,100 @@ public class Study extends Activity {
 	private static final int DIALOG_SELECT_LIMIT = 0;
 	private static final int DIALOG_PLEASE_WAIT = 1;
 
-	private TTS tts = null;
+	private TextToSpeechBeta tts = null;
 
 	private boolean preparing = false;
 
-	private TTS.InitListener ttsInitListener = new TTS.InitListener() {
+	private OnInitListener ttsInitListener = new OnInitListener() {
 
-		public void onInit(int version) {
-			tts.setSpeechRate(120);
-			Word w = currentQuestion.getWord().l();
-
-			tts.setLanguage(questionBaseLanguage.getShortName());
-			tts.speak(prepareToSpeak(w.getWord()), 1, null);
-
-			readTranslation = true;
+		public void onInit(int status, int version) {
+			if (status == TextToSpeechBeta.SUCCESS) {
+				Word w = currentQuestion.getWord().l();
+				audioIsOn(true);
+				read(w);
+			} else
+				audioFailed();
 		}
 
 	};
 
-	private void initAudio() {
-		if (tts == null)
-			tts = new TTS(this, ttsInitListener, true);
-		else {
-			Word w = currentQuestion.getWord();
-			w.load();
+	private void startAudio() {
+		// if (tts == null)
+		tts = new TextToSpeechBeta(this, ttsInitListener);
+		// else {
+		// Word w = currentQuestion.getWord();
+		// w.load();
+		// read(w);
+		// audioIsOn();
+		// }
 
-			tts.setLanguage(questionBaseLanguage.getShortName());
-			tts.speak(prepareToSpeak(w.getWord()), 1, null);
+	}
 
-			readTranslation = true;
+	private void stopAudio() {
+		tts.shutdown();
+		tts = null;
+		audioIsOn(false);
+	}
+
+	private void read(Word w) {
+		if (!isAudioOn())
+			return;
+		if (readTranslation) {
+			if (TextToSpeechBeta.LANG_AVAILABLE == tts
+					.isLanguageAvailable(new Locale(questionTargetLanguage
+							.getShortName()))) {
+				tts.setLanguage(new Locale(questionTargetLanguage
+						.getShortName()));
+				tts.speak(prepareToSpeak(w.getTranslation()), 1, null);
+			} else if (!noTranslationLanguageShown) {
+				Toast.makeText(this, getString(R.string.no_voice_data,
+						questionTargetLanguage.getName()), Toast.LENGTH_LONG).show();
+				noTranslationLanguageShown = true;
+			}
+		} else {
+			if (TextToSpeechBeta.LANG_AVAILABLE == tts
+					.isLanguageAvailable(new Locale(questionBaseLanguage
+							.getShortName()))) {
+				tts
+						.setLanguage(new Locale(questionBaseLanguage
+								.getShortName()));
+				tts.speak(prepareToSpeak(w.getWord()), 1, null);
+			} else if (!noWordLanguageShown) {
+				Toast.makeText(this, getString(R.string.no_voice_data,
+						questionBaseLanguage.getName()), Toast.LENGTH_LONG).show();
+				noWordLanguageShown = true;
+			}
+		}
+		readTranslation = !readTranslation;
+	}
+
+	private void audioIsOn(boolean isOn) {
+		audioOn = isOn;
+		if (!isFinishing()) {
+			SharedPreferences prefs = Langleo.getPreferences();
+			Editor e = prefs.edit();
+			e.putBoolean("audio_on", audioOn);
+			e.commit();
 		}
 
+		ToggleButton tb = (ToggleButton) findViewById(R.id.study_audio_switch);
+		tb.setChecked(audioOn);
+
+		if (audioOn)
+			Toast.makeText(Study.this, R.string.audio_activated,
+					Toast.LENGTH_LONG).show();
+		else if (!isFinishing())
+			Toast.makeText(Study.this, R.string.audio_deactivated,
+					Toast.LENGTH_LONG).show();
+
+	}
+
+	private void audioFailed() {
+		Toast.makeText(this, R.string.audio_start_failed, Toast.LENGTH_LONG);
+	}
+
+	private boolean isAudioOn() {
+		return audioOn;
 	}
 
 	@Override
@@ -117,9 +186,6 @@ public class Study extends Activity {
 
 		Intent intent = getIntent();
 		limitIncrease = intent.getIntExtra("limit_increase", 0);
-
-		SharedPreferences prefs = Langleo.getPreferences();
-		audioEnabled = prefs.getBoolean("audio_enabled", false);
 
 		baseLanguageImage = (ImageView) findViewById(R.id.study_base_language_image);
 		targetLanguageImage = (ImageView) findViewById(R.id.study_target_language_image);
@@ -184,7 +250,7 @@ public class Study extends Activity {
 					tv_translation.setVisibility(View.VISIBLE);
 					tv_note.setVisibility(View.VISIBLE);
 
-					if (!audioEnabled)
+					if (!isAudioOn())
 						return;
 
 					Word w = currentQuestion.getWord();
@@ -194,25 +260,18 @@ public class Study extends Activity {
 					Collection c = list.getCollection();
 					c.load();
 
-					if (readTranslation) {
-						tts.setLanguage(questionTargetLanguage.getShortName());
-						tts.speak(prepareToSpeak(w.getTranslation()), 1, null);
-					} else {
-						tts.setLanguage(questionBaseLanguage.getShortName());
-						tts.speak(prepareToSpeak(w.getWord()), 1, null);
-					}
-					readTranslation = !readTranslation;
+					read(w);
 
 				}
 
-				if (gesture == Gesture.UP && audioEnabled) {
+				if (gesture == Gesture.UP && isAudioOn()) {
 					if (currentQuestion.getRepetitions() == -1)
 						answer(LearningAlgorithm.ANSWER_CONTINUE);
 					else
 						answer(LearningAlgorithm.ANSWER_CORRECT);
 				}
 
-				if (gesture == Gesture.DOWN && audioEnabled) {
+				if (gesture == Gesture.DOWN && isAudioOn()) {
 					if (currentQuestion.getRepetitions() == -1)
 						answer(LearningAlgorithm.ANSWER_NOT_NEW);
 					else
@@ -233,26 +292,16 @@ public class Study extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				SharedPreferences prefs = Langleo.getPreferences();
-				audioEnabled = !audioEnabled;
-				Editor e = prefs.edit();
-				e.putBoolean("audio_enabled", audioEnabled);
-				e.commit();
-
-				// updateAudioIcon();
-				if (audioEnabled) {
-					Toast.makeText(Study.this, R.string.audio_activated,
-							Toast.LENGTH_LONG).show();
-					initAudio();
-				}
+				if (!isAudioOn())
+					startAudio();
+				else
+					stopAudio();
 
 			}
 		});
 
 		FrameLayout f = (FrameLayout) findViewById(R.id.study_layout);
 		f.addView(gestures);
-
-		updateAudioIcon();
 
 		if (savedInstanceState != null) {
 			if (savedInstanceState.getBundle("question") != null) {
@@ -308,27 +357,19 @@ public class Study extends Activity {
 		super.onStop();
 		elapsedTime = SystemClock.elapsedRealtime() - startTime;
 		chronometer.stop();
-		removeDialog(DIALOG_PLEASE_WAIT);
-
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		if (isAudioOn())
+			stopAudio();
 		Langleo.getLearningAlgorithm().stop();
 		INSTANCE = null;
 	}
 
 	private String prepareToSpeak(String string) {
 		return string.replaceAll("\\([^)]*\\)", "");
-	}
-
-	private void updateAudioIcon() {
-		ToggleButton tb = (ToggleButton) findViewById(R.id.study_audio_switch);
-		if (audioEnabled)
-			tb.setChecked(true);
-		else
-			tb.setChecked(false);
 	}
 
 	@Override
@@ -445,6 +486,7 @@ public class Study extends Activity {
 
 	private void nextQuestion() {
 		currentQuestion = Langleo.getLearningAlgorithm().getQuestion();
+		readTranslation = false;
 		if (currentQuestion == null) {
 			finish();
 			return;
@@ -508,11 +550,7 @@ public class Study extends Activity {
 
 		}
 
-		if (audioEnabled && tts != null) {
-			tts.setLanguage(questionBaseLanguage.getShortName());
-			tts.speak(prepareToSpeak(w.getWord()), 1, null);
-			readTranslation = true;
-		}
+		read(w);
 
 	}
 
@@ -563,11 +601,10 @@ public class Study extends Activity {
 
 		@Override
 		protected void onPostExecute(Void v) {
-			if (audioEnabled) {
-				Study.INSTANCE.initAudio();
-				Toast.makeText(Study.INSTANCE, R.string.audio_activated,
-						Toast.LENGTH_LONG).show();
-			}
+			SharedPreferences prefs = Langleo.getPreferences();
+			if (prefs.getBoolean("audio_on", false))
+				Study.INSTANCE.startAudio();
+
 			if (Study.INSTANCE.currentQuestion == null)
 				Study.INSTANCE.nextQuestion();
 			else

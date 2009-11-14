@@ -70,7 +70,7 @@ public class SelectFile extends ListActivity {
 			public void onClick(View v) {
 				Intent intent = new Intent();
 				ListView list = getListView();
-				
+
 				int len = list.getCount();
 				boolean found = false;
 				int type;
@@ -85,7 +85,6 @@ public class SelectFile extends ListActivity {
 						b.putString("fullpath", map.get("fullpath"));
 						intent.putExtra(map.get("filename"), b);
 					}
-						
 
 				}
 				if (!found)
@@ -165,13 +164,12 @@ public class SelectFile extends ListActivity {
 		intent.putExtra("part", "select_file");
 		startActivity(intent);
 	}
-	
+
 	public void refreshList() {
 		datalist = new ArrayList<HashMap<String, String>>();
 		adapter = new FileListAdapter();
 		ListView list = getListView();
 
-		
 		File f = new File(currentDirectory);
 		if (!f.exists()) {
 			f.mkdir();
@@ -220,10 +218,10 @@ public class SelectFile extends ListActivity {
 				h.put("fullpath", file.getAbsolutePath());
 				h.put("filename", file.getName());
 				datalist.add(h);
-				
+
 				adapter.addFile(file.getName());
 			}
-		
+
 		list.setAdapter(adapter);
 	}
 

@@ -242,7 +242,7 @@ public class Olli implements LearningAlgorithm {
 		Collection c = null;
 
 		int new_words = len;
-		
+
 		for (int i = 0; i < len; i++) {
 			q = loadedQuestions.get(i);
 			if (q.getCollection().getId() != currentCollection) {
