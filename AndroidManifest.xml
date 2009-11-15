@@ -26,7 +26,6 @@
 		<activity android:name=".activities.EditWord" />
 		<activity android:name=".activities.ImportFromFile" />
 		<activity android:name=".activities.SelectFile" />
-		<activity android:name=".activities.Backup" android:enabled="false" />
 		<activity android:name=".activities.SelectList" />
 		<activity android:name=".activities.Help" />
 		<activity android:name=".activities.Updates" />
