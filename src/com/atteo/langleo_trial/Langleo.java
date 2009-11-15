@@ -210,8 +210,14 @@ public class Langleo extends Application {
 	private void placeDefaultDatabase() {
 		OutputStream databaseOutputStream;
 		try {
-			databaseOutputStream = new FileOutputStream("/data/data/" + PACKAGE
+			File d = new File("/data/data/" + PACKAGE
+					+ "/databases/");
+			d.mkdirs();
+			File f = new File("/data/data/" + PACKAGE
 					+ "/databases/" + DATABASE_NAME);
+			if (!f.exists())
+				f.createNewFile();
+			databaseOutputStream = new FileOutputStream(f);
 			InputStream databaseInputStream;
 
 			byte[] buffer = new byte[1024];
