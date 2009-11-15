@@ -559,6 +559,8 @@ public class Olli implements LearningAlgorithm {
 		StorableCollection nextQuestionCollection = new StorableCollection(
 				Question.class);
 		nextQuestionCollection.whereInPlace("date <= " + new Date().getTime());
+		nextQuestionCollection.addExtraQueryField("(select disabled from collection where id = collection_id) as _dis");
+		nextQuestionCollection.whereInPlace("_dis = 0");
 		Question q = nextQuestionCollection.getFirst();
 		if (q != null)
 			return LearningAlgorithm.QUESTIONS_WAITING;
