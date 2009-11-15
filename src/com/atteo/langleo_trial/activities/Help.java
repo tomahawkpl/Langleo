@@ -14,14 +14,18 @@ public class Help extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.help);
+		WebView wv = (WebView) this.findViewById(R.id.help_webview);
+		Intent intent = getIntent();
+		if (savedInstanceState != null)
+			wv.loadUrl(savedInstanceState.getString("url"));
+		else
+			wv.loadUrl(prefix + intent.getStringExtra("part") + ".html");
+
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onSaveInstanceState(Bundle b) {
 		WebView wv = (WebView) this.findViewById(R.id.help_webview);
-		Intent intent = getIntent();
-		wv.loadUrl(prefix + intent.getStringExtra("part") + ".html");
-
+		b.putString("url", wv.getUrl());
 	}
 }

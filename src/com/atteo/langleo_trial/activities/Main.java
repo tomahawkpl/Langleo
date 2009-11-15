@@ -220,7 +220,7 @@ public class Main extends Activity {
 
 	private void showHelp() {
 		Intent intent = new Intent(this, Help.class);
-		intent.putExtra("part", "");
+		intent.putExtra("part", "main");
 		startActivity(intent);
 	}
 
