@@ -484,15 +484,16 @@ public class Study extends Activity {
 				.getInstanceState());
 	}
 
-	private void nextQuestion() {
+	private boolean nextQuestion() {
 		currentQuestion = Langleo.getLearningAlgorithm().getQuestion();
 		readTranslation = false;
 		if (currentQuestion == null) {
 			finish();
-			return;
+			return false;
 		}
 
 		showQuestion();
+		return true;
 	}
 
 	private void showQuestion() {
@@ -602,13 +603,15 @@ public class Study extends Activity {
 		@Override
 		protected void onPostExecute(Void v) {
 			SharedPreferences prefs = Langleo.getPreferences();
+			if (Study.INSTANCE.currentQuestion == null)
+				if (!Study.INSTANCE.nextQuestion())
+					return;
+			else
+				Study.INSTANCE.showQuestion();
+			
 			if (prefs.getBoolean("audio_on", false))
 				Study.INSTANCE.startAudio();
 
-			if (Study.INSTANCE.currentQuestion == null)
-				Study.INSTANCE.nextQuestion();
-			else
-				Study.INSTANCE.showQuestion();
 			Study.INSTANCE.findViewById(R.id.study_main_layout).setVisibility(
 					View.VISIBLE);
 			Study.INSTANCE.removeDialog(DIALOG_PLEASE_WAIT);

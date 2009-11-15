@@ -8,7 +8,7 @@ import android.webkit.WebView;
 import com.atteo.langleo_trial.R;
 
 public class Help extends Activity {
-	private final String prefix = "file:///android_asset/help/main.html";
+	private final String prefix = "file:///android_asset/help/";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -21,7 +21,7 @@ public class Help extends Activity {
 		super.onStart();
 		WebView wv = (WebView) this.findViewById(R.id.help_webview);
 		Intent intent = getIntent();
-		wv.loadUrl(prefix + "#" + intent.getStringExtra("part"));
+		wv.loadUrl(prefix + intent.getStringExtra("part") + ".html");
 
 	}
 }
