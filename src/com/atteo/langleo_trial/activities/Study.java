@@ -114,8 +114,8 @@ public class Study extends Activity {
 		if (!isAudioOn())
 			return;
 		if (readTranslation) {
-			if (TextToSpeechBeta.LANG_AVAILABLE == tts
-					.isLanguageAvailable(new Locale(questionTargetLanguage
+			if (TextToSpeechBeta.LANG_AVAILABLE == tts.
+					isLanguageAvailable(new Locale(questionTargetLanguage
 							.getShortName()))) {
 				tts.setLanguage(new Locale(questionTargetLanguage
 						.getShortName()));
@@ -228,13 +228,13 @@ public class Study extends Activity {
 			}
 		});
 
-		button = (Button) findViewById(R.id.study_button_not_new);
-		button.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				answer(LearningAlgorithm.ANSWER_NOT_NEW);
-			}
-		});
+//		button = (Button) findViewById(R.id.study_button_not_new);
+//		button.setOnClickListener(new OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				answer(LearningAlgorithm.ANSWER_NOT_NEW);
+//			}
+//		});
 
 		gestures = new TouchGestureControlOverlay(this);
 		gestures.setGestureListener(new GestureListener() {
@@ -273,7 +273,7 @@ public class Study extends Activity {
 
 				if (gesture == Gesture.DOWN && isAudioOn()) {
 					if (currentQuestion.getRepetitions() == -1)
-						answer(LearningAlgorithm.ANSWER_NOT_NEW);
+						answer(LearningAlgorithm.ANSWER_CONTINUE); // NOT_NEW was here
 					else
 						answer(LearningAlgorithm.ANSWER_INCORRECT);
 				}

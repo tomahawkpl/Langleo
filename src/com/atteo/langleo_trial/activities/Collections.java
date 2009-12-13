@@ -1,5 +1,7 @@
 package com.atteo.langleo_trial.activities;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -14,6 +16,7 @@ import android.content.SharedPreferences;
 import android.database.DataSetObserver;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,6 +30,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
@@ -40,13 +44,13 @@ import com.atteo.silo.StorableCollection;
 public class Collections extends ListActivity {
 	private CollectionsAdapter adapter;
 
-	private ProgressDialog deleteDialog;
-
 	private final int REQUEST_NEW_COLLECTION = 1;
 	private final int REQUEST_EDIT_COLLECTION = 2;
 	private final int REQUEST_COLLECTION_LISTS = 3;
 
 	private final int DIALOG_DELETING = 1;
+	private final int DIALOG_BACKING_UP = 2;
+	private final int DIALOG_RESTORING = 3;
 
 	private int enteredCollection;
 
@@ -78,7 +82,6 @@ public class Collections extends ListActivity {
 
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				// TODO Auto-generated method stub
 
 			}
 
@@ -296,11 +299,12 @@ public class Collections extends ListActivity {
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
 				.getMenuInfo();
-
+		AlertDialog.Builder builder;
+		AlertDialog alert;
 		switch (item.getItemId()) {
 		case R.id.delete_collection:
 			final int rowToDelete = (int) info.id;
-			AlertDialog.Builder builder = new AlertDialog.Builder(this) {
+			builder = new AlertDialog.Builder(this) {
 			};
 			builder.setMessage(getString(R.string.are_you_sure)).setCancelable(
 					false).setPositiveButton(getString(R.string.yes),
@@ -314,7 +318,7 @@ public class Collections extends ListActivity {
 
 						}
 					});
-			AlertDialog alert = builder.create();
+			alert = builder.create();
 			alert.show();
 
 			return true;
@@ -340,8 +344,53 @@ public class Collections extends ListActivity {
 		case R.id.collections_help:
 			showHelp();
 			break;
+
+		case R.id.collections_backup:
+			backup();
+			break;
+
+		case R.id.collections_restore:
+			AlertDialog.Builder builder = new AlertDialog.Builder(this) {
+			};
+			builder.setMessage(getString(R.string.are_you_sure_restore))
+					.setCancelable(false).setPositiveButton(
+							getString(R.string.yes),
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int id) {
+									restore();
+								}
+							}).setNegativeButton(getString(R.string.no),
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int id) {
+
+								}
+							});
+			AlertDialog alert = builder.create();
+			alert.show();
+
+			break;
 		}
 		return true;
+	}
+
+	private void backup() {
+		if (!Langleo.checkCard()) {
+			Toast.makeText(this, R.string.card_not_mounted, Toast.LENGTH_LONG)
+					.show();
+			return;
+		}
+		new BackupTask().execute();
+	}
+
+	private void restore() {
+		if (!Langleo.checkCard()) {
+			Toast.makeText(this, R.string.card_not_mounted, Toast.LENGTH_LONG)
+					.show();
+			return;
+		}
+		new RestoreTask().execute();
 	}
 
 	private void showHelp() {
@@ -370,12 +419,23 @@ public class Collections extends ListActivity {
 	}
 
 	public Dialog onCreateDialog(int dialog) {
+		ProgressDialog progressDialog;
 		switch (dialog) {
 		case DIALOG_DELETING:
-			deleteDialog = new ProgressDialog(this);
-			deleteDialog.setMessage(getString(R.string.deleting));
-			deleteDialog.setCancelable(false);
-			return deleteDialog;
+			progressDialog = new ProgressDialog(this);
+			progressDialog.setMessage(getString(R.string.deleting));
+			progressDialog.setCancelable(false);
+			return progressDialog;
+		case DIALOG_BACKING_UP:
+			progressDialog = new ProgressDialog(this);
+			progressDialog.setMessage(getString(R.string.backing_up));
+			progressDialog.setCancelable(false);
+			return progressDialog;
+		case DIALOG_RESTORING:
+			progressDialog = new ProgressDialog(this);
+			progressDialog.setMessage(getString(R.string.restoring));
+			progressDialog.setCancelable(false);
+			return progressDialog;
 		}
 		return null;
 	}
@@ -390,6 +450,80 @@ public class Collections extends ListActivity {
 		intent.putExtra("collection", new Collection((int) id).toBundle());
 		startActivityForResult(intent, REQUEST_EDIT_COLLECTION);
 
+	}
+
+	private class RestoreTask extends AsyncTask<Void, Void, Boolean> {
+		public void onPreExecute() {
+			showDialog(DIALOG_RESTORING);
+		}
+
+		@Override
+		public void onPostExecute(Boolean result) {
+			refreshList();
+			dismissDialog(DIALOG_RESTORING);
+			if (result)
+				Toast.makeText(Collections.this, R.string.backup_restored,
+						Toast.LENGTH_LONG).show();
+			else
+				Toast.makeText(Collections.this, R.string.backup_restore_failed,
+						Toast.LENGTH_LONG).show();
+		}
+
+		@Override
+		protected Boolean doInBackground(Void... params) {
+//			Langleo.closeDatabase();
+			try {
+				File backupFile = new File(Environment.getExternalStorageDirectory() + "/" +
+						Langleo.DIR_NAME + "/" + Langleo.BACKUP_NAME);
+				if (!backupFile.canRead())
+					return false;
+				Langleo.copyFile(backupFile,getDatabasePath(Langleo.DATABASE_NAME));
+			} catch (IOException e) {
+				e.printStackTrace();
+				return false;
+			}
+//			Langleo.openDatabase();
+			return true;
+
+		}
+	}
+	
+	private class BackupTask extends AsyncTask<Void, Void, Boolean> {
+		public void onPreExecute() {
+			showDialog(DIALOG_BACKING_UP);
+		}
+
+		@Override
+		public void onPostExecute(Boolean result) {
+			dismissDialog(DIALOG_BACKING_UP);
+			if (result)
+				Toast.makeText(Collections.this, R.string.backup_created,
+						Toast.LENGTH_LONG).show();
+			else
+				Toast.makeText(Collections.this, R.string.backup_failed,
+						Toast.LENGTH_LONG).show();
+		}
+
+		@Override
+		protected Boolean doInBackground(Void... params) {
+//			Langleo.closeDatabase();
+			try {
+				File backupFile = new File(Environment.getExternalStorageDirectory() + "/" +
+						Langleo.DIR_NAME + "/" + Langleo.BACKUP_NAME);
+				if (!backupFile.exists())
+					backupFile.createNewFile();
+				if (!backupFile.canWrite())
+					return false;
+				Langleo.copyFile(getDatabasePath(Langleo.DATABASE_NAME),
+						backupFile);
+			} catch (IOException e) {
+				e.printStackTrace();
+				return false;
+			}
+//			Langleo.openDatabase();
+			return true;
+
+		}
 	}
 
 	private class DeleteTask extends AsyncTask<Collection, Void, Void> {

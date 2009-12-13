@@ -271,26 +271,23 @@ public class Lists extends ListActivity {
 		}
 	}
 
-	private boolean checkCard() {
-		if (!Environment.getExternalStorageState().equals("mounted")) {
-			Toast.makeText(this, R.string.card_not_mounted, Toast.LENGTH_LONG)
-					.show();
-			return false;
-		}
-		return true;
-	}
-
 	private void importList() {
-		if (!checkCard())
+		if (!Langleo.checkCard()) {
+			Toast.makeText(this, R.string.card_not_mounted, Toast.LENGTH_LONG)
+			.show();
 			return;
+		}
 		Intent intent = new Intent(this, ImportFromFile.class);
 		intent.putExtra("collection", collection.toBundle());
 		startActivityForResult(intent, REQUEST_IMPORT);
 	}
 
 	private void exportList() {
-		if (!checkCard())
+		if (!Langleo.checkCard()) {
+			Toast.makeText(this, R.string.card_not_mounted, Toast.LENGTH_LONG)
+			.show();
 			return;
+		}
 		Intent intent = new Intent(this, SelectList.class);
 		intent.putExtra("collection", collection.toBundle());
 		startActivityForResult(intent, REQUEST_EXPORT);

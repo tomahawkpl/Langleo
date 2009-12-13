@@ -6,7 +6,7 @@
 	<!--  General -->
 	<string name="shared_user_label">atteo</string>
 	<string name="shared_user_id">atteo</string>
-	
+
 	<string name="app_name">Langleo</string>
 	<string name="ok">OK</string>
 	<string name="cancel">Cancel</string>
@@ -16,8 +16,14 @@
 
 	<!-- Main activity -->
 	<string name="welcome_title">Welcome to Langleo!</string>
-	<string name="welcome_message">Hi! Langleo is a very effective tool which will let you learn up to few thousand new words per month. Before you\'ll start using it I encourage you to read	first two sections of the help page. They will explain to you basic	ideas behind Langleo and tell you how to use it efficiently.</string>
-	<string name="welcome_message2">Some sample French words are preloaded so that you can see how Langleo works. The easiest way of adding new words is using the \'Download\' function.</string>
+	<string name="welcome_message">Hi! Langleo is a very effective tool which will let
+		you learn up to few thousand new words per month. Before you\'ll start
+		using it I encourage you to read first two sections of the help page.
+		They will explain to you basic ideas behind Langleo and tell you how
+		to use it efficiently.</string>
+	<string name="welcome_message2">Some sample French words are preloaded so that you
+		can see how Langleo works. The easiest way of adding new words is
+		using the \'Download\' function.</string>
 	<string name="study">Study</string>
 	<string name="study_using_headphones">Study using headphones</string>
 	<string name="manage_your_collections">Collections</string>
@@ -26,15 +32,20 @@
 	<string name="help">Help</string>
 	<string name="card_not_mounted">SD card is not available</string>
 	<string name="no_words_to_study">Please add a collection</string>
-	<string name="how_many_new_words">How many extra new words would you like to learn?</string>
+	<string name="how_many_new_words">How many extra new words would you like to learn?
+	</string>
 	<string name="more_new_words">More new words</string>
-	<string name="no_need_to_study_now">There are no words to study now, please come back later</string>
-	<string name="click_again_to_start_either_way">Click \'Study\' again to study more new words than current limit</string>
+	<string name="no_need_to_study_now">There are no words to study now, please come back
+		later</string>
+	<string name="click_again_to_start_either_way">Click \'Study\' again to study more new words than
+		current limit</string>
 
 
 	<!-- Collections activity -->
 	<string name="restore_backup">Restore/Backup</string>
-	<string name="collections_empty">You have no collections, press the \'Menu\' button and then \'New\' to add a new collection or \'Help\' to get further information about collections</string>
+	<string name="collections_empty">You have no collections, press the \'Menu\' button
+		and then \'New\' to add a new collection or \'Help\' to get further
+		information about collections</string>
 	<string name="new_">New</string>
 	<string name="new_collection">New collection</string>
 	<string name="delete">Delete</string>
@@ -58,6 +69,16 @@
 	<string name="days_left">Days left</string>
 	<string name="not_learning_yet">You haven\'t started learning yet</string>
 	<string name="finished_learning">You\'ve finished learning</string>
+	<string name="restore">Restore</string>
+	<string name="backup">Backup</string>
+	<string name="are_you_sure_restore">Restored data will replace your current data. Are
+		you sure?</string>
+	<string name="backup_created">Backup created on the SD card</string>
+	<string name="backup_failed">Backup failed</string>
+	<string name="backup_restored">SD card backup restored</string>
+	<string name="backup_restore_failed">Couldn\'t restore data</string>
+	<string name="backing_up">Backing up...</string>
+	<string name="restoring">Restoring...</string>
 
 	<!-- Edit collection activity -->
 	<string name="edit_collection_title">Edit collection</string>
@@ -67,38 +88,46 @@
 	<string name="change">Change</string>
 	<string name="collection_disabled">Disable collection</string>
 	<string name="priority">Priority</string>
-	<string name="priority_long">Priority - higher means more new words will be taken from this collection</string>
+	<string name="priority_long">Priority - higher means more new words will be
+		taken from this collection</string>
 	<string name="select_language">Select language</string>
-	
+
 	<!-- Lists activity -->
 	<string name="new_list">New list</string>
 	<string name="no_internet_connection">Internet connection not available</string>
 	<string name="downloading">Downloading...</string>
-	<string name="lists_empty">You have no lists in this collection, press the \'Menu\' button and then \'New\' to add a new list, \'Download\' to download one, \'Import\' to read a list from file or \'Help\' to get further information about lists</string>
-	
+	<string name="lists_empty">You have no lists in this collection, press the
+		\'Menu\' button and then \'New\' to add a new list, \'Download\' to
+		download one, \'Import\' to read a list from file or \'Help\' to get
+		further information about lists</string>
+
 	<!-- Words activity -->
 	<string name="new_word">New word</string>
-	<string name="words_empty">You have no words in this list, press the \'Menu\' button and then \'New\' to add a new word, \'Help\' to get further information about words</string>
-	
+	<string name="words_empty">You have no words in this list, press the \'Menu\'
+		button and then \'New\' to add a new word, \'Help\' to get further
+		information about words</string>
+
 	<!-- Edit word activity -->
 	<string name="word">Word</string>
 	<string name="translation">Translation</string>
 	<string name="note">Note</string>
-	
+
 	<!-- Import activity -->
 	<string name="selected_file">Selected file(s)</string>
 	<string name="select_different_file">Select different file(s)</string>
 	<string name="loading">Loading...</string>
 	<string name="tabulator">Tabulator</string>
 	<string name="other">Other...</string>
-	<string name="empty_file_select_another">Selected file doesn\'t contain any words, please select another one</string>
+	<string name="empty_file_select_another">Selected file doesn\'t contain any words, please
+		select another one</string>
 	<string name="empty_file">Empty file</string>
 	<string name="example_of_imported_word">Example of an imported word:</string>
 	<string name="will_be_imported_as">Will be imported as:</string>
 	<string name="insert_word_delimiter">Insert a character or string</string>
 	<string name="example_word">Word (%s): %s</string>
 	<string name="example_note">Note: %s</string>
-	<string name="parsing_error">Couldn\'t parse the file with the present settings</string>
+	<string name="parsing_error">Couldn\'t parse the file with the present settings
+	</string>
 	<string name="example_translation">Translation (%s): %s</string>
 	<string name="list_name_empty">List name is empty</string>
 	<string name="word_delimiter">Word delimiter</string>
@@ -107,11 +136,11 @@
 	<!-- Export activity -->
 	<string name="export_to">Export to</string>
 	<string name="export_options">Export options</string>
-	
+
 	<!-- Select file activity -->
 	<string name="select_all">Select all</string>
 	<string name="deselect_all">Deselect all</string>
-	
+
 	<!-- Study activity -->
 	<string name="edit_word">Edit word</string>
 	<string name="stats">Statistics</string>
@@ -122,29 +151,36 @@
 	<string name="delete_word">Delete word</string>
 	<string name="please_wait">Please wait...</string>
 	<string name="audio_activated">Audio and gestures activated</string>
-	<string name="study_headphones_text">You\'re in \'Study using headphones\' mode now, press \'Back\' button to leave or \'Menu\' button for help</string>
-	<string name="no_voice_data">Voice data for the %s language is not available, see Help page</string>
+	<string name="study_headphones_text">You\'re in \'Study using headphones\' mode now,
+		press \'Back\' button to leave or \'Menu\' button for help</string>
+	<string name="no_voice_data">Voice data for the %s language is not available,
+		see Help page</string>
 	<string name="audio_start_failed">Failed to start audio. See help page.</string>
 	<string name="audio_deactivated">Audio and gestures deactivated</string>
-	
+
 	<!-- Preferences activity -->
 	<string name="collections">Collections</string>
 	<string name="import_export">Import/Export</string>
-	<string name="import_export_summary">Set options which control import and export of words</string>
+	<string name="import_export_summary">Set options which control import and export of
+		words</string>
 
 	<string name="studying">Studying</string>
 	<string name="new_words_per_day">New words per day</string>
-	<string name="new_words_per_day_summary">Number of new words that will be introduced daily</string>
+	<string name="new_words_per_day_summary">Number of new words that will be introduced daily
+	</string>
 	<string name="new_words_per_session">New words per session</string>
-	<string name="new_words_per_session_summary">Number of new words that will be introduced per session</string>
+	<string name="new_words_per_session_summary">Number of new words that will be introduced per
+		session</string>
 	<string name="optimize_new_words_per_day">Optimise</string>
-	<string name="optimize_new_words_per_day_summary">Let Langleo figure out the number of new words optimal for you</string>
-	
+	<string name="optimize_new_words_per_day_summary">Let Langleo figure out the number of new words
+		optimal for you</string>
+
 	<!-- Download activity -->
 	<string name="search">Search</string>
 	<string name="refresh">Refresh</string>
 	<string name="no_download_for_this_language">There are no downloads for the %s language</string>
-	<string name="connecting_with_studystacks">Downloading index from studystack.com, it may take a while...</string>
+	<string name="connecting_with_studystacks">Downloading index from studystack.com, it may take
+		a while...</string>
 	<string name="loading_index">Loading index...</string>
 	<string name="loading_words">Loading words...</string>
 	<string name="words">words</string>

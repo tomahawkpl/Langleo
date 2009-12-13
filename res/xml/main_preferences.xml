@@ -9,4 +9,5 @@
 			android:key="new_words_per_session"></EditTextPreference>
 
 	</PreferenceCategory>
+
 </PreferenceScreen>

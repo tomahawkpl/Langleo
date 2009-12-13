@@ -1,6 +1,7 @@
 package com.atteo.langleo_trial;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -37,12 +38,13 @@ import com.atteo.silo.Silo.RunningMode;
 public class Langleo extends Application {
 
 	static private LearningAlgorithm learningAlgorithm = null;
-
+	static private Context dbContext;
+	
 	public static final String DEFAULT_NEW_WORDS_PER_DAY = "20";
 	public static final String DEFAULT_NEW_WORDS_PER_SESSION = "10";
 	public static final long SESSION_TIMEOUT = 1000 * 60 * 15;
 
-	private final String[] MIGRATIONS = new String[] {
+	private static final String[] MIGRATIONS = new String[] {
 			"create table language(id integer primary key autoincrement, name text, shortName text, studystackid integer)",
 			"create table collection(id integer primary key autoincrement, name text, targetLanguage_id integer, baseLanguage_id integer, priority integer, started integer, disabled integer)",
 			"create table list(id integer primary key autoincrement, name text, collection_id integer, fromstudystack integer)",
@@ -90,6 +92,7 @@ public class Langleo extends Application {
 	};
 
 	public static String DATABASE_NAME = "Langleo";
+	public static String BACKUP_NAME = "Langleo.backup";
 	public static String LOG_IDENT = "Langleo";
 	public static String DIR_NAME = "Langleo";
 	public static String PACKAGE;
@@ -123,6 +126,8 @@ public class Langleo extends Application {
 
 		learningAlgorithm = new Olli();
 
+		dbContext = this;
+		
 		openDatabase();
 
 		getLanguages();
@@ -154,8 +159,8 @@ public class Langleo extends Application {
 		return learningAlgorithm;
 	}
 
-	public void openDatabase() {
-		Silo.open(this, DATABASE_NAME, MIGRATIONS, RunningMode.PRODUCTION);
+	public static void openDatabase() {
+		Silo.open(dbContext, DATABASE_NAME, MIGRATIONS, RunningMode.PRODUCTION);
 		Silo.initializeClass(Collection.class);
 		Silo.initializeClass(List.class);
 		Silo.initializeClass(Word.class);
@@ -168,7 +173,7 @@ public class Langleo extends Application {
 		Silo.setLogIdent(LOG_IDENT);
 	}
 
-	public void closeDatabase() {
+	public static void closeDatabase() {
 		Silo.close();
 	}
 
@@ -206,7 +211,29 @@ public class Langleo extends Application {
 
 		return connected;
 	}
+	
+	public static boolean checkCard() {
+		if (!Environment.getExternalStorageState().equals("mounted")) {
+			return false;
+		}
+		return true;
+	}
 
+	public static void copyFile(File source, File dest) throws IOException {
+		OutputStream outputStream;
+		outputStream = new FileOutputStream(dest);
+		InputStream inputStream = new FileInputStream(source);
+
+		
+		byte[] buffer = new byte[1024];
+
+		while (inputStream.read(buffer) > 0) {
+			outputStream.write(buffer);
+		}
+		inputStream.close();
+		outputStream.close();
+	}
+	
 	private void placeDefaultDatabase() {
 		OutputStream databaseOutputStream;
 		try {
