@@ -449,7 +449,6 @@ public class Collections extends ListActivity {
 		Intent intent = new Intent(this, EditCollection.class);
 		intent.putExtra("collection", new Collection((int) id).toBundle());
 		startActivityForResult(intent, REQUEST_EDIT_COLLECTION);
-
 	}
 
 	private class RestoreTask extends AsyncTask<Void, Void, Boolean> {
