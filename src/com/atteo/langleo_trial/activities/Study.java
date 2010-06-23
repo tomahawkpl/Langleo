@@ -10,6 +10,8 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.TextToSpeech.OnInitListener;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,6 +20,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -39,8 +42,6 @@ import com.atteo.langleo_trial.views.SelectLimitDialog;
 import com.google.marvin.widget.TouchGestureControlOverlay;
 import com.google.marvin.widget.TouchGestureControlOverlay.Gesture;
 import com.google.marvin.widget.TouchGestureControlOverlay.GestureListener;
-import com.google.tts.TextToSpeechBeta;
-import com.google.tts.TextToSpeechBeta.OnInitListener;
 
 public class Study extends Activity {
 	private static Study INSTANCE = null;
@@ -75,14 +76,14 @@ public class Study extends Activity {
 	private static final int DIALOG_SELECT_LIMIT = 0;
 	private static final int DIALOG_PLEASE_WAIT = 1;
 
-	private TextToSpeechBeta tts = null;
+	private TextToSpeech tts = null;
 
 	private boolean preparing = false;
 
 	private OnInitListener ttsInitListener = new OnInitListener() {
 
-		public void onInit(int status, int version) {
-			if (status == TextToSpeechBeta.SUCCESS) {
+		public void onInit(int status) {
+			if (status == TextToSpeech.SUCCESS) {
 				Word w = currentQuestion.getWord().l();
 				audioIsOn(true);
 				read(w);
@@ -94,7 +95,7 @@ public class Study extends Activity {
 
 	private void startAudio() {
 		// if (tts == null)
-		tts = new TextToSpeechBeta(this, ttsInitListener);
+		tts = new TextToSpeech(this, ttsInitListener);
 		// else {
 		// Word w = currentQuestion.getWord();
 		// w.load();
@@ -114,7 +115,7 @@ public class Study extends Activity {
 		if (!isAudioOn())
 			return;
 		if (readTranslation) {
-			if (TextToSpeechBeta.LANG_AVAILABLE == tts.
+			if (TextToSpeech.LANG_AVAILABLE == tts.
 					isLanguageAvailable(new Locale(questionTargetLanguage
 							.getShortName()))) {
 				tts.setLanguage(new Locale(questionTargetLanguage
@@ -126,7 +127,7 @@ public class Study extends Activity {
 				noTranslationLanguageShown = true;
 			}
 		} else {
-			if (TextToSpeechBeta.LANG_AVAILABLE == tts
+			if (TextToSpeech.LANG_AVAILABLE == tts
 					.isLanguageAvailable(new Locale(questionBaseLanguage
 							.getShortName()))) {
 				tts
@@ -204,24 +205,24 @@ public class Study extends Activity {
 
 		chronometer = (Chronometer) findViewById(R.id.study_chronometer);
 
-		Button button = (Button) findViewById(R.id.study_button_incorrect);
-		button.setOnClickListener(new OnClickListener() {
+		ImageButton imageButton = (ImageButton) findViewById(R.id.study_button_incorrect);
+		imageButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				answer(LearningAlgorithm.ANSWER_INCORRECT);
 			}
 		});
 
-		button = (Button) findViewById(R.id.study_button_correct);
-		button.setOnClickListener(new OnClickListener() {
+		imageButton = (ImageButton) findViewById(R.id.study_button_correct);
+		imageButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				answer(LearningAlgorithm.ANSWER_CORRECT);
 			}
 		});
 
-		button = (Button) findViewById(R.id.study_button_continue);
-		button.setOnClickListener(new OnClickListener() {
+		imageButton = (ImageButton) findViewById(R.id.study_button_continue);
+		imageButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				answer(LearningAlgorithm.ANSWER_CONTINUE);

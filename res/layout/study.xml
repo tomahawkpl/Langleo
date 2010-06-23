@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<RelativeLayout android:layout_width="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/study_main_layout" android:layout_height="fill_parent"
-	android:visibility="invisible">
+<RelativeLayout android:layout_width="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/study_main_layout"
+	android:layout_height="fill_parent" android:visibility="invisible">
 
 	<AbsoluteLayout android:layout_width="wrap_content"
 		android:id="@+id/study_flags" android:layout_height="wrap_content"
@@ -75,13 +75,13 @@
 
 				<TextView android:text="" android:id="@+id/study_word_content"
 					android:layout_width="fill_parent" android:layout_height="wrap_content"
-					android:gravity="center" android:textSize="30sp"
+					android:gravity="center" android:textSize="23sp"
 					android:layout_below="@+id/study_new_word" android:layout_weight="1" />
 
 				<TextView android:text="" android:id="@+id/study_translation_content"
 					android:layout_width="fill_parent" android:layout_height="wrap_content"
 					android:gravity="center" android:layout_marginTop="5dp"
-					android:textSize="30sp" android:layout_weight="1" />
+					android:textSize="23sp" android:layout_weight="1" />
 
 				<TextView android:text="" android:id="@+id/study_note"
 					android:padding="5dip" android:layout_width="fill_parent"
@@ -94,13 +94,17 @@
 			android:gravity="bottom" android:layout_weight="0"
 			android:id="@+id/study_normal_buttons">
 
-			<Button android:text="@string/incorrect" android:id="@+id/study_button_incorrect"
+			<ImageButton android:id="@+id/study_button_correct"
 				android:layout_width="0dip" android:layout_weight="1"
-				android:layout_height="wrap_content" />
+				android:layout_height="wrap_content"
+				android:src="@drawable/accept" />
 
-			<Button android:text="@string/correct" android:id="@+id/study_button_correct"
+			<ImageButton android:id="@+id/study_button_incorrect"
 				android:layout_width="0dip" android:layout_weight="1"
-				android:layout_height="wrap_content" />
+				android:layout_height="wrap_content"
+				android:src="@drawable/cross" />
+
+
 
 		</LinearLayout>
 
@@ -109,10 +113,11 @@
 			android:layout_weight="0" android:id="@+id/study_first_time_buttons"
 			android:layout_alignParentBottom="true">
 
-
-			<Button android:text="@string/continue_" android:id="@+id/study_button_continue"
+			<ImageButton android:id="@+id/study_button_continue"
 				android:layout_width="0dip" android:layout_weight="1"
-				android:layout_height="wrap_content" />
+				android:layout_height="wrap_content"
+				android:src="@drawable/accept" />
+				
 		</LinearLayout>
 
 	</LinearLayout>

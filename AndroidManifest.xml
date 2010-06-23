@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	android:versionName="1.1" package="com.atteo.langleo_trial"
+	android:versionName="1.1.1" package="com.atteo.langleo_trial"
 	android:sharedUserLabel="@string/shared_user_label"
-	android:sharedUserId="@string/shared_user_id" android:versionCode="72">
+	android:sharedUserId="@string/shared_user_id" android:versionCode="73">
 
 	<uses-permission android:name="android.permission.INTERNET" />
 
@@ -37,4 +37,5 @@
 	<uses-sdk android:minSdkVersion="4"/>
 
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
 </manifest> 

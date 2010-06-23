@@ -5,7 +5,7 @@
 
 	<!--  General -->
 	<string name="shared_user_label">atteo</string>
-	<string name="shared_user_id">atteo</string>
+	<string name="shared_user_id">com.atteo</string>
 
 	<string name="app_name">Langleo</string>
 	<string name="ok">OK</string>
@@ -144,10 +144,6 @@
 	<!-- Study activity -->
 	<string name="edit_word">Edit word</string>
 	<string name="stats">Statistics</string>
-	<string name="incorrect">Incorrect</string>
-	<string name="continue_">Continue</string>
-	<string name="its_not_new">I know it already</string>
-	<string name="correct">Correct</string>
 	<string name="delete_word">Delete word</string>
 	<string name="please_wait">Please wait...</string>
 	<string name="audio_activated">Audio and gestures activated</string>
