@@ -104,8 +104,6 @@
 				android:layout_height="wrap_content"
 				android:src="@drawable/cross" />
 
-
-
 		</LinearLayout>
 
 		<LinearLayout android:layout_width="fill_parent"
