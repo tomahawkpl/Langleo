@@ -80,7 +80,6 @@ public class StackDetails extends ListActivity {
 
 		CheckBox checkbox = (CheckBox) findViewById(R.id.stack_details_switch_order);
 		checkbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			@Override
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
 				switchOrder = isChecked;
@@ -92,8 +91,6 @@ public class StackDetails extends ListActivity {
 
 		Button button = (Button) findViewById(R.id.stack_details_download);
 		button.setOnClickListener(new OnClickListener() {
-
-			@Override
 			public void onClick(View v) {
 				download();
 			}
@@ -126,6 +123,7 @@ public class StackDetails extends ListActivity {
 		startActivity(intent);
 	}
 
+	@Override
 	public Dialog onCreateDialog(int dialog) {
 		ProgressDialog progressDialog;
 		switch (dialog) {

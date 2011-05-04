@@ -115,15 +115,18 @@ public class Study extends Activity {
 		if (!isAudioOn())
 			return;
 		if (readTranslation) {
-			if (TextToSpeech.LANG_AVAILABLE == tts.
-					isLanguageAvailable(new Locale(questionTargetLanguage
+			if (TextToSpeech.LANG_AVAILABLE == tts
+					.isLanguageAvailable(new Locale(questionTargetLanguage
 							.getShortName()))) {
 				tts.setLanguage(new Locale(questionTargetLanguage
 						.getShortName()));
 				tts.speak(prepareToSpeak(w.getTranslation()), 1, null);
 			} else if (!noTranslationLanguageShown) {
-				Toast.makeText(this, getString(R.string.no_voice_data,
-						questionTargetLanguage.getName()), Toast.LENGTH_LONG).show();
+				Toast.makeText(
+						this,
+						getString(R.string.no_voice_data,
+								questionTargetLanguage.getName()),
+						Toast.LENGTH_LONG).show();
 				noTranslationLanguageShown = true;
 			}
 		} else {
@@ -135,8 +138,10 @@ public class Study extends Activity {
 								.getShortName()));
 				tts.speak(prepareToSpeak(w.getWord()), 1, null);
 			} else if (!noWordLanguageShown) {
-				Toast.makeText(this, getString(R.string.no_voice_data,
-						questionBaseLanguage.getName()), Toast.LENGTH_LONG).show();
+				Toast.makeText(
+						this,
+						getString(R.string.no_voice_data, questionBaseLanguage
+								.getName()), Toast.LENGTH_LONG).show();
 				noWordLanguageShown = true;
 			}
 		}
@@ -207,7 +212,6 @@ public class Study extends Activity {
 
 		ImageButton imageButton = (ImageButton) findViewById(R.id.study_button_incorrect);
 		imageButton.setOnClickListener(new OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				answer(LearningAlgorithm.ANSWER_INCORRECT);
 			}
@@ -215,7 +219,6 @@ public class Study extends Activity {
 
 		imageButton = (ImageButton) findViewById(R.id.study_button_correct);
 		imageButton.setOnClickListener(new OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				answer(LearningAlgorithm.ANSWER_CORRECT);
 			}
@@ -223,29 +226,26 @@ public class Study extends Activity {
 
 		imageButton = (ImageButton) findViewById(R.id.study_button_continue);
 		imageButton.setOnClickListener(new OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				answer(LearningAlgorithm.ANSWER_CONTINUE);
 			}
 		});
 
-//		button = (Button) findViewById(R.id.study_button_not_new);
-//		button.setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				answer(LearningAlgorithm.ANSWER_NOT_NEW);
-//			}
-//		});
+		// button = (Button) findViewById(R.id.study_button_not_new);
+		// button.setOnClickListener(new OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// answer(LearningAlgorithm.ANSWER_NOT_NEW);
+		// }
+		// });
 
 		gestures = new TouchGestureControlOverlay(this);
 		gestures.setGestureListener(new GestureListener() {
 
-			@Override
 			public void onGestureChange(Gesture gesture) {
 
 			}
 
-			@Override
 			public void onGestureFinish(Gesture gesture) {
 				if (gesture == Gesture.CENTER) {
 					tv_translation.setVisibility(View.VISIBLE);
@@ -274,14 +274,14 @@ public class Study extends Activity {
 
 				if (gesture == Gesture.DOWN && isAudioOn()) {
 					if (currentQuestion.getRepetitions() == -1)
-						answer(LearningAlgorithm.ANSWER_CONTINUE); // NOT_NEW was here
+						answer(LearningAlgorithm.ANSWER_CONTINUE); // NOT_NEW
+																	// was here
 					else
 						answer(LearningAlgorithm.ANSWER_INCORRECT);
 				}
 
 			}
 
-			@Override
 			public void onGestureStart(Gesture gesture) {
 
 			}
@@ -291,7 +291,6 @@ public class Study extends Activity {
 		ToggleButton tb = (ToggleButton) findViewById(R.id.study_audio_switch);
 		tb.setOnClickListener(new OnClickListener() {
 
-			@Override
 			public void onClick(View v) {
 				if (!isAudioOn())
 					startAudio();
@@ -395,7 +394,6 @@ public class Study extends Activity {
 			Button b = (Button) dialog
 					.findViewById(R.id.increase_limit_dialog_ok);
 			b.setOnClickListener(new OnClickListener() {
-				@Override
 				public void onClick(View v) {
 					dialog.dismiss();
 					NumberPicker np = (NumberPicker) dialog
@@ -412,7 +410,6 @@ public class Study extends Activity {
 			});
 			b = (Button) dialog.findViewById(R.id.increase_limit_dialog_cancel);
 			b.setOnClickListener(new OnClickListener() {
-				@Override
 				public void onClick(View v) {
 					dialog.dismiss();
 				}
@@ -456,6 +453,7 @@ public class Study extends Activity {
 		startActivity(intent);
 	}
 
+	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		if (resultCode == RESULT_CANCELED)
 			return;
@@ -607,9 +605,9 @@ public class Study extends Activity {
 			if (Study.INSTANCE.currentQuestion == null)
 				if (!Study.INSTANCE.nextQuestion())
 					return;
-			else
-				Study.INSTANCE.showQuestion();
-			
+				else
+					Study.INSTANCE.showQuestion();
+
 			if (prefs.getBoolean("audio_on", false))
 				Study.INSTANCE.startAudio();
 

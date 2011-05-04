@@ -6,6 +6,7 @@ import android.preference.PreferenceActivity;
 import com.atteo.langleo_trial.R;
 
 public class Preferences extends PreferenceActivity {
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.main_preferences);

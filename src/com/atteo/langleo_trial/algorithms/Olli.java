@@ -50,7 +50,7 @@ public class Olli implements LearningAlgorithm {
 
 	private static final long FIRST_INTERVAL = 1000 * 60 * 60;
 	private static final float MIN_FACTOR = (float) 1.3;
-	private static final float FIRST_FACTOR = (float) 4;
+	private static final float FIRST_FACTOR = 4;
 	private static final float MAX_FACTOR_DIFFERENCE = (float) 0.2;
 
 	// private static final float BASE_FACTOR_DIFFERENCE = (float) 0.05;
@@ -99,7 +99,6 @@ public class Olli implements LearningAlgorithm {
 
 	}
 
-	@Override
 	public void start(Bundle b) {
 		random = new Random();
 		random.setSeed(new Date().getTime());
@@ -267,7 +266,6 @@ public class Olli implements LearningAlgorithm {
 
 	}
 
-	@Override
 	public void stop() {
 		studyDay.setNewWords(newWordsToday);
 		studyDay.save();
@@ -277,7 +275,6 @@ public class Olli implements LearningAlgorithm {
 		isStarted = false;
 	}
 
-	@Override
 	public Bundle getInstanceState() {
 		if (!isStarted)
 			return null;
@@ -336,7 +333,6 @@ public class Olli implements LearningAlgorithm {
 		return b;
 	}
 
-	@Override
 	public void answer(Question question, int answer) {
 		new AnswerTask(question, answer).execute((Void) null);
 
@@ -371,7 +367,7 @@ public class Olli implements LearningAlgorithm {
 			factor = (FIRST_FACTOR - MIN_FACTOR) / 4 * 3 + MIN_FACTOR;
 			break;
 		case 4:
-			factor = (float) FIRST_FACTOR;
+			factor = FIRST_FACTOR;
 			break;
 		}
 
@@ -517,7 +513,6 @@ public class Olli implements LearningAlgorithm {
 		return newQuestion;
 	}
 
-	@Override
 	public Question getQuestion() {
 		while (currentCollection < collections.size()) {
 			Question q;
@@ -554,12 +549,12 @@ public class Olli implements LearningAlgorithm {
 		return null;
 	}
 
-	@Override
 	public int isQuestionWaiting() {
 		StorableCollection nextQuestionCollection = new StorableCollection(
 				Question.class);
 		nextQuestionCollection.whereInPlace("date <= " + new Date().getTime());
-		nextQuestionCollection.addExtraQueryField("(select disabled from collection where id = collection_id) as _dis");
+		nextQuestionCollection
+				.addExtraQueryField("(select disabled from collection where id = collection_id) as _dis");
 		nextQuestionCollection.whereInPlace("_dis = 0");
 		Question q = nextQuestionCollection.getFirst();
 		if (q != null)
@@ -611,7 +606,6 @@ public class Olli implements LearningAlgorithm {
 			return LearningAlgorithm.QUESTIONS_ANSWERED;
 	}
 
-	@Override
 	public void increaseLimit(int increase) {
 		if (increase == 0)
 			return;
@@ -622,17 +616,14 @@ public class Olli implements LearningAlgorithm {
 
 	}
 
-	@Override
 	public int questionsAnswered() {
 		return questionsAnswered;
 	}
 
-	@Override
 	public int allQuestions() {
 		return allNewQuestions * 2 + allRepeatedQuestions;
 	}
 
-	@Override
 	public void deletedQuestion(Question question) {
 		if (question.getRepetitions() != -1)
 			allRepeatedQuestions--;

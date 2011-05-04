@@ -146,7 +146,6 @@ public class Main extends Activity {
 			Button b = (Button) limit_dialog
 					.findViewById(R.id.increase_limit_dialog_ok);
 			b.setOnClickListener(new OnClickListener() {
-				@Override
 				public void onClick(View v) {
 					limit_dialog.dismiss();
 					Intent intent = new Intent(Main.this, Study.class);
@@ -160,7 +159,6 @@ public class Main extends Activity {
 			b = (Button) limit_dialog
 					.findViewById(R.id.increase_limit_dialog_cancel);
 			b.setOnClickListener(new OnClickListener() {
-				@Override
 				public void onClick(View v) {
 					limit_dialog.dismiss();
 				}

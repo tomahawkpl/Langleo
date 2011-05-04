@@ -106,7 +106,6 @@ public class Download extends ListActivity {
 		ImageButton button = (ImageButton) findViewById(R.id.download_search);
 		button.setOnClickListener(new OnClickListener() {
 
-			@Override
 			public void onClick(View v) {
 				TextView tv = (TextView) findViewById(R.id.download_search_text);
 				search(tv.getText().toString());
@@ -118,7 +117,6 @@ public class Download extends ListActivity {
 		button = (ImageButton) findViewById(R.id.download_clear);
 		button.setOnClickListener(new OnClickListener() {
 
-			@Override
 			public void onClick(View v) {
 				clear();
 
@@ -214,7 +212,7 @@ public class Download extends ListActivity {
 				r = reader.read(data);
 				if (r == -1)
 					break;
-				readCache.append(data,0, r);
+				readCache.append(data, 0, r);
 			}
 		} catch (IOException e1) {
 			e1.printStackTrace();
@@ -309,7 +307,6 @@ public class Download extends ListActivity {
 			}
 
 			java.util.Collections.sort(result, new Comparator<StackData>() {
-				@Override
 				public int compare(StackData object1, StackData object2) {
 					return object1.name.compareToIgnoreCase(object2.name);
 				}
@@ -483,27 +480,22 @@ public class Download extends ListActivity {
 			return true;
 		}
 
-		@Override
 		public int getCount() {
 			return stacks.size();
 		}
 
-		@Override
 		public Object getItem(int position) {
 			return stacks.get(position);
 		}
 
-		@Override
 		public long getItemId(int position) {
 			return position;
 		}
 
-		@Override
 		public int getItemViewType(int position) {
 			return 0;
 		}
 
-		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View v;
 			ViewHolder h;

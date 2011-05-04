@@ -20,6 +20,7 @@ public class MainMenuButton extends Button {
 
 	}
 
+	@Override
 	protected void onFocusChanged(boolean gainFocus, int direction,
 			Rect previouslyFocusedRect) {
 		if (gainFocus) {
@@ -29,6 +30,7 @@ public class MainMenuButton extends Button {
 		super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
 	}
 
+	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
 			setBackgroundResource(R.drawable.button_clicked);
@@ -36,6 +38,7 @@ public class MainMenuButton extends Button {
 		return super.onKeyDown(keyCode, event);
 	}
 
+	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
 			setBackgroundResource(R.drawable.button);
@@ -43,6 +46,7 @@ public class MainMenuButton extends Button {
 		return super.onKeyUp(keyCode, event);
 	}
 
+	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if (event.getAction() == MotionEvent.ACTION_DOWN)
 			setBackgroundResource(R.drawable.button_clicked);

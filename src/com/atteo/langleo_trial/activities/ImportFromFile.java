@@ -50,6 +50,7 @@ public class ImportFromFile extends Activity {
 
 	private final int REQUEST_SELECT_FILE = 1;
 
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.import_from_file);
@@ -73,7 +74,6 @@ public class ImportFromFile extends Activity {
 		RadioButton radio = (RadioButton) findViewById(R.id.import_from_file_radio_other);
 		radio.setOnClickListener(new OnClickListener() {
 
-			@Override
 			public void onClick(View v) {
 				showDialog(DIALOG_WORD_DELIMITER);
 
@@ -83,7 +83,6 @@ public class ImportFromFile extends Activity {
 
 		radio = (RadioButton) findViewById(R.id.import_from_file_radio_tabulator);
 		radio.setOnClickListener(new OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				importData.wordDelimiter = "\t";
 				updateExample();
@@ -93,7 +92,6 @@ public class ImportFromFile extends Activity {
 
 		checkbox = (CheckBox) findViewById(R.id.import_from_file_switch_order);
 		checkbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			@Override
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
 				importData.switchOrder = isChecked;
@@ -141,6 +139,7 @@ public class ImportFromFile extends Activity {
 		startActivityForResult(intent, REQUEST_SELECT_FILE);
 	}
 
+	@Override
 	public Dialog onCreateDialog(int dialog) {
 		switch (dialog) {
 		case DIALOG_LOADING:
@@ -184,6 +183,7 @@ public class ImportFromFile extends Activity {
 
 	}
 
+	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		if (resultCode == RESULT_CANCELED && importData == null) {
 			finish();
@@ -213,6 +213,7 @@ public class ImportFromFile extends Activity {
 		finish();
 	}
 
+	@Override
 	protected void onSaveInstanceState(Bundle bundle) {
 		super.onSaveInstanceState(bundle);
 		if (importData != null)

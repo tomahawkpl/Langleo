@@ -64,7 +64,6 @@ public class Lists extends ListActivity {
 
 	private int enteredList;
 
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lists_list);
@@ -84,14 +83,12 @@ public class Lists extends ListActivity {
 
 		list.setOnScrollListener(new OnScrollListener() {
 
-			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
 				registerProgressBars(view);
 
 			}
 
-			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 
 			}
@@ -100,7 +97,6 @@ public class Lists extends ListActivity {
 
 		list.setOnItemClickListener(new OnItemClickListener() {
 
-			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				List list = new List((Integer) adapter.getItem(position));
@@ -123,12 +119,14 @@ public class Lists extends ListActivity {
 		TaskManager.clearProgressBarsForLists();
 	}
 
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.lists, menu);
 		return true;
 	}
 
+	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
@@ -140,6 +138,7 @@ public class Lists extends ListActivity {
 			menu.getItem(1).setEnabled(false);
 	}
 
+	@Override
 	public Dialog onCreateDialog(int dialog) {
 		ProgressDialog progressDialog;
 		switch (dialog) {
@@ -158,6 +157,7 @@ public class Lists extends ListActivity {
 		return null;
 	}
 
+	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
 				.getMenuInfo();
@@ -191,6 +191,7 @@ public class Lists extends ListActivity {
 
 	}
 
+	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
 		Intent intent;
 		switch (menuItem.getItemId()) {
@@ -237,6 +238,7 @@ public class Lists extends ListActivity {
 		}
 	}
 
+	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		if (requestCode == REQUEST_LIST_WORDS)
 			updateListItem(enteredList);
@@ -274,7 +276,7 @@ public class Lists extends ListActivity {
 	private void importList() {
 		if (!Langleo.checkCard()) {
 			Toast.makeText(this, R.string.card_not_mounted, Toast.LENGTH_LONG)
-			.show();
+					.show();
 			return;
 		}
 		Intent intent = new Intent(this, ImportFromFile.class);
@@ -285,7 +287,7 @@ public class Lists extends ListActivity {
 	private void exportList() {
 		if (!Langleo.checkCard()) {
 			Toast.makeText(this, R.string.card_not_mounted, Toast.LENGTH_LONG)
-			.show();
+					.show();
 			return;
 		}
 		Intent intent = new Intent(this, SelectList.class);
@@ -422,37 +424,30 @@ public class Lists extends ListActivity {
 			notifyObservers();
 		}
 
-		@Override
 		public boolean areAllItemsEnabled() {
 			return true;
 		}
 
-		@Override
 		public boolean isEnabled(int position) {
 			return true;
 		}
 
-		@Override
 		public int getCount() {
 			return names.size();
 		}
 
-		@Override
 		public Object getItem(int position) {
 			return ids.get(position);
 		}
 
-		@Override
 		public long getItemId(int position) {
 			return ids.get(position);
 		}
 
-		@Override
 		public int getItemViewType(int position) {
 			return 0;
 		}
 
-		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View operation, v;
 			ViewHolder h;
@@ -486,27 +481,22 @@ public class Lists extends ListActivity {
 			return v;
 		}
 
-		@Override
 		public int getViewTypeCount() {
 			return 1;
 		}
 
-		@Override
 		public boolean hasStableIds() {
 			return false;
 		}
 
-		@Override
 		public boolean isEmpty() {
 			return names.size() == 0;
 		}
 
-		@Override
 		public void registerDataSetObserver(DataSetObserver observer) {
 			observers.add(observer);
 		}
 
-		@Override
 		public void unregisterDataSetObserver(DataSetObserver observer) {
 			observers.remove(observer);
 		}
@@ -515,6 +505,7 @@ public class Lists extends ListActivity {
 
 	private class DeleteTask extends BetterAsyncTask<List, Void, Void> {
 
+		@Override
 		public void onPreExecute() {
 			showDialog(DIALOG_DELETING);
 		}
@@ -661,6 +652,7 @@ public class Lists extends ListActivity {
 				String[] s = line.split(importData.wordDelimiter);
 				if (s.length != 2 && s.length != 3)
 					continue;
+				w.setNote("");
 				if (importData.switchOrder) {
 					w.setWord(s[1].trim());
 					w.setTranslation(s[0].trim());

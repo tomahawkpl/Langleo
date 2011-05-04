@@ -45,6 +45,7 @@ public class ProgressHandler extends Handler {
 		sendMessage(msg);
 	}
 
+	@Override
 	public void handleMessage(Message msg) {
 		int max = msg.getData().getInt("max");
 		if (max > 0)

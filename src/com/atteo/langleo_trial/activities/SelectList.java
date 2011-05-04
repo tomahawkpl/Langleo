@@ -27,6 +27,7 @@ public class SelectList extends ListActivity {
 
 	private Collection collection;
 
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.select_list);
@@ -41,7 +42,6 @@ public class SelectList extends ListActivity {
 
 		Button button = (Button) findViewById(R.id.select_file_ok);
 		button.setOnClickListener(new OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();
 				ListView list = getListView();
@@ -69,7 +69,6 @@ public class SelectList extends ListActivity {
 
 		button = (Button) findViewById(R.id.select_file_select_all);
 		button.setOnClickListener(new OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				ListView l = getListView();
 				int len = l.getCount();
@@ -81,7 +80,6 @@ public class SelectList extends ListActivity {
 
 		button = (Button) findViewById(R.id.select_file_deselect_all);
 		button.setOnClickListener(new OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				ListView l = getListView();
 				int len = l.getCount();
@@ -146,7 +144,6 @@ public class SelectList extends ListActivity {
 
 	private class myBinder implements SimpleAdapter.ViewBinder {
 
-		@Override
 		public boolean setViewValue(View view, Object data,
 				String textRepresentation) {
 			((CheckedTextView) view).setText(textRepresentation);

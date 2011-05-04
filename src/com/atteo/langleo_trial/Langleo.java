@@ -39,7 +39,7 @@ public class Langleo extends Application {
 
 	static private LearningAlgorithm learningAlgorithm = null;
 	static private Context dbContext;
-	
+
 	public static final String DEFAULT_NEW_WORDS_PER_DAY = "20";
 	public static final String DEFAULT_NEW_WORDS_PER_SESSION = "10";
 	public static final long SESSION_TIMEOUT = 1000 * 60 * 15;
@@ -113,6 +113,7 @@ public class Langleo extends Application {
 		VERSION = pi.versionName;
 	}
 
+	@Override
 	public void onCreate() {
 		super.onCreate();
 
@@ -127,7 +128,7 @@ public class Langleo extends Application {
 		learningAlgorithm = new Olli();
 
 		dbContext = this;
-		
+
 		openDatabase();
 
 		getLanguages();
@@ -177,6 +178,7 @@ public class Langleo extends Application {
 		Silo.close();
 	}
 
+	@Override
 	public void onTerminate() {
 		closeDatabase();
 		super.onTerminate();
@@ -211,7 +213,7 @@ public class Langleo extends Application {
 
 		return connected;
 	}
-	
+
 	public static boolean checkCard() {
 		if (!Environment.getExternalStorageState().equals("mounted")) {
 			return false;
@@ -224,7 +226,6 @@ public class Langleo extends Application {
 		outputStream = new FileOutputStream(dest);
 		InputStream inputStream = new FileInputStream(source);
 
-		
 		byte[] buffer = new byte[1024];
 
 		while (inputStream.read(buffer) > 0) {
@@ -233,15 +234,14 @@ public class Langleo extends Application {
 		inputStream.close();
 		outputStream.close();
 	}
-	
+
 	private void placeDefaultDatabase() {
 		OutputStream databaseOutputStream;
 		try {
-			File d = new File("/data/data/" + PACKAGE
-					+ "/databases/");
+			File d = new File("/data/data/" + PACKAGE + "/databases/");
 			d.mkdirs();
-			File f = new File("/data/data/" + PACKAGE
-					+ "/databases/" + DATABASE_NAME);
+			File f = new File("/data/data/" + PACKAGE + "/databases/"
+					+ DATABASE_NAME);
 			if (!f.exists())
 				f.createNewFile();
 			databaseOutputStream = new FileOutputStream(f);

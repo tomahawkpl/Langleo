@@ -17,6 +17,7 @@ import com.atteo.langleo_trial.models.List;
 public class EditList extends Activity {
 	private List list;
 
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.edit_list);

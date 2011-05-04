@@ -33,6 +33,7 @@ public class SelectFile extends ListActivity {
 
 	private String currentDirectory;
 
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
@@ -50,8 +51,6 @@ public class SelectFile extends ListActivity {
 		}
 
 		list.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
 			public void onItemClick(AdapterView<?> adapter, View view,
 					int position, long id) {
 				if (!SelectFile.this.adapter.isDirectory(position))
@@ -66,7 +65,6 @@ public class SelectFile extends ListActivity {
 
 		Button button = (Button) findViewById(R.id.select_file_ok);
 		button.setOnClickListener(new OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();
 				ListView list = getListView();
@@ -98,7 +96,6 @@ public class SelectFile extends ListActivity {
 
 		button = (Button) findViewById(R.id.select_file_select_all);
 		button.setOnClickListener(new OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				ListView l = getListView();
 				int len = l.getCount();
@@ -110,7 +107,6 @@ public class SelectFile extends ListActivity {
 
 		button = (Button) findViewById(R.id.select_file_deselect_all);
 		button.setOnClickListener(new OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				ListView l = getListView();
 				int len = l.getCount();
@@ -129,6 +125,7 @@ public class SelectFile extends ListActivity {
 		b.putString("current_directory", currentDirectory);
 	}
 
+	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && datalist.size() > 0
 				&& datalist.get(0).get("filename").equals("..")) {
@@ -176,7 +173,6 @@ public class SelectFile extends ListActivity {
 		}
 		File[] files = f.listFiles(new FileFilter() {
 
-			@Override
 			public boolean accept(File pathname) {
 				if (pathname.isDirectory())
 					return true;
@@ -204,7 +200,6 @@ public class SelectFile extends ListActivity {
 			}
 		files = f.listFiles(new FileFilter() {
 
-			@Override
 			public boolean accept(File pathname) {
 				if (pathname.getName().endsWith(".txt"))
 					return true;
@@ -241,6 +236,7 @@ public class SelectFile extends ListActivity {
 		public final int VIEWTYPE_DIR = 0;
 		public final int VIEWTYPE_FILE = 1;
 
+		@Override
 		public void finalize() {
 			int len = observers.size();
 			for (int i = 0; i < len; i++)
@@ -263,22 +259,18 @@ public class SelectFile extends ListActivity {
 			notifyObservers();
 		}
 
-		@Override
 		public boolean areAllItemsEnabled() {
 			return true;
 		}
 
-		@Override
 		public boolean isEnabled(int position) {
 			return true;
 		}
 
-		@Override
 		public int getCount() {
 			return directories.size() + files.size();
 		}
 
-		@Override
 		public Object getItem(int position) {
 			if (position < directories.size())
 				return directories.get(position);
@@ -287,19 +279,16 @@ public class SelectFile extends ListActivity {
 			return null;
 		}
 
-		@Override
 		public long getItemId(int position) {
 			return position;
 		}
 
-		@Override
 		public int getItemViewType(int position) {
 			if (position < directories.size())
 				return VIEWTYPE_DIR;
 			return VIEWTYPE_FILE;
 		}
 
-		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			TextView v;
 			if (position < directories.size()) {
@@ -323,7 +312,6 @@ public class SelectFile extends ListActivity {
 			return v;
 		}
 
-		@Override
 		public int getViewTypeCount() {
 			return 2;
 		}
@@ -332,22 +320,18 @@ public class SelectFile extends ListActivity {
 			return position < directories.size();
 		}
 
-		@Override
 		public boolean hasStableIds() {
 			return false;
 		}
 
-		@Override
 		public boolean isEmpty() {
 			return directories.size() + files.size() == 0;
 		}
 
-		@Override
 		public void registerDataSetObserver(DataSetObserver observer) {
 			observers.add(observer);
 		}
 
-		@Override
 		public void unregisterDataSetObserver(DataSetObserver observer) {
 			observers.remove(observer);
 		}

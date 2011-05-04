@@ -34,6 +34,7 @@ public class Words extends ListActivity {
 
 	ArrayList<HashMap<String, String>> datalist;
 
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -45,8 +46,6 @@ public class Words extends ListActivity {
 		ListView list = getListView();
 
 		list.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				editWord((int) id);
@@ -58,17 +57,20 @@ public class Words extends ListActivity {
 
 	}
 
+	@Override
 	public void onResume() {
 		super.onResume();
 		refreshList();
 	}
 
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.words, menu);
 		return true;
 	}
 
+	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
@@ -76,6 +78,7 @@ public class Words extends ListActivity {
 		inflater.inflate(R.menu.word, menu);
 	}
 
+	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
 				.getMenuInfo();
@@ -92,6 +95,7 @@ public class Words extends ListActivity {
 
 	}
 
+	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
 		switch (menuItem.getItemId()) {
 		case R.id.new_word:
@@ -106,6 +110,7 @@ public class Words extends ListActivity {
 		return true;
 	}
 
+	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		if (resultCode == RESULT_CANCELED)
 			return;

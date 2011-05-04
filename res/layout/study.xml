@@ -86,7 +86,8 @@
 				<TextView android:text="" android:id="@+id/study_note"
 					android:padding="5dip" android:layout_width="fill_parent"
 					android:layout_height="wrap_content" android:gravity="center"
-					android:layout_below="@+id/study_flags" />
+					android:layout_below="@+id/study_flags" 
+					android:textSize="17sp" />
 			</LinearLayout>
 		</FrameLayout>
 		<LinearLayout android:layout_width="fill_parent"

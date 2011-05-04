@@ -17,6 +17,7 @@ import com.atteo.langleo_trial.models.Word;
 public class EditWord extends Activity {
 	private Word word;
 
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.edit_word);

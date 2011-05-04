@@ -32,6 +32,7 @@ public class EditCollection extends Activity {
 
 	private String[] languageStrings;
 
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.edit_collection);
@@ -63,7 +64,6 @@ public class EditCollection extends Activity {
 		cb_disabled.setChecked(collection.getDisabled());
 
 		cb_disabled.setOnClickListener(new OnClickListener() {
-			@Override
 			public void onClick(View v) {
 				updateNewWords();
 			}
@@ -98,7 +98,6 @@ public class EditCollection extends Activity {
 		Button btn_change = (Button) findViewById(R.id.edit_collection_change_base_language);
 		btn_change.setOnClickListener(new OnClickListener() {
 
-			@Override
 			public void onClick(View v) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						EditCollection.this);
@@ -121,7 +120,6 @@ public class EditCollection extends Activity {
 		btn_change = (Button) findViewById(R.id.edit_collection_change_target_language);
 		btn_change.setOnClickListener(new OnClickListener() {
 
-			@Override
 			public void onClick(View v) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						EditCollection.this);

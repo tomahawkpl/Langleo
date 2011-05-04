@@ -58,6 +58,7 @@ public class Collections extends ListActivity {
 
 	String s1, s2, s3, s4, s5, s6, s7;
 
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -73,14 +74,12 @@ public class Collections extends ListActivity {
 
 		list.setOnScrollListener(new OnScrollListener() {
 
-			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
 				registerProgressBars(view);
 
 			}
 
-			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 
 			}
@@ -98,6 +97,7 @@ public class Collections extends ListActivity {
 		refreshList();
 	}
 
+	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		TaskManager.setCollections(null);
@@ -279,12 +279,14 @@ public class Collections extends ListActivity {
 
 	}
 
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.collections, menu);
 		return true;
 	}
 
+	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
@@ -296,6 +298,7 @@ public class Collections extends ListActivity {
 			menu.getItem(1).setEnabled(false);
 	}
 
+	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
 				.getMenuInfo();
@@ -332,6 +335,7 @@ public class Collections extends ListActivity {
 
 	}
 
+	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
 		Intent intent;
 		switch (menuItem.getItemId()) {
@@ -399,6 +403,7 @@ public class Collections extends ListActivity {
 		startActivity(intent);
 	}
 
+	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		if (requestCode == REQUEST_COLLECTION_LISTS)
 			updateListItem(enteredCollection);
@@ -418,6 +423,7 @@ public class Collections extends ListActivity {
 		}
 	}
 
+	@Override
 	public Dialog onCreateDialog(int dialog) {
 		ProgressDialog progressDialog;
 		switch (dialog) {
@@ -441,17 +447,18 @@ public class Collections extends ListActivity {
 	}
 
 	private void deleteCollection(int id) {
-		Collection collection = new Collection((int) id);
+		Collection collection = new Collection(id);
 		new DeleteTask().execute(collection);
 	}
 
 	private void editCollection(int id) {
 		Intent intent = new Intent(this, EditCollection.class);
-		intent.putExtra("collection", new Collection((int) id).toBundle());
+		intent.putExtra("collection", new Collection(id).toBundle());
 		startActivityForResult(intent, REQUEST_EDIT_COLLECTION);
 	}
 
 	private class RestoreTask extends AsyncTask<Void, Void, Boolean> {
+		@Override
 		public void onPreExecute() {
 			showDialog(DIALOG_RESTORING);
 		}
@@ -464,30 +471,34 @@ public class Collections extends ListActivity {
 				Toast.makeText(Collections.this, R.string.backup_restored,
 						Toast.LENGTH_LONG).show();
 			else
-				Toast.makeText(Collections.this, R.string.backup_restore_failed,
-						Toast.LENGTH_LONG).show();
+				Toast.makeText(Collections.this,
+						R.string.backup_restore_failed, Toast.LENGTH_LONG)
+						.show();
 		}
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-//			Langleo.closeDatabase();
+			// Langleo.closeDatabase();
 			try {
-				File backupFile = new File(Environment.getExternalStorageDirectory() + "/" +
-						Langleo.DIR_NAME + "/" + Langleo.BACKUP_NAME);
+				File backupFile = new File(Environment
+						.getExternalStorageDirectory()
+						+ "/" + Langleo.DIR_NAME + "/" + Langleo.BACKUP_NAME);
 				if (!backupFile.canRead())
 					return false;
-				Langleo.copyFile(backupFile,getDatabasePath(Langleo.DATABASE_NAME));
+				Langleo.copyFile(backupFile,
+						getDatabasePath(Langleo.DATABASE_NAME));
 			} catch (IOException e) {
 				e.printStackTrace();
 				return false;
 			}
-//			Langleo.openDatabase();
+			// Langleo.openDatabase();
 			return true;
 
 		}
 	}
-	
+
 	private class BackupTask extends AsyncTask<Void, Void, Boolean> {
+		@Override
 		public void onPreExecute() {
 			showDialog(DIALOG_BACKING_UP);
 		}
@@ -505,10 +516,11 @@ public class Collections extends ListActivity {
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-//			Langleo.closeDatabase();
+			// Langleo.closeDatabase();
 			try {
-				File backupFile = new File(Environment.getExternalStorageDirectory() + "/" +
-						Langleo.DIR_NAME + "/" + Langleo.BACKUP_NAME);
+				File backupFile = new File(Environment
+						.getExternalStorageDirectory()
+						+ "/" + Langleo.DIR_NAME + "/" + Langleo.BACKUP_NAME);
 				if (!backupFile.exists())
 					backupFile.createNewFile();
 				if (!backupFile.canWrite())
@@ -519,13 +531,14 @@ public class Collections extends ListActivity {
 				e.printStackTrace();
 				return false;
 			}
-//			Langleo.openDatabase();
+			// Langleo.openDatabase();
 			return true;
 
 		}
 	}
 
 	private class DeleteTask extends AsyncTask<Collection, Void, Void> {
+		@Override
 		public void onPreExecute() {
 			showDialog(DIALOG_DELETING);
 		}
@@ -613,37 +626,30 @@ public class Collections extends ListActivity {
 			notifyObservers();
 		}
 
-		@Override
 		public boolean areAllItemsEnabled() {
 			return true;
 		}
 
-		@Override
 		public boolean isEnabled(int position) {
 			return true;
 		}
 
-		@Override
 		public int getCount() {
 			return collections.size();
 		}
 
-		@Override
 		public Object getItem(int position) {
 			return collections.get(position).id;
 		}
 
-		@Override
 		public long getItemId(int position) {
 			return collections.get(position).id;
 		}
 
-		@Override
 		public int getItemViewType(int position) {
 			return 0;
 		}
 
-		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View operation, v;
 			ViewHolder h;
@@ -718,27 +724,22 @@ public class Collections extends ListActivity {
 			return v;
 		}
 
-		@Override
 		public int getViewTypeCount() {
 			return 1;
 		}
 
-		@Override
 		public boolean hasStableIds() {
 			return false;
 		}
 
-		@Override
 		public boolean isEmpty() {
 			return collections.size() == 0;
 		}
 
-		@Override
 		public void registerDataSetObserver(DataSetObserver observer) {
 			observers.add(observer);
 		}
 
-		@Override
 		public void unregisterDataSetObserver(DataSetObserver observer) {
 			observers.remove(observer);
 		}

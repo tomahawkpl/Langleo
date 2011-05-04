@@ -5,10 +5,9 @@ TODO:
 - click handlers
 - show word difficulty
 - auto-translate
-- smaller font in the import list
 - add japanese, arabic and others
 - edit collection/list after Menu button
-- fix help bug (samsung)
+- visual feedback when clicking on words
 
 1.3:
 - use perst database
