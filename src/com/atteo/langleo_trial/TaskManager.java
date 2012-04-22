@@ -19,8 +19,6 @@ public class TaskManager {
 
 	private static HashMap<Integer, CollectionProgress> collectionProgresses = new HashMap<Integer, CollectionProgress>();
 
-	private static int lastId = -1;
-
 	private static Collections collections;
 	private static Lists lists;
 
@@ -63,7 +61,6 @@ public class TaskManager {
 
 	public static TaskInfo registerTask(int type, int collectionId, int listId,
 			int maxProgress) {
-		lastId++;
 		TaskInfo task = new TaskInfo();
 		task.type = type;
 		task.maxProgress = maxProgress;

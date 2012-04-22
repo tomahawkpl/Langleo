@@ -180,10 +180,11 @@ public class StackDetails extends ListActivity {
 		String lines[];
 		int len;
 		Word stackData;
-		lines = content.split("\r\n");
+		lines = content.split("\n");
 		len = lines.length;
 		for (int i = 0; i < len; i++) {
-			stackData = getWordFromLine(lines[i]);
+			String line = lines[i].trim();
+			stackData = getWordFromLine(line);
 			if (stackData != null)
 				words.add(stackData);
 		}

@@ -124,11 +124,11 @@
 	<string name="example_of_imported_word">Example of an imported word:</string>
 	<string name="will_be_imported_as">Will be imported as:</string>
 	<string name="insert_word_delimiter">Insert a character or string</string>
-	<string name="example_word">Word (%s): %s</string>
+	<string name="example_word">Word (%1$s): %2$s</string>
 	<string name="example_note">Note: %s</string>
 	<string name="parsing_error">Couldn\'t parse the file with the present settings
 	</string>
-	<string name="example_translation">Translation (%s): %s</string>
+	<string name="example_translation">Translation (%1$s): %2$s</string>
 	<string name="list_name_empty">List name is empty</string>
 	<string name="word_delimiter">Word delimiter</string>
 	<string name="files_selected">files selected</string>

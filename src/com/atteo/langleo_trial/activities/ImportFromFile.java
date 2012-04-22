@@ -331,9 +331,7 @@ public class ImportFromFile extends Activity {
 
 				BufferedReader reader = new BufferedReader(fileReader, 16384);
 				String line;
-				int lineNumber = 0;
 				while (true) {
-					lineNumber++;
 					try {
 						line = reader.readLine();
 					} catch (IOException e) {

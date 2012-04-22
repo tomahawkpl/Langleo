@@ -33,8 +33,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Process;
 
-;
-
 public abstract class BetterAsyncTask<Params, Progress, Result> {
 	private static final String LOG_TAG = "BetterAsyncTask";
 

@@ -775,7 +775,6 @@ public class Lists extends ListActivity {
 			Word w;
 
 			words.iterate();
-			int i = 0;
 			while ((w = words.next()) != null) {
 				// if (i % 20 == 0)
 				publishProgress(done);
@@ -786,7 +785,6 @@ public class Lists extends ListActivity {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				i++;
 			}
 			publishProgress(done);
 			try {

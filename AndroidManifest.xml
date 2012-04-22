@@ -1,41 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	android:versionName="1.1.2" package="com.atteo.langleo_trial"
-	android:sharedUserLabel="@string/shared_user_label"
-	android:sharedUserId="@string/shared_user_id" android:versionCode="74">
+    package="com.atteo.langleo_trial"
+    android:sharedUserId="@string/shared_user_id"
+    android:sharedUserLabel="@string/shared_user_label"
+    android:versionCode="74"
+    android:versionName="1.1.2" >
 
-	<uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
-	<application android:icon="@drawable/icon" android:label="@string/app_name"
-		android:name="Langleo">
-		<activity android:alwaysRetainTaskState="true" android:name=".activities.Main"
-			android:label="@string/app_name" android:screenOrientation="portrait">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
-		</activity>
-		<activity android:name=".activities.Collections"
-			android:stateNotNeeded="true" />
-		<activity android:name=".activities.Download" />
-		<activity android:name=".activities.StackDetails" />
-		<activity android:name=".activities.EditCollection" />
-		<activity android:name=".activities.Lists" />
-		<activity android:name=".activities.EditList" />
-		<activity android:name=".activities.Words" />
-		<activity android:name=".activities.EditWord" />
-		<activity android:name=".activities.ImportFromFile" />
-		<activity android:name=".activities.SelectFile" />
-		<activity android:name=".activities.SelectList" />
-		<activity android:name=".activities.Help" />
-		<activity android:name=".activities.Updates" />
-		<activity android:name=".activities.Preferences"
-			android:stateNotNeeded="true" />
-		<activity android:name=".activities.Study"
-			android:launchMode="singleTask" android:screenOrientation="portrait" />
-	</application>
-	<uses-sdk android:minSdkVersion="4"/>
+    <uses-sdk
+        android:minSdkVersion="7"
+        android:targetSdkVersion="7" />
 
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
-</manifest> 
+    <application
+        android:name="Langleo"
+        android:icon="@drawable/icon"
+        android:label="@string/app_name" >
+        <activity
+            android:name=".activities.Main"
+            android:alwaysRetainTaskState="true"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.Collections"
+            android:stateNotNeeded="true" />
+        <activity android:name=".activities.Download" />
+        <activity android:name=".activities.StackDetails" />
+        <activity android:name=".activities.EditCollection" />
+        <activity android:name=".activities.Lists" />
+        <activity android:name=".activities.EditList" />
+        <activity android:name=".activities.Words" />
+        <activity android:name=".activities.EditWord" />
+        <activity android:name=".activities.ImportFromFile" />
+        <activity android:name=".activities.SelectFile" />
+        <activity android:name=".activities.SelectList" />
+        <activity android:name=".activities.Help" />
+        <activity android:name=".activities.Updates" />
+        <activity
+            android:name=".activities.Preferences"
+            android:stateNotNeeded="true" />
+        <activity
+            android:name=".activities.Study"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+    </application>
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" >
+    </uses-permission>
+
+</manifest>

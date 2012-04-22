@@ -71,12 +71,12 @@
 				<TextView android:text="@string/new_word" android:id="@+id/study_new_word"
 					android:padding="5dip" android:layout_width="fill_parent"
 					android:layout_height="wrap_content" android:gravity="center"
-					android:textSize="20sp" android:layout_below="@+id/study_flags" />
+					android:textSize="20sp" />
 
 				<TextView android:text="" android:id="@+id/study_word_content"
 					android:layout_width="fill_parent" android:layout_height="wrap_content"
 					android:gravity="center" android:textSize="23sp"
-					android:layout_below="@+id/study_new_word" android:layout_weight="1" />
+					android:layout_weight="1" />
 
 				<TextView android:text="" android:id="@+id/study_translation_content"
 					android:layout_width="fill_parent" android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
 			</LinearLayout>
 		</FrameLayout>
 		<LinearLayout android:layout_width="fill_parent"
-			android:layout_alignParentBottom="true" android:layout_height="wrap_content"
+			android:layout_height="wrap_content"
 			android:gravity="bottom" android:layout_weight="0"
 			android:id="@+id/study_normal_buttons">
 
@@ -109,8 +109,7 @@
 
 		<LinearLayout android:layout_width="fill_parent"
 			android:layout_height="wrap_content" android:gravity="bottom"
-			android:layout_weight="0" android:id="@+id/study_first_time_buttons"
-			android:layout_alignParentBottom="true">
+			android:layout_weight="0" android:id="@+id/study_first_time_buttons">
 
 			<ImageButton android:id="@+id/study_button_continue"
 				android:layout_width="0dip" android:layout_weight="1"
